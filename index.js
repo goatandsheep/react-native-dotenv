@@ -1,4 +1,3 @@
-const {join} = require('path')
 const dotenv = require('dotenv')
 
 module.exports = function (data) {
@@ -7,45 +6,35 @@ module.exports = function (data) {
   return {
     visitor: {
       ImportDeclaration(path, state) {
-        const production = process.env.BABEL_ENV === 'production'
-        const options = state.opts
+        const options = Object.assign({
+          moduleName: '@env',
+          path: '.env'
+        }, state.opts)
 
-        if (options.replacedModuleName === undefined) {
-          return
-        }
-
-        const configDir = options.configDir ? options.configDir : './'
-        const configFile = options.filename ? options.filename : '.env'
-
-        if (path.node.source.value === options.replacedModuleName) {
-          let config = dotenv.config({
-            path: join(configDir, configFile),
-            silent: true}
-          ) || {}
-
-          const platformPath = production ? `${configFile}.production` : `${configFile}.development`
-
-          config = Object.assign(config, dotenv.config({
-            path: join(configDir, platformPath), silent: true
-          }))
+        if (path.node.source.value === options.moduleName) {
+          dotenv.config({
+            path: options.path
+          })
 
           path.node.specifiers.forEach((specifier, idx) => {
             if (specifier.type === 'ImportDefaultSpecifier') {
-              throw path.get('specifiers')[idx].buildCodeFrameError('Import dotenv as default is not supported.')
+              throw path.get('specifiers')[idx].buildCodeFrameError('Default import is not supported')
+            }
+
+            if (specifier.type === 'ImportNamespaceSpecifier') {
+              throw path.get('specifiers')[idx].buildCodeFrameError('Wildcard import is not supported')
             }
 
             const importedId = specifier.imported.name
             const localId = specifier.local.name
 
-            if (!config[importedId]) {
-              throw path.get('specifiers')[idx].buildCodeFrameError(`Try to import dotenv variable "${importedId}" which is not defined in any ${configFile} files.'`)
+            if (!Object.prototype.hasOwnProperty.call(process.env, importedId)) {
+              throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" is not defined in ${options.path}`)
             }
 
             const binding = path.scope.getBinding(localId)
             binding.referencePaths.forEach(refPath => {
-              if (config[importedId]) {
-                refPath.replaceWith(t.valueToNode(config[importedId]))
-              }
+              refPath.replaceWith(t.valueToNode(process.env[importedId]))
             })
           })
 

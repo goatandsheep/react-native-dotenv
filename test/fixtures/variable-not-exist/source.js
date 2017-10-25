@@ -1,1 +1,1 @@
-import { foo } from "babel-dotenv";
+import {foo} from '@env'

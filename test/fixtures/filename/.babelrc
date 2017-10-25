@@ -2,9 +2,7 @@
   "plugins": [
     "babel-plugin-transform-es2015-modules-commonjs",
     ["../../../", {
-      "replacedModuleName": "babel-dotenv",
-      "configDir": "test/fixtures/filename",
-      "filename": "build.env"
+      "path": "test/fixtures/filename/.env.build"
     }]
   ]
 }

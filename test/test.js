@@ -1,20 +1,36 @@
 const babel = require('babel-core')
 const expect = require('expect.js')
 
-describe('myself in some tests', () => {
+describe('babel-plugin-dotenv-import', () => {
+  before(() => {
+    this.env = {...process.env}
+  })
+
+  afterEach(() => {
+    process.env = {...this.env}
+  })
+
   it('should throw if variable not exist', () => {
     expect(() => {
       babel.transformFileSync('test/fixtures/variable-not-exist/source.js')
     }).to.throwException(e => {
-      expect(e.message).to.contain('Try to import dotenv variable "foo" which is not defined in any .env files.')
+      expect(e.message).to.contain('"foo" is not defined in .env')
     })
   })
 
   it('should throw if default is imported', () => {
     expect(() => {
-      babel.transformFileSync('test/fixtures/default-imported/source.js')
+      babel.transformFileSync('test/fixtures/default-import/source.js')
     }).to.throwException(e => {
-      expect(e.message).to.contain('Import dotenv as default is not supported.')
+      expect(e.message).to.contain('Default import is not supported')
+    })
+  })
+
+  it('should throw if wildcard is imported', () => {
+    expect(() => {
+      babel.transformFileSync('test/fixtures/wildcard-import/source.js')
+    }).to.throwException(e => {
+      expect(e.message).to.contain('Wildcard import is not supported')
     })
   })
 
@@ -23,30 +39,30 @@ describe('myself in some tests', () => {
     expect(result.code).to.be('\'use strict\';\n\nconsole.log(\'abc123\');\nconsole.log(\'username\');')
   })
 
-  it('should load let .env.development overwrite .env', () => {
-    const result = babel.transformFileSync('test/fixtures/dev-env/source.js')
-    expect(result.code).to.be('\'use strict\';\n\nconsole.log(\'abc123\');\nconsole.log(\'userdonthavename\');')
+  it('should keep existing environment variables', () => {
+    process.env.API_KEY = 'dont override me'
+
+    const result = babel.transformFileSync('test/fixtures/default/source.js')
+    expect(result.code).to.be('\'use strict\';\n\nconsole.log(\'dont override me\');\nconsole.log(\'username\');')
   })
 
-  it('should load custom env file "build.env" and its overwrites', () => {
+  it('should load custom env file ".env.build"', () => {
     const result = babel.transformFileSync('test/fixtures/filename/source.js')
-    expect(result.code).to.be('\'use strict\';\n\nconsole.log(\'abc123456\');\nconsole.log(\'userdonthavename123456\');')
-  })
-
-  it('should load let .env.production overwrite .env', () => {
-    process.env.BABEL_ENV = 'production'
-    const result = babel.transformFileSync('test/fixtures/prod-env/source.js')
-    expect(result.code).to.be('\'use strict\';\n\nconsole.log(\'abc123\');\nconsole.log(\'foobar\');')
-    process.env.BABEL_ENV = undefined
+    expect(result.code).to.be('\'use strict\';\n\nconsole.log(\'abc123456\');\nconsole.log(\'username123456\');')
   })
 
   it('should support `as alias` import syntax', () => {
     const result = babel.transformFileSync('test/fixtures/as-alias/source.js')
-    expect(result.code).to.be('\'use strict\';\n\nvar a = \'abc123\';\nvar b = \'username\';')
+    expect(result.code).to.be('\'use strict\';\n\nconst a = \'abc123\';\nconst b = \'username\';')
   })
 
-  it('should do nothing if no `replacedModuleName` provided', () => {
-    const result = babel.transformFileSync('test/fixtures/replaced-module-name-not-provided/source.js')
-    expect(result.code).to.be('\'use strict\';\n\nvar _fancyDotenv = require(\'fancy-dotenv\');\n\nvar _fancyDotenv2 = _interopRequireDefault(_fancyDotenv);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }')
+  it('should allow specifying a custom module name', () => {
+    const result = babel.transformFileSync('test/fixtures/custom-module/source.js')
+    expect(result.code).to.be('\'use strict\';\n\nconsole.log(\'abc123\');\nconsole.log(\'username\');')
+  })
+
+  it('should not alter other imports', () => {
+    const result = babel.transformFileSync('test/fixtures/unused/source.js')
+    expect(result.code).to.be('\'use strict\';\n\nvar _path = require(\'path\');\n\nconsole.log(_path.join);')
   })
 })
