@@ -20,8 +20,19 @@
     "babel-runtime": "^6.26.0",
     "expect.js": "^0.3.1",
     "istanbul": "^0.4.5",
-    "mocha": "^4.0.1"
+    "mocha": "^4.0.1",
+    "xo": "^0.18.2"
   },
   "author": "Bertrand Marron",
-  "license": "MIT"
+  "license": "MIT",
+  "xo": {
+    "semicolon": false,
+    "space": 2,
+    "overrides": [
+      {
+        "files": "test/test.js",
+        "env": "mocha"
+      }
+    ]
+  }
 }
