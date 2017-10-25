@@ -14,9 +14,12 @@ $ npm install babel-plugin-dotenv-import
 
 ```json
 {
-  "plugins": [["dotenv-import", {
-      "replacedModuleName": "@env"
-   }]]
+  "plugins": [
+    ["dotenv-import", {
+      "moduleName": "@env",
+      "path": ".env"
+    }]
+  ]
 }
 ```
 
@@ -25,13 +28,13 @@ $ npm install babel-plugin-dotenv-import
 ```
 DB_HOST=localhost
 DB_USER=root
-DB_PASS=s1mpl3
+DB_PASS=
 ```
 
 In **whatever.js**
 
 ```js
-import { DB_HOST, DB_USER, DB_PASS } from "@env"
+import {DB_HOST, DB_USER, DB_PASS} from "@env"
 
 db.connect({
   host: DB_HOST,
