@@ -1,0 +1,111 @@
+version: 2
+
+defaults:
+  workspace_root: &workspace_root
+    ~/babel-plugin-dotenv-import
+
+  nodejs_container: &nodejs_container
+    working_directory: *workspace_root
+    docker:
+      - image: circleci/node:8
+
+  filters: &default_filters
+    tags:
+      only: '/v[0-9]+(\.[0-9]+)*/'
+
+  attach_workspace: &attach_workspace
+    attach_workspace:
+      at: *workspace_root
+
+  restore_node_modules: &restore_node_modules
+    restore_cache:
+      name: Restore node_modules cache
+      keys:
+        - v1-babel-plugin-dotenv-import-node-{{ checksum "yarn.lock" }}
+        - v1-babel-plugin-dotenv-import-node-
+
+jobs:
+  checkout:
+    <<: *nodejs_container
+    steps:
+      - checkout
+
+      - persist_to_workspace:
+          root: *workspace_root
+          paths:
+            - ./
+
+  install:
+    <<: *nodejs_container
+    steps:
+      - *attach_workspace
+      - *restore_node_modules
+
+      - restore_cache:
+          name: Restore yarn cache
+          keys:
+            - v1-babel-plugin-dotenv-import-yarn-{{ checksum "yarn.lock" }}
+            - v1-babel-plugin-dotenv-import-yarn-
+
+      - run:
+          name: Install dependencies
+          command: yarn
+
+      - save_cache:
+          name: Save yarn cache
+          key: v1-babel-plugin-dotenv-import-yarn-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn/
+
+      - save_cache:
+          name: Save node_modules cache
+          key: v1-babel-plugin-dotenv-import-node-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules/
+
+  lint:
+    <<: *nodejs_container
+    steps:
+      - *attach_workspace
+      - *restore_node_modules
+
+      - run:
+          name: Lint JavaScript
+          command: yarn xo
+
+  test:
+    <<: *nodejs_container
+    steps:
+      - *attach_workspace
+      - *restore_node_modules
+
+      - run:
+          name: Run tests
+          command: yarn test
+
+      - run:
+          name: Upload code coverage to codecov
+          command: yarn codecov -f coverage/coverage-final.json
+
+workflows:
+  version: 2
+
+  build_test_deploy:
+    jobs:
+      - checkout:
+          filters: *default_filters
+
+      - install:
+          requires:
+            - checkout
+          filters: *default_filters
+
+      - lint:
+          requires:
+            - install
+          filters: *default_filters
+
+      - test:
+          requires:
+            - install
+          filters: *default_filters

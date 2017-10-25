@@ -1,4 +1,10 @@
-# babel-plugin-dotenv-import
+# babel-plugin-dotenv-import [![CircleCI](https://circleci.com/gh/tusbar/babel-plugin-dotenv-import.svg?style=svg)](https://circleci.com/gh/tusbar/babel-plugin-dotenv-import)
+
+[![npm version](https://img.shields.io/npm/v/babel-plugin-dotenv-import.svg)](https://www.npmjs.com/package/babel-plugin-dotenv-import)
+[![Build Status](https://travis-ci.org/tusbar/babel-plugin-dotenv-import.svg?branch=master)](https://travis-ci.org/tusbar/babel-plugin-dotenv-import)
+[![codecov](https://codecov.io/gh/tusbar/babel-plugin-dotenv-import/branch/master/graph/badge.svg)](https://codecov.io/gh/tusbar/babel-plugin-dotenv-import)
+[![dependencies Status](https://david-dm.org/tusbar/babel-plugin-dotenv-import/status.svg)](https://david-dm.org/tusbar/babel-plugin-dotenv-import)
+[![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)
 
 Load environment variables from .env file using `import` statement.
 
