@@ -1,11 +1,11 @@
-# babel-plugin-dotenv
+# babel-plugin-dotenv-import
 
 Loads environment variables from a .env file through `import` statement.
 
 ## Installation
 
 ```sh
-$ npm install babel-plugin-dotenv
+$ npm install babel-plugin-dotenv-import
 ```
 
 ## Usage
@@ -14,8 +14,8 @@ $ npm install babel-plugin-dotenv
 
 ```json
 {
-  "plugins": [["babel-plugin-dotenv", {
-      "replacedModuleName": "babel-dotenv"
+  "plugins": [["dotenv-import", {
+      "replacedModuleName": "@env"
    }]]
 }
 ```
@@ -31,10 +31,15 @@ DB_PASS=s1mpl3
 In **whatever.js**
 
 ```js
-import { DB_HOST, DB_USER, DB_PASS } from "babel-dotenv"
+import { DB_HOST, DB_USER, DB_PASS } from "@env"
+
 db.connect({
   host: DB_HOST,
   username: DB_USER,
   password: DB_PASS
 });
 ```
+
+## Credits
+
+Based on [David Chang](https://github.com/zetachang)’s works on [babel-plugin-dotenv](https://github.com/zetachang/react-native-dotenv/tree/master/babel-plugin-dotenv).

@@ -1,5 +1,5 @@
 {
-  "name": "babel-plugin-dotenv",
+  "name": "babel-plugin-dotenv-import",
   "version": "0.1.0",
   "description": "Load environment variables from .env file using import statement",
   "main": "index.js",
@@ -22,6 +22,6 @@
     "istanbul": "^0.4.5",
     "mocha": "^3.0.2"
   },
-  "author": "David Chang",
+  "author": "Bertrand Marron",
   "license": "MIT"
 }
