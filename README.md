@@ -1,6 +1,6 @@
 # babel-plugin-dotenv-import
 
-Loads environment variables from a .env file through `import` statement.
+Load environment variables from .env file using `import` statement.
 
 ## Installation
 
