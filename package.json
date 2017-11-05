@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-dotenv-import",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Load environment variables from .env file using import statement",
   "repository": "git@github.com:tusbar/babel-plugin-dotenv-import.git",
   "main": "index.js",
