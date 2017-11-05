@@ -5,7 +5,7 @@
 [![dependencies Status](https://david-dm.org/tusbar/babel-plugin-dotenv-import/status.svg)](https://david-dm.org/tusbar/babel-plugin-dotenv-import)
 [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)
 
-Load environment variables from .env file using `import` statement.
+Load environment variables using `import` statements.
 
 ## Installation
 
@@ -34,21 +34,20 @@ $ npm install babel-plugin-dotenv-import
 **.env**
 
 ```dosini
-DB_HOST=localhost
-DB_USER=root
-DB_PASS=
+API_URL=https://api.example.org
+API_TOKEN=
 ```
 
-In **whatever.js**
+In **users.js**
 
 ```js
-import {DB_HOST, DB_USER, DB_PASS} from "@env"
+import {API_URL, API_TOKEN} from "@env"
 
-db.connect({
-  host: DB_HOST,
-  username: DB_USER,
-  password: DB_PASS
-});
+fetch(`${API_URL}/users`, {
+  headers: {
+    'Authorization': `Bearer ${API_TOKEN}`
+  }
+})
 ```
 
 ## White and black lists
