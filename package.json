@@ -34,12 +34,6 @@
   },
   "xo": {
     "semicolon": false,
-    "space": 2,
-    "overrides": [
-      {
-        "files": "test/test.js",
-        "env": "mocha"
-      }
-    ]
+    "space": 2
   }
 }
