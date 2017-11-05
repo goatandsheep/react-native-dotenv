@@ -30,41 +30,41 @@ test('throw if wildcard is imported', t => {
 
 test('load environment variables from .env', t => {
   const {code} = transformFileSync('test/fixtures/default/source.js')
-  t.is(code, '\'use strict\';\n\nconsole.log(\'abc123\');\nconsole.log(\'username\');')
+  t.is(code, '\n\nconsole.log(\'abc123\');\nconsole.log(\'username\');')
 })
 
 test('allow importing variables already defined in the environment', t => {
   process.env.FROM_ENV = 'hello'
 
   const {code} = transformFileSync('test/fixtures/from-env/source.js')
-  t.is(code, '\'use strict\';\n\nconsole.log(\'hello\');')
+  t.is(code, '\n\nconsole.log(\'hello\');')
 })
 
 test('prioritize environment variables over variables defined in .env', t => {
   process.env.API_KEY = 'i win'
 
   const {code} = transformFileSync('test/fixtures/default/source.js')
-  t.is(code, '\'use strict\';\n\nconsole.log(\'i win\');\nconsole.log(\'username\');')
+  t.is(code, '\n\nconsole.log(\'i win\');\nconsole.log(\'username\');')
 })
 
 test('load custom env file', t => {
   const {code} = transformFileSync('test/fixtures/filename/source.js')
-  t.is(code, '\'use strict\';\n\nconsole.log(\'abc123456\');\nconsole.log(\'username123456\');')
+  t.is(code, '\n\nconsole.log(\'abc123456\');\nconsole.log(\'username123456\');')
 })
 
 test('support `as alias` import syntax', t => {
   const {code} = transformFileSync('test/fixtures/as-alias/source.js')
-  t.is(code, '\'use strict\';\n\nconst a = \'abc123\';\nconst b = \'username\';')
+  t.is(code, '\n\nconst a = \'abc123\';\nconst b = \'username\';')
 })
 
 test('allow specifying a custom module name', t => {
   const {code} = transformFileSync('test/fixtures/custom-module/source.js')
-  t.is(code, '\'use strict\';\n\nconsole.log(\'abc123\');\nconsole.log(\'username\');')
+  t.is(code, '\n\nconsole.log(\'abc123\');\nconsole.log(\'username\');')
 })
 
 test('leave other imports untouched', t => {
   const {code} = transformFileSync('test/fixtures/unused/source.js')
-  t.is(code, '\'use strict\';\n\nvar _path = require(\'path\');\n\nconsole.log(_path.join);')
+  t.is(code, 'import { join } from \'path\';\n\nconsole.log(join);')
 })
 
 test('throw when using non-whitelisted env variables', t => {
@@ -92,5 +92,5 @@ test('throw when trying to use a variable not defined in .env in safe mode', t =
 
 test('load environment variables from .env in safe mode', t => {
   const {code} = transformFileSync('test/fixtures/safe-success/source.js')
-  t.is(code, '\'use strict\';\n\nconsole.log(\'1\');')
+  t.is(code, '\n\nconsole.log(\'1\');')
 })
