@@ -39,6 +39,12 @@ describe('babel-plugin-dotenv-import', () => {
     expect(result.code).to.be('\'use strict\';\n\nconsole.log(\'abc123\');\nconsole.log(\'username\');')
   })
 
+  it('should allow importing variables defined in the environment', () => {
+    process.env.FROM_ENV = 'hello'
+    const result = babel.transformFileSync('test/fixtures/from-env/source.js')
+    expect(result.code).to.be('\'use strict\';\n\nconsole.log(\'hello\');')
+  })
+
   it('should keep existing environment variables', () => {
     process.env.API_KEY = 'dont override me'
 
