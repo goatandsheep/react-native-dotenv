@@ -65,4 +65,20 @@ describe('babel-plugin-dotenv-import', () => {
     const result = babel.transformFileSync('test/fixtures/unused/source.js')
     expect(result.code).to.be('\'use strict\';\n\nvar _path = require(\'path\');\n\nconsole.log(_path.join);')
   })
+
+  it('should throw when using non-whitelisted env variables', () => {
+    expect(() => {
+      babel.transformFileSync('test/fixtures/whitelist/source.js')
+    }).to.throwException(e => {
+      expect(e.message).to.contain('"NOT_WHITELISTED" was not whitelisted')
+    })
+  })
+
+  it('should throw when using blacklisted env variables', () => {
+    expect(() => {
+      babel.transformFileSync('test/fixtures/blacklist/source.js')
+    }).to.throwException(e => {
+      expect(e.message).to.contain('"BLACKLISTED" was blacklisted')
+    })
+  })
 })

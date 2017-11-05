@@ -22,7 +22,9 @@ $ npm install babel-plugin-dotenv-import
   "plugins": [
     ["dotenv-import", {
       "moduleName": "@env",
-      "path": ".env"
+      "path": ".env",
+      "blacklist": null,
+      "whitelist": null
     }]
   ]
 }
@@ -46,6 +48,22 @@ db.connect({
   username: DB_USER,
   password: DB_PASS
 });
+```
+
+## White and black lists
+
+It is possible to limit the scope of env variables that will be imported by specifying a `whitelist` and/or a `blacklist` as an array of strings.
+
+```json
+{
+  "plugins": [
+    ["dotenv-import", {
+      "blacklist": [
+        "GITHUB_TOKEN"
+      ]
+    }]
+  ]
+}
 ```
 
 ## Credits

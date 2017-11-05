@@ -8,7 +8,9 @@ module.exports = function (data) {
       ImportDeclaration(path, state) {
         const options = Object.assign({
           moduleName: '@env',
-          path: '.env'
+          path: '.env',
+          whitelist: null,
+          blacklist: null
         }, state.opts)
 
         if (path.node.source.value === options.moduleName) {
@@ -27,6 +29,14 @@ module.exports = function (data) {
 
             const importedId = specifier.imported.name
             const localId = specifier.local.name
+
+            if (Array.isArray(options.whitelist) && !options.whitelist.includes(importedId)) {
+              throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" was not whitelisted`)
+            }
+
+            if (Array.isArray(options.blacklist) && options.blacklist.includes(importedId)) {
+              throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" was blacklisted`)
+            }
 
             if (!Object.prototype.hasOwnProperty.call(process.env, importedId)) {
               throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" is not defined in ${options.path}`)
