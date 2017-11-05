@@ -1,69 +1,65 @@
 const {readFileSync} = require('fs')
 const dotenv = require('dotenv')
 
-module.exports = function (data) {
-  const t = data.types
+module.exports = ({types: t}) => ({
+  name: 'dotenv-import',
 
-  return {
-    pre() {
-      this.opts = {
-        moduleName: '@env',
-        path: '.env',
-        whitelist: null,
-        blacklist: null,
-        safe: false,
+  pre() {
+    this.opts = {
+      moduleName: '@env',
+      path: '.env',
+      whitelist: null,
+      blacklist: null,
+      safe: false,
 
-        ...this.opts
-      }
+      ...this.opts
+    }
 
-      if (this.opts.safe) {
-        this.env = dotenv.parse(readFileSync(this.opts.path))
-      } else {
-        dotenv.config({
-          path: this.opts.path
-        })
-        this.env = process.env
-      }
-    },
+    if (this.opts.safe) {
+      this.env = dotenv.parse(readFileSync(this.opts.path))
+    } else {
+      dotenv.config({
+        path: this.opts.path
+      })
+      this.env = process.env
+    }
+  },
 
-    visitor: {
-      ImportDeclaration(path, state) {
-        const options = state.opts
+  visitor: {
+    ImportDeclaration(path, {opts}) {
+      if (path.node.source.value === opts.moduleName) {
+        path.node.specifiers.forEach((specifier, idx) => {
+          if (specifier.type === 'ImportDefaultSpecifier') {
+            throw path.get('specifiers')[idx].buildCodeFrameError('Default import is not supported')
+          }
 
-        if (path.node.source.value === options.moduleName) {
-          path.node.specifiers.forEach((specifier, idx) => {
-            if (specifier.type === 'ImportDefaultSpecifier') {
-              throw path.get('specifiers')[idx].buildCodeFrameError('Default import is not supported')
-            }
+          if (specifier.type === 'ImportNamespaceSpecifier') {
+            throw path.get('specifiers')[idx].buildCodeFrameError('Wildcard import is not supported')
+          }
 
-            if (specifier.type === 'ImportNamespaceSpecifier') {
-              throw path.get('specifiers')[idx].buildCodeFrameError('Wildcard import is not supported')
-            }
+          const importedId = specifier.imported.name
+          const localId = specifier.local.name
 
-            const importedId = specifier.imported.name
-            const localId = specifier.local.name
+          if (Array.isArray(opts.whitelist) && !opts.whitelist.includes(importedId)) {
+            throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" was not whitelisted`)
+          }
 
-            if (Array.isArray(options.whitelist) && !options.whitelist.includes(importedId)) {
-              throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" was not whitelisted`)
-            }
+          if (Array.isArray(opts.blacklist) && opts.blacklist.includes(importedId)) {
+            throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" was blacklisted`)
+          }
 
-            if (Array.isArray(options.blacklist) && options.blacklist.includes(importedId)) {
-              throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" was blacklisted`)
-            }
+          if (!Object.prototype.hasOwnProperty.call(this.env, importedId)) {
+            throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" is not defined in ${opts.path}`)
+          }
 
-            if (!Object.prototype.hasOwnProperty.call(this.env, importedId)) {
-              throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" is not defined in ${options.path}`)
-            }
-
-            const binding = path.scope.getBinding(localId)
-            binding.referencePaths.forEach(refPath => {
-              refPath.replaceWith(t.valueToNode(this.env[importedId]))
-            })
+          const binding = path.scope.getBinding(localId)
+          binding.referencePaths.forEach(refPath => {
+            refPath.replaceWith(t.valueToNode(this.env[importedId]))
           })
+        })
 
-          path.remove()
-        }
+        path.remove()
       }
     }
   }
-}
+})
