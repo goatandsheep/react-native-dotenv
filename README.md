@@ -24,7 +24,8 @@ $ npm install babel-plugin-dotenv-import
       "moduleName": "@env",
       "path": ".env",
       "blacklist": null,
-      "whitelist": null
+      "whitelist": null,
+      "safe": false
     }]
   ]
 }
@@ -32,7 +33,7 @@ $ npm install babel-plugin-dotenv-import
 
 **.env**
 
-```
+```text
 DB_HOST=localhost
 DB_USER=root
 DB_PASS=
@@ -61,6 +62,22 @@ It is possible to limit the scope of env variables that will be imported by spec
       "blacklist": [
         "GITHUB_TOKEN"
       ]
+    }]
+  ]
+}
+```
+
+## Safe mode
+
+Enable safe mode to only allow environment variables defined in the `.env` file. This will completely ignore everything that is already defined in the environment.
+
+The `.env` file has to exist.
+
+```json
+{
+  "plugins": [
+    ["dotenv-import", {
+      "safe": true
     }]
   ]
 }

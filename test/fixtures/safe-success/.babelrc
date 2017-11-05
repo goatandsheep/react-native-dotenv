@@ -1,0 +1,9 @@
+{
+  "plugins": [
+    "babel-plugin-transform-es2015-modules-commonjs",
+    ["../../../", {
+      "path": "test/fixtures/safe-success/.env",
+      "safe": true
+    }]
+  ]
+}
