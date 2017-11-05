@@ -66,6 +66,19 @@ It is possible to limit the scope of env variables that will be imported by spec
 }
 ```
 
+```json
+{
+  "plugins": [
+    ["dotenv-import", {
+      "whitelist": [
+        "API_URL",
+        "API_TOKEN"
+      ]
+    }]
+  ]
+}
+```
+
 ## Safe mode
 
 Enable safe mode to only allow environment variables defined in the `.env` file. This will completely ignore everything that is already defined in the environment.
