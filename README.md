@@ -33,7 +33,7 @@ $ npm install babel-plugin-dotenv-import
 
 **.env**
 
-```text
+```dosini
 DB_HOST=localhost
 DB_USER=root
 DB_PASS=
