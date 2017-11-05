@@ -1,104 +1,96 @@
-const babel = require('babel-core')
-const expect = require('expect.js')
+import test from 'ava'
+import {transformFileSync} from 'babel-core'
 
-describe('babel-plugin-dotenv-import', () => {
-  before(() => {
-    this.env = {...process.env}
-  })
+const env = Object.apply({}, process.env)
 
-  afterEach(() => {
-    process.env = {...this.env}
-  })
+test.afterEach(() => {
+  process.env = Object.apply({}, env)
+})
 
-  it('should throw if variable not exist', () => {
-    expect(() => {
-      babel.transformFileSync('test/fixtures/variable-not-exist/source.js')
-    }).to.throwException(e => {
-      expect(e.message).to.contain('"foo" is not defined in .env')
-    })
-  })
+test('throw if the variable does not exist', t => {
+  t.throws(
+    () => transformFileSync('test/fixtures/variable-not-exist/source.js'),
+    'test/fixtures/variable-not-exist/source.js: "foo" is not defined in .env'
+  )
+})
 
-  it('should throw if default is imported', () => {
-    expect(() => {
-      babel.transformFileSync('test/fixtures/default-import/source.js')
-    }).to.throwException(e => {
-      expect(e.message).to.contain('Default import is not supported')
-    })
-  })
+test('throw if default is imported', t => {
+  t.throws(
+    () => transformFileSync('test/fixtures/default-import/source.js'),
+    'test/fixtures/default-import/source.js: Default import is not supported'
+  )
+})
 
-  it('should throw if wildcard is imported', () => {
-    expect(() => {
-      babel.transformFileSync('test/fixtures/wildcard-import/source.js')
-    }).to.throwException(e => {
-      expect(e.message).to.contain('Wildcard import is not supported')
-    })
-  })
+test('throw if wildcard is imported', t => {
+  t.throws(
+    () => transformFileSync('test/fixtures/wildcard-import/source.js'),
+    'test/fixtures/wildcard-import/source.js: Wildcard import is not supported'
+  )
+})
 
-  it('should load default env from .env', () => {
-    const result = babel.transformFileSync('test/fixtures/default/source.js')
-    expect(result.code).to.be('\'use strict\';\n\nconsole.log(\'abc123\');\nconsole.log(\'username\');')
-  })
+test('load environment variables from .env', t => {
+  const {code} = transformFileSync('test/fixtures/default/source.js')
+  t.is(code, '\'use strict\';\n\nconsole.log(\'abc123\');\nconsole.log(\'username\');')
+})
 
-  it('should allow importing variables defined in the environment', () => {
-    process.env.FROM_ENV = 'hello'
-    const result = babel.transformFileSync('test/fixtures/from-env/source.js')
-    expect(result.code).to.be('\'use strict\';\n\nconsole.log(\'hello\');')
-  })
+test('allow importing variables already defined in the environment', t => {
+  process.env.FROM_ENV = 'hello'
 
-  it('should keep existing environment variables', () => {
-    process.env.API_KEY = 'dont override me'
+  const {code} = transformFileSync('test/fixtures/from-env/source.js')
+  t.is(code, '\'use strict\';\n\nconsole.log(\'hello\');')
+})
 
-    const result = babel.transformFileSync('test/fixtures/default/source.js')
-    expect(result.code).to.be('\'use strict\';\n\nconsole.log(\'dont override me\');\nconsole.log(\'username\');')
-  })
+test('prioritize environment variables over variables defined in .env', t => {
+  process.env.API_KEY = 'i win'
 
-  it('should load custom env file ".env.build"', () => {
-    const result = babel.transformFileSync('test/fixtures/filename/source.js')
-    expect(result.code).to.be('\'use strict\';\n\nconsole.log(\'abc123456\');\nconsole.log(\'username123456\');')
-  })
+  const {code} = transformFileSync('test/fixtures/default/source.js')
+  t.is(code, '\'use strict\';\n\nconsole.log(\'i win\');\nconsole.log(\'username\');')
+})
 
-  it('should support `as alias` import syntax', () => {
-    const result = babel.transformFileSync('test/fixtures/as-alias/source.js')
-    expect(result.code).to.be('\'use strict\';\n\nconst a = \'abc123\';\nconst b = \'username\';')
-  })
+test('load custom env file', t => {
+  const {code} = transformFileSync('test/fixtures/filename/source.js')
+  t.is(code, '\'use strict\';\n\nconsole.log(\'abc123456\');\nconsole.log(\'username123456\');')
+})
 
-  it('should allow specifying a custom module name', () => {
-    const result = babel.transformFileSync('test/fixtures/custom-module/source.js')
-    expect(result.code).to.be('\'use strict\';\n\nconsole.log(\'abc123\');\nconsole.log(\'username\');')
-  })
+test('support `as alias` import syntax', t => {
+  const {code} = transformFileSync('test/fixtures/as-alias/source.js')
+  t.is(code, '\'use strict\';\n\nconst a = \'abc123\';\nconst b = \'username\';')
+})
 
-  it('should not alter other imports', () => {
-    const result = babel.transformFileSync('test/fixtures/unused/source.js')
-    expect(result.code).to.be('\'use strict\';\n\nvar _path = require(\'path\');\n\nconsole.log(_path.join);')
-  })
+test('allow specifying a custom module name', t => {
+  const {code} = transformFileSync('test/fixtures/custom-module/source.js')
+  t.is(code, '\'use strict\';\n\nconsole.log(\'abc123\');\nconsole.log(\'username\');')
+})
 
-  it('should throw when using non-whitelisted env variables', () => {
-    expect(() => {
-      babel.transformFileSync('test/fixtures/whitelist/source.js')
-    }).to.throwException(e => {
-      expect(e.message).to.contain('"NOT_WHITELISTED" was not whitelisted')
-    })
-  })
+test('leave other imports untouched', t => {
+  const {code} = transformFileSync('test/fixtures/unused/source.js')
+  t.is(code, '\'use strict\';\n\nvar _path = require(\'path\');\n\nconsole.log(_path.join);')
+})
 
-  it('should throw when using blacklisted env variables', () => {
-    expect(() => {
-      babel.transformFileSync('test/fixtures/blacklist/source.js')
-    }).to.throwException(e => {
-      expect(e.message).to.contain('"BLACKLISTED" was blacklisted')
-    })
-  })
+test('throw when using non-whitelisted env variables', t => {
+  t.throws(
+    () => transformFileSync('test/fixtures/whitelist/source.js'),
+    'test/fixtures/whitelist/source.js: "NOT_WHITELISTED" was not whitelisted'
+  )
+})
 
-  it('should throw trying to use a variable not in .env in safe mode', () => {
-    expect(() => {
-      process.env.FROM_ENV = 'here'
-      babel.transformFileSync('test/fixtures/safe-error/source.js')
-    }).to.throwException(e => {
-      expect(e.message).to.contain('"FROM_ENV" is not defined in test/fixtures/safe-error/.env')
-    })
-  })
+test('throw when using blacklisted env variables', t => {
+  t.throws(
+    () => transformFileSync('test/fixtures/blacklist/source.js'),
+    'test/fixtures/blacklist/source.js: "BLACKLISTED" was blacklisted'
+  )
+})
 
-  it('should retrieve environment variables from .env in safe mode', () => {
-    const result = babel.transformFileSync('test/fixtures/safe-success/source.js')
-    expect(result.code).to.be('\'use strict\';\n\nconsole.log(\'1\');')
-  })
+test('throw when trying to use a variable not defined in .env in safe mode', t => {
+  process.env.FROM_ENV = 'here'
+
+  t.throws(
+    () => transformFileSync('test/fixtures/safe-error/source.js'),
+    'test/fixtures/safe-error/source.js: "FROM_ENV" is not defined in test/fixtures/safe-error/.env'
+  )
+})
+
+test('load environment variables from .env in safe mode', t => {
+  const {code} = transformFileSync('test/fixtures/safe-success/source.js')
+  t.is(code, '\'use strict\';\n\nconsole.log(\'1\');')
 })
