@@ -1,0 +1,11 @@
+{
+  "plugins": [
+    "babel-plugin-transform-es2015-modules-commonjs",
+    ["../../../", {
+      "path": "test/fixtures/whitelist/.env",
+      "whitelist": [
+        "WHITELISTED"
+      ]
+    }]
+  ]
+}
