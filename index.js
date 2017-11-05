@@ -1,23 +1,36 @@
+const {readFileSync} = require('fs')
 const dotenv = require('dotenv')
 
 module.exports = function (data) {
   const t = data.types
 
   return {
+    pre() {
+      this.opts = {
+        moduleName: '@env',
+        path: '.env',
+        whitelist: null,
+        blacklist: null,
+        safe: false,
+
+        ...this.opts
+      }
+
+      if (this.opts.safe) {
+        this.env = dotenv.parse(readFileSync(this.opts.path))
+      } else {
+        dotenv.config({
+          path: this.opts.path
+        })
+        this.env = process.env
+      }
+    },
+
     visitor: {
       ImportDeclaration(path, state) {
-        const options = Object.assign({
-          moduleName: '@env',
-          path: '.env',
-          whitelist: null,
-          blacklist: null
-        }, state.opts)
+        const options = state.opts
 
         if (path.node.source.value === options.moduleName) {
-          dotenv.config({
-            path: options.path
-          })
-
           path.node.specifiers.forEach((specifier, idx) => {
             if (specifier.type === 'ImportDefaultSpecifier') {
               throw path.get('specifiers')[idx].buildCodeFrameError('Default import is not supported')
@@ -38,13 +51,13 @@ module.exports = function (data) {
               throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" was blacklisted`)
             }
 
-            if (!Object.prototype.hasOwnProperty.call(process.env, importedId)) {
+            if (!Object.prototype.hasOwnProperty.call(this.env, importedId)) {
               throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" is not defined in ${options.path}`)
             }
 
             const binding = path.scope.getBinding(localId)
             binding.referencePaths.forEach(refPath => {
-              refPath.replaceWith(t.valueToNode(process.env[importedId]))
+              refPath.replaceWith(t.valueToNode(this.env[importedId]))
             })
           })
 

@@ -39,6 +39,12 @@ describe('babel-plugin-dotenv-import', () => {
     expect(result.code).to.be('\'use strict\';\n\nconsole.log(\'abc123\');\nconsole.log(\'username\');')
   })
 
+  it('should allow importing variables defined in the environment', () => {
+    process.env.FROM_ENV = 'hello'
+    const result = babel.transformFileSync('test/fixtures/from-env/source.js')
+    expect(result.code).to.be('\'use strict\';\n\nconsole.log(\'hello\');')
+  })
+
   it('should keep existing environment variables', () => {
     process.env.API_KEY = 'dont override me'
 
@@ -80,5 +86,19 @@ describe('babel-plugin-dotenv-import', () => {
     }).to.throwException(e => {
       expect(e.message).to.contain('"BLACKLISTED" was blacklisted')
     })
+  })
+
+  it('should throw trying to use a variable not in .env in safe mode', () => {
+    expect(() => {
+      process.env.FROM_ENV = 'here'
+      babel.transformFileSync('test/fixtures/safe-error/source.js')
+    }).to.throwException(e => {
+      expect(e.message).to.contain('"FROM_ENV" is not defined in test/fixtures/safe-error/.env')
+    })
+  })
+
+  it('should retrieve environment variables from .env in safe mode', () => {
+    const result = babel.transformFileSync('test/fixtures/safe-success/source.js')
+    expect(result.code).to.be('\'use strict\';\n\nconsole.log(\'1\');')
   })
 })
