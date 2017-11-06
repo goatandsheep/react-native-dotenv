@@ -25,7 +25,8 @@ $ npm install babel-plugin-dotenv-import
       "path": ".env",
       "blacklist": null,
       "whitelist": null,
-      "safe": false
+      "safe": false,
+      "allowUndefined": false
     }]
   ]
 }
@@ -94,6 +95,28 @@ The `.env` file has to exist.
   ]
 }
 ```
+
+## Allow undefined
+
+Allow importing undefined variables, their value will be `undefined`.
+
+```json
+{
+  "plugins": [
+    ["dotenv-import", {
+      "allowUndefined": true
+    }]
+  ]
+}
+```
+
+```js
+import {UNDEFINED_VAR} from '@env'
+
+console.log(UNDEFINED_VAR === undefined) // true
+```
+
+When `false` (default behavior), an error will be thrown.
 
 ## Credits
 
