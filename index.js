@@ -10,7 +10,8 @@ module.exports = ({types: t}) => ({
       path: '.env',
       whitelist: null,
       blacklist: null,
-      safe: false
+      safe: false,
+      allowUndefined: false
     }, this.opts)
 
     if (this.opts.safe) {
@@ -46,7 +47,7 @@ module.exports = ({types: t}) => ({
             throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" was blacklisted`)
           }
 
-          if (!Object.prototype.hasOwnProperty.call(this.env, importedId)) {
+          if (!opts.allowUndefined && !Object.prototype.hasOwnProperty.call(this.env, importedId)) {
             throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" is not defined in ${opts.path}`)
           }
 

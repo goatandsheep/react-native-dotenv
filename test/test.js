@@ -94,3 +94,8 @@ test('load environment variables from .env in safe mode', t => {
   const {code} = transformFileSync('test/fixtures/safe-success/source.js')
   t.is(code, '\n\nconsole.log(\'1\');')
 })
+
+test('import undefined variables', t => {
+  const {code} = transformFileSync('test/fixtures/undefined/source.js')
+  t.is(code, '\n\nconsole.log(undefined);')
+})
