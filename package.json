@@ -15,8 +15,8 @@
     "dotenv": "^5.0.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.0.0-beta.47",
     "ava": "^0.25.0",
-    "babel-core": "^6.14.0",
     "codecov": "^3.0.0",
     "nyc": "^11.6.0",
     "xo": "^0.21.0"
