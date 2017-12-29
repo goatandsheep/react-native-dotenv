@@ -118,6 +118,19 @@ console.log(UNDEFINED_VAR === undefined) // true
 
 When `false` (default behavior), an error will be thrown.
 
+## Caveats
+
+When using with [`babel-loader`](https://github.com/babel/babel-loader) with caching enabled you will run into issues where environment changes won’t be picked up.
+This is due to the fact that `babel-loader` computes a `cacheIdentifier` that does not take your environment into account.
+
+You can easily clear the cache:
+
+```shell
+rm -rf node_modules/.cache/babel-loader/*
+```
+
+Or you can override the default `cacheIdentifier` to include some of your environment variables.
+
 ## Credits
 
 Based on [David Chang](https://github.com/zetachang)’s works on [babel-plugin-dotenv](https://github.com/zetachang/react-native-dotenv/tree/master/babel-plugin-dotenv).
