@@ -3397,8 +3397,8 @@ number-is-nan@^1.0.0:
   resolved "https://registry.yarnpkg.com/number-is-nan/-/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
 
 nyc@^11.6.0:
-  version "11.7.3"
-  resolved "https://registry.yarnpkg.com/nyc/-/nyc-11.7.3.tgz#164f4cfad84dee6d8f353824231d9dd683aa14ea"
+  version "11.8.0"
+  resolved "https://registry.yarnpkg.com/nyc/-/nyc-11.8.0.tgz#1e8453b0644f8fea4d829b1a6636663157cd3b00"
   dependencies:
     archy "^1.0.0"
     arrify "^1.0.1"
@@ -4902,8 +4902,8 @@ xo-init@^0.7.0:
     write-pkg "^3.1.0"
 
 xo@^0.21.0:
-  version "0.21.0"
-  resolved "https://registry.yarnpkg.com/xo/-/xo-0.21.0.tgz#c5b8d871b06e307f910062d3fb7d8a95aa94296f"
+  version "0.21.1"
+  resolved "https://registry.yarnpkg.com/xo/-/xo-0.21.1.tgz#b9b198e5af5118654994925ff8b371a82e9b4a2c"
   dependencies:
     arrify "^1.0.1"
     debug "^3.1.0"
