@@ -1,11 +1,11 @@
 # babel-plugin-dotenv-import [![CircleCI](https://circleci.com/gh/tusbar/babel-plugin-dotenv-import.svg?style=svg)](https://circleci.com/gh/tusbar/babel-plugin-dotenv-import)
 
-[![npm version](https://img.shields.io/npm/v/babel-plugin-dotenv-import.svg)](https://www.npmjs.com/package/babel-plugin-dotenv-import)
-[![codecov](https://codecov.io/gh/tusbar/babel-plugin-dotenv-import/branch/master/graph/badge.svg)](https://codecov.io/gh/tusbar/babel-plugin-dotenv-import)
-[![dependencies Status](https://david-dm.org/tusbar/babel-plugin-dotenv-import/status.svg)](https://david-dm.org/tusbar/babel-plugin-dotenv-import)
-[![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)
+> Load environment variables using `import` statements.
 
-Load environment variables using `import` statements.
+[![npm version](https://badgen.net/npm/v/babel-plugin-dotenv-import)](https://www.npmjs.com/package/babel-plugin-dotenv-import)
+[![dependencies Status](https://badgen.net/david/dep/tusbar/babel-plugin-dotenv-import)](https://david-dm.org/tusbar/babel-plugin-dotenv-import)
+[![codecov](https://badgen.net/codecov/c/github/tusbar/babel-plugin-dotenv-import)](https://codecov.io/gh/tusbar/babel-plugin-dotenv-import)
+[![XO code style](https://badgen.net/badge/code%20style/XO/cyan)](https://github.com/xojs/xo)
 
 ## Installation
 
