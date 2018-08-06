@@ -7,7 +7,7 @@ defaults:
   nodejs_container: &nodejs_container
     working_directory: *workspace_root
     docker:
-      - image: circleci/node:8
+      - image: circleci/node:8-stretch
 
   filters: &default_filters
     tags:
@@ -85,12 +85,12 @@ jobs:
 
       - run:
           name: Upload code coverage to codecov
-          command: yarn codecov -f coverage/coverage-final.json
+          command: yarn codecov
 
 workflows:
   version: 2
 
-  build_test_deploy:
+  push:
     jobs:
       - checkout:
           filters: *default_filters
