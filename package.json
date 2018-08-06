@@ -32,6 +32,23 @@
   },
   "xo": {
     "semicolon": false,
-    "space": 2
+    "space": 2,
+    "overrides": [
+      {
+        "files": "test/fixtures/**/*.js",
+        "rules": {
+          "import/no-unresolved": [
+            "error",
+            {
+              "ignore": [
+                "@env",
+                "foo"
+              ]
+            }
+          ],
+          "no-unused-vars": "off"
+        }
+      }
+    ]
   }
 }
