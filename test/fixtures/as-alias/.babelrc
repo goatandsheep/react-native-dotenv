@@ -1,7 +1,0 @@
-{
-  "plugins": [
-    ["../../../", {
-      "path": "test/fixtures/as-alias/.env"
-    }]
-  ]
-}

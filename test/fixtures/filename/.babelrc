@@ -1,7 +1,0 @@
-{
-  "plugins": [
-    ["../../../", {
-      "path": "test/fixtures/filename/.env.build"
-    }]
-  ]
-}

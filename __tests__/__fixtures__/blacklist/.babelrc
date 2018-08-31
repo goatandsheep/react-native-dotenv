@@ -1,7 +1,7 @@
 {
   "plugins": [
     ["../../../", {
-      "path": "test/fixtures/blacklist/.env",
+      "path": "__tests__/__fixtures__/blacklist/.env",
       "blacklist": [
         "BLACKLISTED"
       ]

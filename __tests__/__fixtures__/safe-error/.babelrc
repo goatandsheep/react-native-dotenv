@@ -1,7 +1,7 @@
 {
   "plugins": [
     ["../../../", {
-      "path": "test/fixtures/safe-success/.env",
+      "path": "__tests__/__fixtures__/safe-error/.env",
       "safe": true
     }]
   ]

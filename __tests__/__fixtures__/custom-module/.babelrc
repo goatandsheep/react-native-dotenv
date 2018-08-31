@@ -1,7 +1,7 @@
 {
   "plugins": [
     ["../../../", {
-      "path": "test/fixtures/custom-module/.env",
+      "path": "__tests__/__fixtures__/custom-module/.env",
       "moduleName": "foo"
     }]
   ]

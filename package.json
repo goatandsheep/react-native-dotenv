@@ -5,7 +5,7 @@
   "repository": "git@github.com:tusbar/babel-plugin-dotenv-import.git",
   "main": "index.js",
   "scripts": {
-    "test": "nyc ava"
+    "test": "jest"
   },
   "keywords": [
     "dotenv",
@@ -16,17 +16,35 @@
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
-    "ava": "^0.25.0",
     "codecov": "^3.0.0",
-    "nyc": "^12.0.2",
+    "jest": "^23.5.0",
+    "jest-junit": "^5.1.0",
     "xo": "^0.22.0"
   },
   "author": "Bertrand Marron",
   "license": "MIT",
-  "nyc": {
-    "reporter": [
+  "jest": {
+    "testEnvironment": "node",
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/__fixtures__/"
+    ],
+    "reporters": [
+      "default",
+      [
+        "jest-junit",
+        {
+          "output": "reports/tests/junit.xml"
+        }
+      ]
+    ],
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "index.js"
+    ],
+    "coverageReporters": [
       "lcov",
-      "text"
+      "text-summary"
     ]
   },
   "xo": {
@@ -34,7 +52,13 @@
     "space": 2,
     "overrides": [
       {
-        "files": "test/fixtures/**/*.js",
+        "files": "__tests__/**/*.js",
+        "env": [
+          "jest"
+        ]
+      },
+      {
+        "files": "__tests__/__fixtures__/**/*.js",
         "rules": {
           "import/no-unresolved": [
             "error",

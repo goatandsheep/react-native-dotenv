@@ -21,8 +21,9 @@ defaults:
     restore_cache:
       name: Restore node_modules cache
       keys:
-        - v1-babel-plugin-dotenv-import-node-{{ checksum "yarn.lock" }}
-        - v1-babel-plugin-dotenv-import-node-
+        - v2-babel-plugin-dotenv-import-node-{{ .Branch }}-{{ checksum "yarn.lock" }}
+        - v2-babel-plugin-dotenv-import-node-master-{{ checksum "yarn.lock" }}
+        - v2-babel-plugin-dotenv-import-node-master-
 
 jobs:
   checkout:
@@ -44,8 +45,8 @@ jobs:
       - restore_cache:
           name: Restore yarn cache
           keys:
-            - v1-babel-plugin-dotenv-import-yarn-{{ checksum "yarn.lock" }}
-            - v1-babel-plugin-dotenv-import-yarn-
+            - v2-babel-plugin-dotenv-import-yarn-{{ checksum "yarn.lock" }}
+            - v2-babel-plugin-dotenv-import-yarn-
 
       - run:
           name: Install dependencies
@@ -53,13 +54,13 @@ jobs:
 
       - save_cache:
           name: Save yarn cache
-          key: v1-babel-plugin-dotenv-import-yarn-{{ checksum "yarn.lock" }}
+          key: v2-babel-plugin-dotenv-import-yarn-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn/
 
       - save_cache:
           name: Save node_modules cache
-          key: v1-babel-plugin-dotenv-import-node-{{ checksum "yarn.lock" }}
+          key: v2-babel-plugin-dotenv-import-node-{{ .Branch }}-{{ checksum "yarn.lock" }}
           paths:
             - node_modules/
 
@@ -82,6 +83,9 @@ jobs:
       - run:
           name: Run tests
           command: yarn test
+
+      - store_test_results:
+          path: reports/tests/
 
       - run:
           name: Upload code coverage to codecov
