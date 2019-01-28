@@ -2761,8 +2761,8 @@ jest-jasmine2@^23.6.0:
     pretty-format "^23.6.0"
 
 jest-junit@^6.0.1:
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/jest-junit/-/jest-junit-6.0.1.tgz#7c24b2aff4ddfce3a8c0e0c84978123c0d4a945a"
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/jest-junit/-/jest-junit-6.1.0.tgz#7c9ee19de705fb212bf4bfa5ab08334452cb597d"
   dependencies:
     jest-config "^23.6.0"
     jest-validate "^23.0.1"
