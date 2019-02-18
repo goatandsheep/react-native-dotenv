@@ -2344,8 +2344,8 @@ jest-jasmine2@^24.1.0:
     throat "^4.0.0"
 
 jest-junit@^6.0.1:
-  version "6.2.1"
-  resolved "https://registry.yarnpkg.com/jest-junit/-/jest-junit-6.2.1.tgz#5bf69813d5c2ae583500816eee79a73b90179629"
+  version "6.3.0"
+  resolved "https://registry.yarnpkg.com/jest-junit/-/jest-junit-6.3.0.tgz#99e64ebc54eddcb21238f0cc49f5820c89a8c785"
   dependencies:
     jest-validate "^24.0.0"
     mkdirp "^0.5.1"
