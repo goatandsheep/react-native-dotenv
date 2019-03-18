@@ -12,7 +12,7 @@
     "babel-plugin"
   ],
   "dependencies": {
-    "dotenv": "^6.0.0"
+    "dotenv": "^7.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
