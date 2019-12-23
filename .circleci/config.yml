@@ -7,7 +7,7 @@ defaults:
   nodejs_container: &nodejs_container
     working_directory: *workspace_root
     docker:
-      - image: circleci/node:8-stretch
+      - image: circleci/node:12-stretch
 
   filters: &default_filters
     tags:
@@ -21,9 +21,9 @@ defaults:
     restore_cache:
       name: Restore node_modules cache
       keys:
-        - v2-babel-plugin-dotenv-import-node-{{ .Branch }}-{{ checksum "yarn.lock" }}
-        - v2-babel-plugin-dotenv-import-node-master-{{ checksum "yarn.lock" }}
-        - v2-babel-plugin-dotenv-import-node-master-
+        - v3-babel-plugin-dotenv-import-node-{{ .Branch }}-{{ checksum "yarn.lock" }}
+        - v3-babel-plugin-dotenv-import-node-master-{{ checksum "yarn.lock" }}
+        - v3-babel-plugin-dotenv-import-node-master-
 
 jobs:
   checkout:
@@ -45,22 +45,22 @@ jobs:
       - restore_cache:
           name: Restore yarn cache
           keys:
-            - v2-babel-plugin-dotenv-import-yarn-{{ checksum "yarn.lock" }}
-            - v2-babel-plugin-dotenv-import-yarn-
+            - v3-babel-plugin-dotenv-import-yarn-{{ checksum "yarn.lock" }}
+            - v3-babel-plugin-dotenv-import-yarn-
 
       - run:
           name: Install dependencies
-          command: yarn
+          command: yarn --frozen-lockfile
 
       - save_cache:
           name: Save yarn cache
-          key: v2-babel-plugin-dotenv-import-yarn-{{ checksum "yarn.lock" }}
+          key: v3-babel-plugin-dotenv-import-yarn-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn/
 
       - save_cache:
           name: Save node_modules cache
-          key: v2-babel-plugin-dotenv-import-node-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          key: v3-babel-plugin-dotenv-import-node-{{ .Branch }}-{{ checksum "yarn.lock" }}
           paths:
             - node_modules/
 

@@ -22,7 +22,7 @@ describe('babel-plugin-dotenv-import', () => {
 
   it('should throw if wildcard is imported', () => {
     expect(
-      () => transformFileSync(FIXTURES + 'wildcard-import/source.js'),
+      () => transformFileSync(FIXTURES + 'wildcard-import/source.js')
     ).toThrow('Wildcard import is not supported')
   })
 
