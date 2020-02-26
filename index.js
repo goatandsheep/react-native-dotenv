@@ -5,14 +5,15 @@ module.exports = ({types: t}) => ({
   name: 'dotenv-import',
 
   pre() {
-    this.opts = Object.assign({
+    this.opts = {
       moduleName: '@env',
       path: '.env',
       whitelist: null,
       blacklist: null,
       safe: false,
-      allowUndefined: false
-    }, this.opts)
+      allowUndefined: false,
+      ...this.opts
+    }
 
     if (this.opts.safe) {
       this.env = dotenv.parse(readFileSync(this.opts.path))
