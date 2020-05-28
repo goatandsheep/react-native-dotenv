@@ -21,7 +21,7 @@
     "codecov": "^3.6.1",
     "jest": "^26.0.1",
     "jest-junit": "^10.0.0",
-    "xo": "^0.27.2"
+    "xo": "^0.30.0"
   },
   "author": "Bertrand Marron",
   "license": "MIT",
