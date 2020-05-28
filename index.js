@@ -1,6 +1,19 @@
 const {readFileSync} = require('fs')
 const dotenv = require('dotenv')
 
+function parseDotenvFile(path) {
+  let content
+
+  try {
+    content = readFileSync(path)
+  } catch (_) {
+    // The env file does not exist.
+    return {}
+  }
+
+  return dotenv.parse(content)
+}
+
 module.exports = ({types: t}) => ({
   name: 'dotenv-import',
 
@@ -16,7 +29,7 @@ module.exports = ({types: t}) => ({
     }
 
     if (this.opts.safe) {
-      this.env = dotenv.parse(readFileSync(this.opts.path))
+      this.env = parseDotenvFile(this.opts.path)
     } else {
       dotenv.config({
         path: this.opts.path

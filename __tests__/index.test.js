@@ -94,4 +94,9 @@ describe('babel-plugin-dotenv-import', () => {
     const {code} = transformFileSync(FIXTURES + 'undefined/source.js')
     expect(code).toBe('console.log(undefined);')
   })
+
+  it('should not throw if .env exists in safe mode', () => {
+    const {code} = transformFileSync(FIXTURES + 'safe-no-dotenv/source.js')
+    expect(code).toBe('console.log(undefined);')
+  })
 })
