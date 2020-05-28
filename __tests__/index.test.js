@@ -62,7 +62,7 @@ describe('babel-plugin-dotenv-import', () => {
 
   it('should leave other imports untouched', () => {
     const {code} = transformFileSync(FIXTURES + 'unused/source.js')
-    expect(code).toBe('import { join } from \'path\';\nconsole.log(join);')
+    expect(code).toBe('import { join } from \'path\'; // eslint-disable-line import/no-unresolved\n\nconsole.log(join);')
   })
 
   it('should throw when using non-whitelisted env variables', () => {
