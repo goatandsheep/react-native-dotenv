@@ -28,11 +28,18 @@ module.exports = ({types: t}) => ({
       ...this.opts
     }
 
+    const babelMode = process.env.BABEL_ENV || 'development'
     if (this.opts.safe) {
-      this.env = parseDotenvFile(this.opts.path)
+      const parsed = parseDotenvFile(this.opts.path)
+      const modeParsed = parseDotenvFile(this.opts.path + '.' + babelMode)
+      this.env = Object.assign(parsed, modeParsed)
     } else {
       dotenv.config({
         path: this.opts.path
+      })
+      dotenv.config({
+        path: this.opts.path + '.' + babelMode,
+        silent: true
       })
       this.env = process.env
     }
