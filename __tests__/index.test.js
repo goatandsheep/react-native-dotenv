@@ -3,7 +3,7 @@ const {transformFileSync} = require('@babel/core')
 const FIXTURES = '__tests__/__fixtures__/'
 const env = Object.apply({}, process.env)
 
-describe('babel-plugin-dotenv-import', () => {
+describe('react-native-dotenv', () => {
   afterEach(() => {
     process.env = Object.apply({}, env)
   })
@@ -47,6 +47,11 @@ describe('babel-plugin-dotenv-import', () => {
 
   it('should load custom env file', () => {
     const {code} = transformFileSync(FIXTURES + 'filename/source.js')
+    expect(code).toBe('console.log("abc123456");\nconsole.log("username123456");')
+  })
+
+  it('should load multiple env files', () => {
+    const {code} = transformFileSync(FIXTURES + 'multi-env/source.js')
     expect(code).toBe('console.log("abc123456");\nconsole.log("username123456");')
   })
 

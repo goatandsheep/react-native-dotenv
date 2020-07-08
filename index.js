@@ -68,9 +68,9 @@ module.exports = ({types: t}) => ({
             throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" was blacklisted`)
           }
 
-          if (!opts.allowUndefined && !Object.prototype.hasOwnProperty.call(this.env, importedId)) {
-            throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" is not defined in ${opts.path}`)
-          }
+          // if (!opts.allowUndefined && !Object.prototype.hasOwnProperty.call(this.env, importedId)) {
+          //   throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" is not defined in ${opts.path}`)
+          // }
 
           const binding = path.scope.getBinding(localId)
           binding.referencePaths.forEach(refPath => {
