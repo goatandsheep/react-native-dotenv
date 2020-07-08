@@ -131,6 +131,8 @@ rm -rf node_modules/.cache/babel-loader/*
 
 Or you can override the default `cacheIdentifier` to include some of your environment variables.
 
+Multi-environment is still a work in progress.
+
 ## Credits
 
 * Based on [David Chang](https://github.com/zetachang)’s works on [babel-plugin-dotenv](https://github.com/zetachang/react-native-dotenv/tree/master/babel-plugin-dotenv).
