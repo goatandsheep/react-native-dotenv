@@ -1,16 +1,16 @@
-# babel-plugin-dotenv-import [![CircleCI](https://circleci.com/gh/tusbar/babel-plugin-dotenv-import.svg?style=svg)](https://circleci.com/gh/tusbar/babel-plugin-dotenv-import)
+# react-native-dotenv [![CircleCI](https://circleci.com/gh/goatandsheep/react-native-dotenv.svg?style=svg)](https://circleci.com/gh/goatandsheep/react-native-dotenv)
 
 > Load environment variables using `import` statements.
 
-[![npm version](https://badgen.net/npm/v/babel-plugin-dotenv-import)](https://www.npmjs.com/package/babel-plugin-dotenv-import)
-[![dependencies Status](https://badgen.net/david/dep/tusbar/babel-plugin-dotenv-import)](https://david-dm.org/tusbar/babel-plugin-dotenv-import)
-[![codecov](https://badgen.net/codecov/c/github/tusbar/babel-plugin-dotenv-import)](https://codecov.io/gh/tusbar/babel-plugin-dotenv-import)
+[![npm version](https://badgen.net/npm/v/react-native-dotenv)](https://www.npmjs.com/package/react-native-dotenv)
+[![dependencies Status](https://badgen.net/david/dep/goatandsheep/react-native-dotenv)](https://david-dm.org/goatandsheep/react-native-dotenv)
+[![codecov](https://badgen.net/codecov/c/github/goatandsheep/react-native-dotenv)](https://codecov.io/gh/goatandsheep/react-native-dotenv)
 [![XO code style](https://badgen.net/badge/code%20style/XO/cyan)](https://github.com/xojs/xo)
 
 ## Installation
 
 ```sh
-$ npm install babel-plugin-dotenv-import
+$ npm install react-native-dotenv
 ```
 
 ## Usage
@@ -133,7 +133,8 @@ Or you can override the default `cacheIdentifier` to include some of your enviro
 
 ## Credits
 
-Based on [David Chang](https://github.com/zetachang)’s works on [babel-plugin-dotenv](https://github.com/zetachang/react-native-dotenv/tree/master/babel-plugin-dotenv).
+* Based on [David Chang](https://github.com/zetachang)’s works on [babel-plugin-dotenv](https://github.com/zetachang/react-native-dotenv/tree/master/babel-plugin-dotenv).
+* Also based on [Bertrand Marron](https://github.com/tusbar)'s works on [babel-plugin-dotenv-import](https://github.com/tusbar/babel-plugin-dotenv-import).
 
 ## Miscellaneous
 
