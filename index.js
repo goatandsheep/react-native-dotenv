@@ -6,7 +6,7 @@ function parseDotenvFile(path) {
 
   try {
     content = readFileSync(path)
-  } catch (_) {
+  } catch {
     // The env file does not exist.
     return {}
   }
