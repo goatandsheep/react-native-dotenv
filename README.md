@@ -13,36 +13,12 @@
 $ npm install react-native-dotenv
 ```
 
-## The story
+## Story
 
-To those who want to learn why this repo has changed tremendously over the past
-couple weeks, this is my explanation to you from @goatandsheep . To everyone
-else, continue to [the usage section](#Usage).
+Many have been asking about recent changes in this repo. Take a look at the
+[story wiki page](https://github.com/goatandsheep/react-native-dotenv/wiki/Story-of-this-repo).
 
-[Credits](#Credits).
-
-This package was originally written and maintained by @zetachang . However, due
-to intense time commitments, he was unable to keep up with looming security
-issues, feature requests, pull requests, etc. Being the smart person he is, he
-is in high demand.
-
-We noticed this was an issue and looked around at the various forks the
-community had made to solve some of these issues, but there needed to be a
-cohesive community. Initially we tried to figure out how to resolve this within
-@zetachang 's repo, but we realized he likely wouldn't be able to keep up.
-
-When we started thinking about a plan of how to upgrade it we realized there
-would be too many necessary changes than it would be worth to upgrade it
-piecewise so we took @tusbar 's fork, which is called
-[babel-plugin-dotenv-import](https://github.com/tusbar/babel-plugin-dotenv-import).
-His fork is really good, which is why we wanted to build off that.
-
-We've added a few features and are going to continue to add more as the
-community requests it.
-
-If you'd like to become a contributor, please send me a message and I'd be
-happy to add you to the team. There is also a [gitter chat](https://gitter.im/pass-it-on/react-native-dotenv#)
-and I'll try to answer any notifications I get.
+If you'd like to become an active contributor, please send us a message.
 
 ## Migration
 
