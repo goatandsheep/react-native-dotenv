@@ -1,13 +1,17 @@
 const {readFileSync} = require('fs')
 const dotenv = require('dotenv')
 
-function parseDotenvFile(path) {
+function parseDotenvFile(path, verbose = false) {
   let content
 
   try {
     content = readFileSync(path)
-  } catch {
+  } catch (error) {
     // The env file does not exist.
+    if (verbose) {
+      console.error('react-native-dotenv', error)
+    }
+
     return {}
   }
 
@@ -30,7 +34,7 @@ module.exports = ({types: t}) => ({
 
     const babelMode = process.env.BABEL_ENV || 'development'
     if (this.opts.safe) {
-      const parsed = parseDotenvFile(this.opts.path)
+      const parsed = parseDotenvFile(this.opts.path, this.opts.verbose)
       const modeParsed = parseDotenvFile(this.opts.path + '.' + babelMode)
       this.env = Object.assign(parsed, modeParsed)
     } else {
