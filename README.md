@@ -20,7 +20,7 @@ $ npm install react-native-dotenv
 ```json
 {
   "plugins": [
-    ["dotenv-import", {
+    ["module:react-native-dotenv", {
       "moduleName": "@env",
       "path": ".env",
       "blacklist": null,
@@ -58,7 +58,7 @@ It is possible to limit the scope of env variables that will be imported by spec
 ```json
 {
   "plugins": [
-    ["dotenv-import", {
+    ["module:react-native-dotenv", {
       "blacklist": [
         "GITHUB_TOKEN"
       ]
@@ -70,7 +70,7 @@ It is possible to limit the scope of env variables that will be imported by spec
 ```json
 {
   "plugins": [
-    ["dotenv-import", {
+    ["module:react-native-dotenv", {
       "whitelist": [
         "API_URL",
         "API_TOKEN"
@@ -89,7 +89,7 @@ The `.env` file has to exist.
 ```json
 {
   "plugins": [
-    ["dotenv-import", {
+    ["module:react-native-dotenv", {
       "safe": true
     }]
   ]
@@ -103,7 +103,7 @@ Allow importing undefined variables, their value will be `undefined`.
 ```json
 {
   "plugins": [
-    ["dotenv-import", {
+    ["module:react-native-dotenv", {
       "allowUndefined": true
     }]
   ]
