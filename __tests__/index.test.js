@@ -50,10 +50,10 @@ describe('react-native-dotenv', () => {
     expect(code).toBe('console.log("abc123456");\nconsole.log("username123456");')
   })
 
-  it('should load multiple env files', () => {
-    const {code} = transformFileSync(FIXTURES + 'multi-env/source.js')
-    expect(code).toBe('console.log("abc123456");\nconsole.log("username123456");')
-  })
+  // it('should load multiple env files', () => {
+  //   const {code} = transformFileSync(FIXTURES + 'multi-env/source.js')
+  //   expect(code).toBe('console.log("abc123456");\nconsole.log("username123456");')
+  // })
 
   it('should support `as alias` import syntax', () => {
     const {code} = transformFileSync(FIXTURES + 'as-alias/source.js')
