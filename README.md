@@ -23,8 +23,7 @@ If you'd like to become an active contributor, please send us a message.
 ## Migration
 
 For those moving from v0.2.0 to the latest version, you will find it is quite
-the jump. We are working on a migration guide. For now, take a look at the
-issues tab at #15 and #18 .
+the jump. We are working on a [migration guide](https://github.com/goatandsheep/react-native-dotenv/wiki/Migration-Guide).
 
 ## Usage
 
