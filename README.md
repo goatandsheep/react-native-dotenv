@@ -13,17 +13,13 @@
 $ npm install react-native-dotenv
 ```
 
-## Story
+## Introduction
 
-Many have been asking about recent changes in this repo. Take a look at the
-[story wiki page](https://github.com/goatandsheep/react-native-dotenv/wiki/Story-of-this-repo).
+**Breaking changes**: moving from `v0.x` to `v2.x` changes both the setup and usage of this package. Please see the [migration guide](https://github.com/goatandsheep/react-native-dotenv/wiki/Migration-Guide).
+
+Many have been asking about the reasons behind recent changes in this repo. Please see the [story wiki page](https://github.com/goatandsheep/react-native-dotenv/wiki/Story-of-this-repo).
 
 If you'd like to become an active contributor, please send us a message.
-
-## Migration
-
-For those moving from v0.2.0 to the latest version, you will find it is quite
-the jump. We are working on a [migration guide](https://github.com/goatandsheep/react-native-dotenv/wiki/Migration-Guide).
 
 ## Usage
 
