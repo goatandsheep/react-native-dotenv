@@ -3,7 +3,7 @@
     ["../../../", {
       "path": "__tests__/__fixtures__/safe-error/.env",
       "safe": true,
-      "allowedUndefined": false
+      "allowUndefined": false
     }]
   ]
 }
