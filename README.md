@@ -25,6 +25,18 @@ If you'd like to become an active contributor, please send us a message.
 
 **.babelrc**
 
+Basic setup:
+
+```json
+{
+  "plugins": [
+    ["module:react-native-dotenv"]
+  ]
+}
+```
+
+If the defaults do not cut it for your project, this outlines the available options for your Babel configuration and their respective default values, but you do not need to add them if you are using the default settings.
+
 ```json
 {
   "plugins": [
@@ -34,7 +46,7 @@ If you'd like to become an active contributor, please send us a message.
       "blacklist": null,
       "whitelist": null,
       "safe": false,
-      "allowUndefined": false
+      "allowUndefined": true
     }]
   ]
 }
