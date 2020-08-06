@@ -2,7 +2,8 @@
   "plugins": [
     ["../../../", {
       "path": "__tests__/__fixtures__/safe-error/.env",
-      "safe": true
+      "safe": true,
+      "allowedUndefined": false
     }]
   ]
 }

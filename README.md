@@ -52,6 +52,8 @@ If the defaults do not cut it for your project, this outlines the available opti
 }
 ```
 
+Note: for safe mode, it's highly recommended to set `allowUndefined` to `false`.
+
 **.env**
 
 ```dosini

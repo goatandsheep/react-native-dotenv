@@ -1,5 +1,7 @@
 {
   "plugins": [
-    "../../../"
+    ["../../../", {
+      "allowedUndefined": false
+    }]
   ]
 }
