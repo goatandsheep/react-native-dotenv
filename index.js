@@ -28,7 +28,7 @@ module.exports = ({types: t}) => ({
       whitelist: null,
       blacklist: null,
       safe: false,
-      allowUndefined: false,
+      allowUndefined: true,
       ...this.opts
     }
 
