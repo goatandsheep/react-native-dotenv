@@ -138,7 +138,7 @@ import {UNDEFINED_VAR} from '@env'
 console.log(UNDEFINED_VAR === undefined) // true
 ```
 
-When `false` (default behavior), an error will be thrown.
+When set to `false`, an error will be thrown. **This is no longer default behavior**.
 
 ## Caveats
 
