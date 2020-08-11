@@ -23,7 +23,7 @@
   "devDependencies": {
     "@babel/core": "7.11.1",
     "codecov": "^3.7.2",
-    "jest": "26.2.2",
+    "jest": "26.3.0",
     "jest-junit": "^11.0.1",
     "xo": "^0.32.1"
   },
