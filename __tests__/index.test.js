@@ -6,8 +6,7 @@ describe('react-native-dotenv', () => {
   const OLD_ENV = process.env
   afterEach(() => {
     jest.resetModules()
-    process.env = { ...OLD_ENV }
-
+    process.env = {...OLD_ENV}
   })
 
   it('should throw if the variable does not exist', () => {
