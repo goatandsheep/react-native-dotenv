@@ -1,11 +1,12 @@
 const {transformFileSync} = require('@babel/core')
 
 const FIXTURES = '__tests__/__fixtures__/'
-const env = Object.apply({}, process.env)
 
 describe('react-native-dotenv', () => {
+  const OLD_ENV = process.env
   afterEach(() => {
-    process.env = Object.apply({}, env)
+    jest.resetModules()
+    process.env = {...OLD_ENV}
   })
 
   it('should throw if the variable does not exist', () => {
@@ -47,6 +48,11 @@ describe('react-native-dotenv', () => {
 
   it('should load custom env file', () => {
     const {code} = transformFileSync(FIXTURES + 'filename/source.js')
+    expect(code).toBe('console.log("abc123456");\nconsole.log("username123456");')
+  })
+
+  it('should load multiple env files', () => {
+    const {code} = transformFileSync(FIXTURES + 'multi-env/source.js')
     expect(code).toBe('console.log("abc123456");\nconsole.log("username123456");')
   })
 
