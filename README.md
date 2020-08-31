@@ -140,6 +140,10 @@ console.log(UNDEFINED_VAR === undefined) // true
 
 When set to `false`, an error will be thrown. **This is no longer default behavior**.
 
+## Multi-env
+
+This package now supports environment specific variables. This means if you're importing environment variables from multiple files, e.g. `.env` and `.env.development`, you can now do that. They must all be at the same path. so if you specify `{ path: 'bob'}`, your environment-specific variables must be at `bob.development`, `bob.test`, and `bob.production`. The environment-specific variables always overwrite the default values in your `.env`. If you omit one of these 3, then it won't be included but hopefully you have the default values.
+
 ## Caveats
 
 When using with [`babel-loader`](https://github.com/babel/babel-loader) with caching enabled you will run into issues where environment changes won’t be picked up.
@@ -152,8 +156,6 @@ rm -rf node_modules/.cache/babel-loader/*
 ```
 
 Or you can override the default `cacheIdentifier` to include some of your environment variables.
-
-Multi-environment is still a work in progress.
 
 ## Credits
 
