@@ -83,6 +83,12 @@ describe('react-native-dotenv', () => {
     ).toThrow('"BLACKLISTED" was blacklisted')
   })
 
+  // it('should be able to import key through require', () => {
+
+  //   const {code} = transformFileSync(FIXTURES + 'require-import/source.js')
+  //   expect(code).toBe('console.log("abc123");')
+  // })
+
   it('should throw when trying to use a variable not defined in .env in safe mode', () => {
     process.env.FROM_ENV = 'here'
 
