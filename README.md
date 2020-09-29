@@ -13,13 +13,13 @@
 $ npm install react-native-dotenv
 ```
 
-## Introduction
-
 **Breaking changes**: moving from `v0.x` to `v2.x` changes both the setup and usage of this package. Please see the [migration guide](https://github.com/goatandsheep/react-native-dotenv/wiki/Migration-Guide).
 
 Many have been asking about the reasons behind recent changes in this repo. Please see the [story wiki page](https://github.com/goatandsheep/react-native-dotenv/wiki/Story-of-this-repo).
 
-If you'd like to become an active contributor, please send us a message.
+## Introduction
+
+This babel plugin lets you inject your environment variables into your react-native environment using dotenv for multiple environments.
 
 ## Usage
 
@@ -58,7 +58,7 @@ Note: for safe mode, it's highly recommended to set `allowUndefined` to `false`.
 
 ```dosini
 API_URL=https://api.example.org
-API_TOKEN=
+API_TOKEN=abc123
 ```
 
 In **users.js**
@@ -142,7 +142,21 @@ When set to `false`, an error will be thrown. **This is no longer default behavi
 
 ## Multi-env
 
-This package now supports environment specific variables. This means if you're importing environment variables from multiple files, e.g. `.env` and `.env.development`, you can now do that. They must all be at the same path. so if you specify `{ path: 'bob'}`, your environment-specific variables must be at `bob.development`, `bob.test`, and `bob.production`. The environment-specific variables always overwrite the default values in your `.env`. If you omit one of these 3, then it won't be included but hopefully you have the default values.
+This package now supports environment specific variables. This means you may now import environment variables from multiple files, i.e. `.env`, `.env.development`, `.env.production`, and `.env.test`.
+
+Note: it is not recommended that you commit any sensitive information in `.env` file to code in case your git repo is exposed. The best practice is to put a `.env.template` or `.env.development.template` that contains dummy values so other developers know what to configure. Then add your `.env` and `.env.development` to `.gitignore`. In a future release you can keep sensitive keys in a separate `.env.local` (and respective `.env.local.template`) in `.gitignore` and you can use your other `.env` files for non-sensitive config.
+
+The base set of variables will be `.env` and the environment-specific variables will overwrite them.
+
+The variables will automatically be pulled from the appropriate environment and `development` is the default. The choice of environment is based on your Babel environment first and if that value is not set, your NPM environment, which should actually be the same, but this makes it more robust.
+
+In general, **Release** is `production` and **Debug** is `development`.
+
+### Reference Material
+
+* [babel environments](https://babeljs.io/docs/en/6.26.3/babelrc#env-option)
+* [dotenv documentation](https://www.npmjs.com/package/dotenv)
+* [See the wiki for more troubleshooting tips](https://github.com/goatandsheep/react-native-dotenv/wiki/Multi-env-troubleshooting)
 
 ## Caveats
 
@@ -157,10 +171,14 @@ rm -rf node_modules/.cache/babel-loader/*
 
 Or you can override the default `cacheIdentifier` to include some of your environment variables.
 
+The tests that use `require('@env')` are also not passing.
+
 ## Credits
 
 * Based on [David Chang](https://github.com/zetachang)’s works on [babel-plugin-dotenv](https://github.com/zetachang/react-native-dotenv/tree/master/babel-plugin-dotenv).
 * Also based on [Bertrand Marron](https://github.com/tusbar)'s works on [babel-plugin-dotenv-import](https://github.com/tusbar/babel-plugin-dotenv-import).
+
+If you'd like to become an active contributor, please send us a message.
 
 ## Miscellaneous
 

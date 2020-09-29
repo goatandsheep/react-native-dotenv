@@ -61,25 +61,27 @@ module.exports = ({types: t}) => ({
             throw path.get('specifiers')[idx].buildCodeFrameError('Wildcard import is not supported')
           }
 
-          const importedId = specifier.imported.name
-          const localId = specifier.local.name
+          if (specifier.imported && specifier.local) {
+            const importedId = specifier.imported.name
+            const localId = specifier.local.name
 
-          if (Array.isArray(opts.whitelist) && !opts.whitelist.includes(importedId)) {
-            throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" was not whitelisted`)
+            if (Array.isArray(opts.whitelist) && !opts.whitelist.includes(importedId)) {
+              throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" was not whitelisted`)
+            }
+
+            if (Array.isArray(opts.blacklist) && opts.blacklist.includes(importedId)) {
+              throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" was blacklisted`)
+            }
+
+            if (!opts.allowUndefined && !Object.prototype.hasOwnProperty.call(this.env, importedId)) {
+              throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" is not defined in ${opts.path}`)
+            }
+
+            const binding = path.scope.getBinding(localId)
+            binding.referencePaths.forEach(refPath => {
+              refPath.replaceWith(t.valueToNode(this.env[importedId]))
+            })
           }
-
-          if (Array.isArray(opts.blacklist) && opts.blacklist.includes(importedId)) {
-            throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" was blacklisted`)
-          }
-
-          if (!opts.allowUndefined && !Object.prototype.hasOwnProperty.call(this.env, importedId)) {
-            throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" is not defined in ${opts.path}`)
-          }
-
-          const binding = path.scope.getBinding(localId)
-          binding.referencePaths.forEach(refPath => {
-            refPath.replaceWith(t.valueToNode(this.env[importedId]))
-          })
         })
 
         path.remove()
