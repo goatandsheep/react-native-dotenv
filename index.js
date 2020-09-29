@@ -60,7 +60,7 @@ module.exports = ({types: t}) => ({
           if (specifier.type === 'ImportNamespaceSpecifier') {
             throw path.get('specifiers')[idx].buildCodeFrameError('Wildcard import is not supported')
           }
-          
+
           if (specifier.imported && specifier.local) {
             const importedId = specifier.imported.name
             const localId = specifier.local.name
