@@ -151,6 +151,7 @@ The base set of variables will be `.env` and the environment-specific variables 
 The variables will automatically be pulled from the appropriate environment and `development` is the default. The choice of environment is based on your Babel environment first and if that value is not set, your NPM environment, which should actually be the same, but this makes it more robust.
 
 In general, **Release** is `production` and **Debug** is `development`.
+Also, you can specify `APP_ENV` variable, which will allow you to use a specific env file without depending on the global environment.
 
 ### Reference Material
 
