@@ -3,3 +3,5 @@ coverage
 reports
 
 .nyc_output
+
+.vs
