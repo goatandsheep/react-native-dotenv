@@ -151,7 +151,19 @@ The base set of variables will be `.env` and the environment-specific variables 
 The variables will automatically be pulled from the appropriate environment and `development` is the default. The choice of environment is based on your Babel environment first and if that value is not set, your NPM environment, which should actually be the same, but this makes it more robust.
 
 In general, **Release** is `production` and **Debug** is `development`.
-Also, you can specify `APP_ENV` variable, which will allow you to use a specific env file without depending on the global environment.
+## Experimental feature
+One thing that we've noticed is that metro overwrites the test environment variable even if you specify a config so we've added a way to fix this. Make sure to specify the config value as indicated in the wiki and make custom configs for alternative builds. However, if you still need this, such as for a staging / test environment, you can add the APP_ENV environment variable in the CLI. For example:
+
+```json
+// package.json
+{
+  "scripts": {
+    "start:staging": "APP_ENV=staging npx react-native start",
+  }
+}
+```
+The above example would use the `.env.staging` file. The standard word is `test`, but go nuts.
+
 
 ### Reference Material
 
