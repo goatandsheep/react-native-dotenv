@@ -165,8 +165,28 @@ One thing that we've noticed is that metro overwrites the test environment varia
 ```
 The above example would use the `.env.staging` file. The standard word is `test`, but go nuts.
 
+## TypeScript
 
-### Reference Material
+- Create a `types` folder in your project
+- Inside that folder, create a `*.d.ts`file, say, `env.d.ts`
+- in that file, declare a module as the following format:
+```ts
+declare module '@env' {
+  export const API_BASE: string;
+}
+```
+Add all of your .env variables inside this module.
+
+- Finally, add this folder into the `typeRoots` field in your `tsconfig.json` file:
+```json
+{
+...
+    "typeRoots": ["./src/types"],
+...
+}
+```
+
+## Reference Material
 
 * [babel environments](https://babeljs.io/docs/en/6.26.3/babelrc#env-option)
 * [dotenv documentation](https://www.npmjs.com/package/dotenv)
@@ -182,6 +202,18 @@ You can easily clear the cache:
 ```shell
 rm -rf node_modules/.cache/babel-loader/*
 ```
+
+or
+
+`yarn start --reset-cache`
+
+`expo r -c`
+
+Maybe a solution for updating package.json scripts:
+
+>     "cc": "rimraf node_modules/.cache/babel-loader/*,",
+>     "android": "npm run cc && react-native run-android",
+>     "ios": "npm run cc && react-native run-ios",
 
 Or you can override the default `cacheIdentifier` to include some of your environment variables.
 
