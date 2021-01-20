@@ -207,6 +207,8 @@ or
 
 `yarn start --reset-cache`
 
+or
+
 `expo r -c`
 
 Maybe a solution for updating package.json scripts:
