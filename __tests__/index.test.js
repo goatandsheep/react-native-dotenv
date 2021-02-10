@@ -56,6 +56,11 @@ describe('react-native-dotenv', () => {
     expect(code).toBe('console.log("abc123456");\nconsole.log("username123456");')
   })
 
+  it('should load local env files', () => {
+    const {code} = transformFileSync(FIXTURES + 'local-env/source.js')
+    expect(code).toBe('console.log("local-key");\nconsole.log("username123456");')
+  })
+
   it('should support `as alias` import syntax', () => {
     const {code} = transformFileSync(FIXTURES + 'as-alias/source.js')
     expect(code).toBe('const a = "abc123";\nconst b = "username";')
@@ -63,6 +68,11 @@ describe('react-native-dotenv', () => {
 
   it('should allow specifying a custom module name', () => {
     const {code} = transformFileSync(FIXTURES + 'custom-module/source.js')
+    expect(code).toBe('console.log("abc123");\nconsole.log("username");')
+  })
+
+  it('should allow specifying the package module name', () => {
+    const {code} = transformFileSync(FIXTURES + 'module-name/source.js')
     expect(code).toBe('console.log("abc123");\nconsole.log("username");')
   })
 
