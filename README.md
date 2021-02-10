@@ -145,7 +145,7 @@ When set to `false`, an error will be thrown. **This is no longer default behavi
 
 This package now supports environment specific variables. This means you may now import environment variables from multiple files, i.e. `.env`, `.env.development`, `.env.production`, and `.env.test`.
 
-Note: it is not recommended that you commit any sensitive information in `.env` file to code in case your git repo is exposed. The best practice is to put a `.env.template` or `.env.development.template` that contains dummy values so other developers know what to configure. Then add your `.env` and `.env.development` to `.gitignore`. In a future release you can keep sensitive keys in a separate `.env.local` (and respective `.env.local.template`) in `.gitignore` and you can use your other `.env` files for non-sensitive config.
+Note: it is not recommended that you commit any sensitive information in `.env` file to code in case your git repo is exposed. The best practice is to put a `.env.template` or `.env.development.template` that contains dummy values so other developers know what to configure. Then add your `.env` and `.env.development` to `.gitignore`. You can also keep sensitive keys in a separate `.env.local` (and respective `.env.local.template`) in `.gitignore` and you can use your other `.env` files for non-sensitive config.
 
 The base set of variables will be `.env` and the environment-specific variables will overwrite them.
 
@@ -166,6 +166,36 @@ One thing that we've noticed is that metro overwrites the test environment varia
 The above example would use the `.env.staging` file. The standard word is `test`, but go nuts.
 
 ## TypeScript
+
+### Option 1: easy mode
+
+Install the @types package [![npm version](https://badgen.net/npm/v/@types/react-native-dotenv)](https://www.npmjs.com/package/@types/react-native-dotenv)
+
+```shell
+npm install @types/react-native-dotenv
+```
+
+Set the `moduleName` in your Babel config as `react-native-dotenv`.
+
+```json
+{
+  "plugins": [
+    ["module:react-native-dotenv", {
+      "moduleName": "react-native-dotenv"
+    }]
+  ]
+}
+```
+
+Import your variables from `react-native-dotenv`:
+
+```js
+import {API_URL} from 'react-native-dotenv'
+
+console.log(API_URL)
+```
+
+### Option 2: specify types manually
 
 - Create a `types` folder in your project
 - Inside that folder, create a `*.d.ts`file, say, `env.d.ts`
