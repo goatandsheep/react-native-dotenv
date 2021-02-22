@@ -1,11 +1,12 @@
 const {readFileSync} = require('fs')
+const {resolve} = require('path')
 const dotenv = require('dotenv')
 
 function parseDotenvFile(path, verbose = false) {
   let content
 
   try {
-    content = readFileSync(path)
+    content = readFileSync(resolve(__dirname, path))
   } catch (error) {
     // The env file does not exist.
     if (verbose) {
