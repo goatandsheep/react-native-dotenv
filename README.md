@@ -241,6 +241,10 @@ or
 
 `expo r -c`
 
+or 
+
+[react-native-clean-project](https://www.npmjs.com/package/react-native-clean-project)
+
 Maybe a solution for updating package.json scripts:
 
 >     "cc": "rimraf node_modules/.cache/babel-loader/*,",
