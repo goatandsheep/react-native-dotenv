@@ -251,6 +251,8 @@ Or you can override the default `cacheIdentifier` to include some of your enviro
 
 The tests that use `require('@env')` are also not passing.
 
+For nextjs, you _must_ set `moduleName` to `react-native-dotenv`.
+
 ## Credits
 
 * Based on [David Chang](https://github.com/zetachang)’s works on [babel-plugin-dotenv](https://github.com/zetachang/react-native-dotenv/tree/master/babel-plugin-dotenv).
