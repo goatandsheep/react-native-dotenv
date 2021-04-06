@@ -74,6 +74,8 @@ fetch(`${API_URL}/users`, {
 })
 ```
 
+Also preview [the upcoming test app](https://github.com/goatandsheep/chatkitty-example-react-native/).
+
 ## White and black lists
 
 It is possible to limit the scope of env variables that will be imported by specifying a `whitelist` and/or a `blacklist` as an array of strings.
