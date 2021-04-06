@@ -7,6 +7,7 @@ assignees: goatandsheep
 
 ---
 
+- [x] Asked question in discussions
 - [x] Tried the troubleshooting Wiki
 - [x] Followed the migration Wiki
 
