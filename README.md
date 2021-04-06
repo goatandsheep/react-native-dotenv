@@ -74,6 +74,8 @@ fetch(`${API_URL}/users`, {
 })
 ```
 
+Also preview [the upcoming test app](https://github.com/goatandsheep/chatkitty-example-react-native/).
+
 ## White and black lists
 
 It is possible to limit the scope of env variables that will be imported by specifying a `whitelist` and/or a `blacklist` as an array of strings.
@@ -241,6 +243,10 @@ or
 
 `expo r -c`
 
+or 
+
+[react-native-clean-project](https://www.npmjs.com/package/react-native-clean-project)
+
 Maybe a solution for updating package.json scripts:
 
 >     "cc": "rimraf node_modules/.cache/babel-loader/*,",
@@ -250,6 +256,8 @@ Maybe a solution for updating package.json scripts:
 Or you can override the default `cacheIdentifier` to include some of your environment variables.
 
 The tests that use `require('@env')` are also not passing.
+
+For nextjs, you _must_ set `moduleName` to `react-native-dotenv`.
 
 ## Credits
 
