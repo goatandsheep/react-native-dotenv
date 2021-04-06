@@ -57,7 +57,7 @@ module.exports = ({types: t}) => ({
   visitor: {
     ImportDeclaration(path, {opts}) {
       if (path.node.source.value === opts.moduleName) {
-        path.node.specifiers.forEach((specifier, idx) => {
+        for (const [idx, specifier] of path.node.specifiers.entries()) {
           if (specifier.type === 'ImportDefaultSpecifier') {
             throw path.get('specifiers')[idx].buildCodeFrameError('Default import is not supported')
           }
@@ -83,11 +83,11 @@ module.exports = ({types: t}) => ({
             }
 
             const binding = path.scope.getBinding(localId)
-            binding.referencePaths.forEach(refPath => {
+            for (const refPath of binding.referencePaths) {
               refPath.replaceWith(t.valueToNode(this.env[importedId]))
-            })
+            }
           }
-        })
+        }
 
         path.remove()
       }
