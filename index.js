@@ -27,6 +27,8 @@ module.exports = ({types: t}) => ({
       path: '.env',
       whitelist: null,
       blacklist: null,
+      allowlist: null,
+      blocklist: null,
       safe: false,
       allowUndefined: true,
       ...this.opts
@@ -70,11 +72,17 @@ module.exports = ({types: t}) => ({
             const importedId = specifier.imported.name
             const localId = specifier.local.name
 
-            if (Array.isArray(opts.whitelist) && !opts.whitelist.includes(importedId)) {
+            if (Array.isArray(opts.allowlist) && !opts.allowlist.includes(importedId)) {
+              throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" was not present in allowlist`)
+            } else if (Array.isArray(opts.whitelist) && !opts.whitelist.includes(importedId)) {
+              console.warn("[DEPRECATION WARNING] This option is will be deprecated soon. Use allowlist instead")
               throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" was not whitelisted`)
             }
 
-            if (Array.isArray(opts.blacklist) && opts.blacklist.includes(importedId)) {
+            if (Array.isArray(opts.blocklist) && opts.blocklist.includes(importedId)) {
+              throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" was not present in blocklist`)
+            } else if (Array.isArray(opts.blacklist) && opts.blacklist.includes(importedId)) {
+              console.warn("[DEPRECATION WARNING] This option is will be deprecated soon. Use blocklist instead")
               throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" was blacklisted`)
             }
 
