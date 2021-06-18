@@ -46,8 +46,6 @@ If the defaults do not cut it for your project, this outlines the available opti
       "path": ".env",
       "blocklist": null,
       "allowlist": null,
-      "blacklist": null, // DEPRECATED
-      "whitelist": null, // DEPRECATED
       "safe": false,
       "allowUndefined": true
     }]
@@ -77,10 +75,6 @@ fetch(`${API_URL}/users`, {
 ```
 
 Also preview [the upcoming test app](https://github.com/goatandsheep/chatkitty-example-react-native/).
-
-## [DEPRECATED] White and black lists
-
-Moving forward to a more inclusive language, terms like `white` and `black` are being moved away. Future versions will just use `allowlist` and `blocklist` while `whitelist`/`blacklist` are still supported.
 
 ## Allow and Block lists
 
