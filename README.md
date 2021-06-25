@@ -44,8 +44,8 @@ If the defaults do not cut it for your project, this outlines the available opti
     ["module:react-native-dotenv", {
       "moduleName": "@env",
       "path": ".env",
-      "blacklist": null,
-      "whitelist": null,
+      "blocklist": null,
+      "allowlist": null,
       "safe": false,
       "allowUndefined": true
     }]
@@ -76,15 +76,15 @@ fetch(`${API_URL}/users`, {
 
 Also preview [the upcoming test app](https://github.com/goatandsheep/chatkitty-example-react-native/).
 
-## White and black lists
+## Allow and Block lists
 
-It is possible to limit the scope of env variables that will be imported by specifying a `whitelist` and/or a `blacklist` as an array of strings.
+It is possible to limit the scope of env variables that will be imported by specifying a `allowlist` and/or a `blocklist` as an array of strings.
 
 ```json
 {
   "plugins": [
     ["module:react-native-dotenv", {
-      "blacklist": [
+      "blocklist": [
         "GITHUB_TOKEN"
       ]
     }]
@@ -96,7 +96,7 @@ It is possible to limit the scope of env variables that will be imported by spec
 {
   "plugins": [
     ["module:react-native-dotenv", {
-      "whitelist": [
+      "allowlist": [
         "API_URL",
         "API_TOKEN"
       ]
@@ -245,7 +245,7 @@ or
 
 `expo r -c`
 
-or 
+or
 
 [react-native-clean-project](https://www.npmjs.com/package/react-native-clean-project)
 

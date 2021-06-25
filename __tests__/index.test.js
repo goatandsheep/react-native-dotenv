@@ -81,16 +81,16 @@ describe('react-native-dotenv', () => {
     expect(code).toBe('import { join } from \'path\'; // eslint-disable-line import/no-unresolved\n\nconsole.log(join);')
   })
 
-  it('should throw when using non-whitelisted env variables', () => {
+  it('should throw when using non-allowlisted env variables', () => {
     expect(
-      () => transformFileSync(FIXTURES + 'whitelist/source.js')
-    ).toThrow('"NOT_WHITELISTED" was not whitelisted')
+      () => transformFileSync(FIXTURES + 'allowlist/source.js')
+    ).toThrow('"NOT_ALLOWLISTED" was not present in allowlist')
   })
 
-  it('should throw when using blacklisted env variables', () => {
+  it('should throw when using blocklisted env variables', () => {
     expect(
-      () => transformFileSync(FIXTURES + 'blacklist/source.js')
-    ).toThrow('"BLACKLISTED" was blacklisted')
+      () => transformFileSync(FIXTURES + 'blocklist/source.js')
+    ).toThrow('"BLOCKLISTED" was not present in blocklist')
   })
 
   it('should throw when trying to use a variable not defined in .env in safe mode', () => {
