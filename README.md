@@ -44,8 +44,10 @@ If the defaults do not cut it for your project, this outlines the available opti
     ["module:react-native-dotenv", {
       "moduleName": "@env",
       "path": ".env",
-      "blacklist": null,
-      "whitelist": null,
+      "blocklist": null,
+      "allowlist": null,
+      "blacklist": null, // DEPRECATED
+      "whitelist": null, // DEPRECATED
       "safe": false,
       "allowUndefined": true
     }]
@@ -76,15 +78,19 @@ fetch(`${API_URL}/users`, {
 
 Also preview [the upcoming test app](https://github.com/goatandsheep/chatkitty-example-react-native/).
 
-## White and black lists
+## [DEPRECATED] White and black lists
 
-It is possible to limit the scope of env variables that will be imported by specifying a `whitelist` and/or a `blacklist` as an array of strings.
+Moving forward to a more inclusive language, terms like `white` and `black` are being moved away. Future versions will just use `allowlist` and `blocklist` while `whitelist`/`blacklist` are still supported.
+
+## Allow and Block lists
+
+It is possible to limit the scope of env variables that will be imported by specifying a `allowlist` and/or a `blocklist` as an array of strings.
 
 ```json
 {
   "plugins": [
     ["module:react-native-dotenv", {
-      "blacklist": [
+      "blocklist": [
         "GITHUB_TOKEN"
       ]
     }]
@@ -96,7 +102,7 @@ It is possible to limit the scope of env variables that will be imported by spec
 {
   "plugins": [
     ["module:react-native-dotenv", {
-      "whitelist": [
+      "allowlist": [
         "API_URL",
         "API_TOKEN"
       ]
@@ -145,7 +151,7 @@ When set to `false`, an error will be thrown. **This is no longer default behavi
 
 ## Multi-env
 
-This package now supports environment specific variables. This means you may now import environment variables from multiple files, i.e. `.env`, `.env.development`, `.env.production`, and `.env.test`.
+This package now supports environment specific variables. This means you may now import environment variables from multiple files, i.e. `.env`, `.env.development`, `.env.production`, and `.env.test`. This is based on [dotenv-flow](https://www.npmjs.com/package/dotenv-flow).
 
 Note: it is not recommended that you commit any sensitive information in `.env` file to code in case your git repo is exposed. The best practice is to put a `.env.template` or `.env.development.template` that contains dummy values so other developers know what to configure. Then add your `.env` and `.env.development` to `.gitignore`. You can also keep sensitive keys in a separate `.env.local` (and respective `.env.local.template`) in `.gitignore` and you can use your other `.env` files for non-sensitive config.
 
@@ -154,8 +160,22 @@ The base set of variables will be `.env` and the environment-specific variables 
 The variables will automatically be pulled from the appropriate environment and `development` is the default. The choice of environment is based on your Babel environment first and if that value is not set, your NPM environment, which should actually be the same, but this makes it more robust.
 
 In general, **Release** is `production` and **Debug** is `development`.
+
+To choose, setup your scripts with `NODE_ENV` for each environment
+
+```json
+// package.json
+{
+  "scripts": {
+    "start:development": "NODE_ENV=development npx react-native start",
+    "start:production": "NODE_ENV=production npx react-native start",
+  }
+}
+```
+
 ## Experimental feature
-One thing that we've noticed is that metro overwrites the test environment variable even if you specify a config so we've added a way to fix this. Make sure to specify the config value as indicated in the wiki and make custom configs for alternative builds. However, if you still need this, such as for a staging / test environment, you can add the APP_ENV environment variable in the CLI. For example:
+
+One thing that we've noticed is that metro overwrites the test environment variable even if you specify a config so we've added a way to fix this. Make sure to specify the config value as indicated in the wiki and make custom configs for alternative builds. However, if you still need this, such as for a staging / test environment, you can add the APP_ENV environment variable in the CLI.
 
 ```json
 // package.json
@@ -166,6 +186,8 @@ One thing that we've noticed is that metro overwrites the test environment varia
 }
 ```
 The above example would use the `.env.staging` file. The standard word is `test`, but go nuts.
+
+Note: if you're using `APP_ENV`, you should avoid using `development` nor `production` as values and you should avoid having a `.env.development` or `.env.production`. This is a Babel and Node thing that I have little control over unfortunately and is consistent with many other platforms that have an override option, like [Gatsby](https://www.gatsbyjs.com/docs/how-to/local-development/environment-variables/#additional-environments-staging-test-etc). If you want to use `development` and `production`, you should not use `APP_ENV`, but rather the built-in `NODE_ENV=development` or `NODE_ENV=production`.
 
 ## TypeScript
 
@@ -243,7 +265,7 @@ or
 
 `expo r -c`
 
-or 
+or
 
 [react-native-clean-project](https://www.npmjs.com/package/react-native-clean-project)
 
