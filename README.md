@@ -167,6 +167,8 @@ One thing that we've noticed is that metro overwrites the test environment varia
 ```
 The above example would use the `.env.staging` file. The standard word is `test`, but go nuts.
 
+Note: if you're using `APP_ENV`, you should not use `development` nor `production` as values nor should you have a `.env.development` nor `.env.production`. This is a Babel and Node thing that I have little control over unfortunately and is consistent with many other platforms that have an override option, like [Gatsby](https://www.gatsbyjs.com/docs/how-to/local-development/environment-variables/#additional-environments-staging-test-etc).
+
 ## TypeScript
 
 ### Option 1: easy mode
