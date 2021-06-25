@@ -78,7 +78,7 @@ describe('react-native-dotenv', () => {
 
   it('should leave other imports untouched', () => {
     const {code} = transformFileSync(FIXTURES + 'unused/source.js')
-    expect(code).toBe('import { join } from \'path\'; // eslint-disable-line import/no-unresolved\n\nconsole.log(join);')
+    expect(code).toBe('import { join } from \'node:path\'; // eslint-disable-line import/no-unresolved\n\nconsole.log(join);')
   })
 
   it('should throw when using non-allowlisted env variables', () => {
