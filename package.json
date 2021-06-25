@@ -58,6 +58,12 @@
     "space": 2,
     "overrides": [
       {
+        "files": "**/*",
+        "rules": {
+          "unicorn/prefer-module": "off"
+        }
+      },
+      {
         "files": "__tests__/**/*.js",
         "env": [
           "jest"
