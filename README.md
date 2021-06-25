@@ -44,8 +44,10 @@ If the defaults do not cut it for your project, this outlines the available opti
     ["module:react-native-dotenv", {
       "moduleName": "@env",
       "path": ".env",
-      "blacklist": null,
-      "whitelist": null,
+      "blocklist": null,
+      "allowlist": null,
+      "blacklist": null, // DEPRECATED
+      "whitelist": null, // DEPRECATED
       "safe": false,
       "allowUndefined": true
     }]
@@ -76,15 +78,19 @@ fetch(`${API_URL}/users`, {
 
 Also preview [the upcoming test app](https://github.com/goatandsheep/chatkitty-example-react-native/).
 
-## White and black lists
+## [DEPRECATED] White and black lists
 
-It is possible to limit the scope of env variables that will be imported by specifying a `whitelist` and/or a `blacklist` as an array of strings.
+Moving forward to a more inclusive language, terms like `white` and `black` are being moved away. Future versions will just use `allowlist` and `blocklist` while `whitelist`/`blacklist` are still supported.
+
+## Allow and Block lists
+
+It is possible to limit the scope of env variables that will be imported by specifying a `allowlist` and/or a `blocklist` as an array of strings.
 
 ```json
 {
   "plugins": [
     ["module:react-native-dotenv", {
-      "blacklist": [
+      "blocklist": [
         "GITHUB_TOKEN"
       ]
     }]
@@ -96,7 +102,7 @@ It is possible to limit the scope of env variables that will be imported by spec
 {
   "plugins": [
     ["module:react-native-dotenv", {
-      "whitelist": [
+      "allowlist": [
         "API_URL",
         "API_TOKEN"
       ]
@@ -245,7 +251,7 @@ or
 
 `expo r -c`
 
-or 
+or
 
 [react-native-clean-project](https://www.npmjs.com/package/react-native-clean-project)
 
