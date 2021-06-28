@@ -1,6 +1,6 @@
 {
   "name": "react-native-dotenv",
-  "version": "2.5.3",
+  "version": "2.6.2",
   "description": "Load environment variables using import statements.",
   "repository": "github:goatandsheep/react-native-dotenv",
   "homepage": "https://github.com/goatandsheep/react-native-dotenv",
@@ -18,14 +18,14 @@
     "react-native"
   ],
   "dependencies": {
-    "dotenv": "^8.0.0"
+    "dotenv": "^10.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.12.13",
-    "codecov": "^3.8.1",
-    "jest": "26.6.3",
-    "jest-junit": "^12.0.0",
-    "xo": "^0.37.1"
+    "@babel/core": "7.14.6",
+    "codecov": "^3.8.2",
+    "jest": "27.0.5",
+    "jest-junit": "^12.2.0",
+    "xo": "^0.40.3"
   },
   "author": "Kemal Ahmed",
   "license": "MIT",
@@ -57,6 +57,12 @@
     "semicolon": false,
     "space": 2,
     "overrides": [
+      {
+        "files": "**/*",
+        "rules": {
+          "unicorn/prefer-module": "off"
+        }
+      },
       {
         "files": "__tests__/**/*.js",
         "env": [

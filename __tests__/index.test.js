@@ -78,7 +78,19 @@ describe('react-native-dotenv', () => {
 
   it('should leave other imports untouched', () => {
     const {code} = transformFileSync(FIXTURES + 'unused/source.js')
-    expect(code).toBe('import { join } from \'path\'; // eslint-disable-line import/no-unresolved\n\nconsole.log(join);')
+    expect(code).toBe('import { join } from \'node:path\'; // eslint-disable-line import/no-unresolved\n\nconsole.log(join);')
+  })
+
+  it('should throw when using non-allowlisted env variables', () => {
+    expect(
+      () => transformFileSync(FIXTURES + 'allowlist/source.js')
+    ).toThrow('"NOT_ALLOWLISTED" was not present in allowlist')
+  })
+
+  it('should throw when using blocklisted env variables', () => {
+    expect(
+      () => transformFileSync(FIXTURES + 'blocklist/source.js')
+    ).toThrow('"BLOCKLISTED" was not present in blocklist')
   })
 
   it('should throw when using non-whitelisted env variables', () => {
