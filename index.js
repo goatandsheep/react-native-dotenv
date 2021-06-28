@@ -100,14 +100,14 @@ module.exports = ({types: t}) => ({
         path.remove()
       }
     },
-    MemberExpression: function MemberExpression (path, {opts}) {
-      if (path.get("object").matchesPattern("process.env")) {
-        var key = path.toComputedKey();
+    MemberExpression(path, {opts}) {
+      if (path.get('object').matchesPattern('process.env')) {
+        const key = path.toComputedKey()
         if (t.isStringLiteral(key)) {
-          var importedId = key.value;
-          var value = (opts.env && importedId in opts.env) ? opts.env[importedId] : process.env[importedId];
+          const importedId = key.value
+          const value = (opts.env && importedId in opts.env) ? opts.env[importedId] : process.env[importedId]
 
-          path.replaceWith(t.valueToNode(value));
+          path.replaceWith(t.valueToNode(value))
         }
       }
     }
