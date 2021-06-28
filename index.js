@@ -1,5 +1,5 @@
 const {readFileSync} = require('fs')
-const {resolve} = require('path')
+const {resolve} = require('node:path')
 const dotenv = require('dotenv')
 
 function parseDotenvFile(path, verbose = false) {
