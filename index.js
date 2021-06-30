@@ -37,16 +37,16 @@ module.exports = ({types: t}) => ({
     const babelMode = process.env.APP_ENV || (process.env.BABEL_ENV && process.env.BABEL_ENV !== 'undefined' && process.env.BABEL_ENV) || process.env.NODE_ENV || 'development'
     if (this.opts.safe) {
       const parsed = parseDotenvFile(this.opts.path, this.opts.verbose)
-      const modeParsed = parseDotenvFile(this.opts.path + '.' + babelMode)
       const localParsed = parseDotenvFile(this.opts.path + '.local')
+      const modeParsed = parseDotenvFile(this.opts.path + '.' + babelMode)
       this.env = Object.assign(Object.assign(parsed, modeParsed), localParsed)
     } else {
       dotenv.config({
-        path: this.opts.path + '.local',
+        path: this.opts.path + '.' + babelMode,
         silent: true
       })
       dotenv.config({
-        path: this.opts.path + '.' + babelMode,
+        path: this.opts.path + '.local',
         silent: true
       })
       dotenv.config({

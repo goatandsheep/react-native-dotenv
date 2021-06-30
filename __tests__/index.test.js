@@ -58,7 +58,7 @@ describe('react-native-dotenv', () => {
 
   it('should load local env files', () => {
     const {code} = transformFileSync(FIXTURES + 'local-env/source.js')
-    expect(code).toBe('console.log("local-key");\nconsole.log("username123456");')
+    expect(code).toBe('console.log("username123456");\nconsole.log("local-key");')
   })
 
   it('should support `as alias` import syntax', () => {
