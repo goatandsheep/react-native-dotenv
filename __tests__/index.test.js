@@ -33,10 +33,10 @@ describe('react-native-dotenv', () => {
   })
 
   it('should print the environment if setting to verbose', () => {
-    console.log = jest.fn();
+    console.log = jest.fn()
     const {code} = transformFileSync(FIXTURES + 'verbose/source.js')
     expect(code).toBe('console.log("abc123");\nconsole.log("username");')
-    expect(console.log.mock.calls[0][1]).toBe('test');
+    expect(console.log.mock.calls[0][1]).toBe('test')
   })
 
   it('should allow importing variables already defined in the environment', () => {
