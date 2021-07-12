@@ -49,7 +49,8 @@ If the defaults do not cut it for your project, this outlines the available opti
       "blacklist": null, // DEPRECATED
       "whitelist": null, // DEPRECATED
       "safe": false,
-      "allowUndefined": true
+      "allowUndefined": true,
+      "verbose": false
     }]
   ]
 }

@@ -31,10 +31,15 @@ module.exports = ({types: t}) => ({
       blocklist: null,
       safe: false,
       allowUndefined: true,
+      verbose: false,
       ...this.opts
     }
 
-    const babelMode = process.env.APP_ENV || (process.env.BABEL_ENV && process.env.BABEL_ENV !== 'undefined' && process.env.BABEL_ENV) || process.env.NODE_ENV || 'development'
+    const babelMode = process.env.APP_ENV || (process.env.BABEL_ENV && process.env.BABEL_ENV !== 'undefined' && process.env.BABEL_ENV !== 'development' && process.env.BABEL_ENV) || process.env.NODE_ENV || 'development'
+    if (this.opts.verbose) {
+      console.log('dotenvMode', babelMode)
+    }
+
     if (this.opts.safe) {
       const parsed = parseDotenvFile(this.opts.path, this.opts.verbose)
       const localParsed = parseDotenvFile(this.opts.path + '.local')
