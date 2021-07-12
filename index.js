@@ -80,14 +80,14 @@ module.exports = ({types: t}) => ({
             if (Array.isArray(opts.allowlist) && !opts.allowlist.includes(importedId)) {
               throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" was not present in allowlist`)
             } else if (Array.isArray(opts.whitelist) && !opts.whitelist.includes(importedId)) {
-              console.error('[DEPRECATION WARNING] This option is will be deprecated soon. Use allowlist instead')
+              console.warn('[DEPRECATION WARNING] This option is will be deprecated soon. Use allowlist instead')
               throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" was not whitelisted`)
             }
 
             if (Array.isArray(opts.blocklist) && opts.blocklist.includes(importedId)) {
               throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" was not present in blocklist`)
             } else if (Array.isArray(opts.blacklist) && opts.blacklist.includes(importedId)) {
-              console.error('[DEPRECATION WARNING] This option is will be deprecated soon. Use blocklist instead')
+              console.warn('[DEPRECATION WARNING] This option is will be deprecated soon. Use blocklist instead')
               throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" was blacklisted`)
             }
 

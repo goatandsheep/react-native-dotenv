@@ -1,0 +1,8 @@
+{
+  "plugins": [
+    ["../../../", {
+      "path": "__tests__/__fixtures__/default/.env",
+      "verbose": true
+    }]
+  ]
+}
