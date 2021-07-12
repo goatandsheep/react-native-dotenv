@@ -14,8 +14,13 @@
   "keywords": [
     "dotenv",
     "babel-plugin",
+    "babel",
+    "dotenv-flow",
     "react",
-    "react-native"
+    "react-native",
+    "config",
+    "env",
+    "12factor"
   ],
   "dependencies": {
     "dotenv": "^10.0.0"

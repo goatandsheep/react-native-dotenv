@@ -31,10 +31,15 @@ module.exports = ({types: t}) => ({
       blocklist: null,
       safe: false,
       allowUndefined: true,
+      verbose: false,
       ...this.opts
     }
 
-    const babelMode = process.env.APP_ENV || (process.env.BABEL_ENV && process.env.BABEL_ENV !== 'undefined' && process.env.BABEL_ENV) || process.env.NODE_ENV || 'development'
+    const babelMode = process.env.APP_ENV || (process.env.BABEL_ENV && process.env.BABEL_ENV !== 'undefined' && process.env.BABEL_ENV !== 'development' && process.env.BABEL_ENV) || process.env.NODE_ENV || 'development'
+    if (this.opts.verbose) {
+      console.log('dotenvMode', babelMode)
+    }
+
     if (this.opts.safe) {
       const parsed = parseDotenvFile(this.opts.path, this.opts.verbose)
       const localParsed = parseDotenvFile(this.opts.path + '.local')
@@ -75,14 +80,14 @@ module.exports = ({types: t}) => ({
             if (Array.isArray(opts.allowlist) && !opts.allowlist.includes(importedId)) {
               throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" was not present in allowlist`)
             } else if (Array.isArray(opts.whitelist) && !opts.whitelist.includes(importedId)) {
-              console.warn('[DEPRECATION WARNING] This option is will be deprecated soon. Use allowlist instead')
+              console.error('[DEPRECATION WARNING] This option is will be deprecated soon. Use allowlist instead')
               throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" was not whitelisted`)
             }
 
             if (Array.isArray(opts.blocklist) && opts.blocklist.includes(importedId)) {
               throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" was not present in blocklist`)
             } else if (Array.isArray(opts.blacklist) && opts.blacklist.includes(importedId)) {
-              console.warn('[DEPRECATION WARNING] This option is will be deprecated soon. Use blocklist instead')
+              console.error('[DEPRECATION WARNING] This option is will be deprecated soon. Use blocklist instead')
               throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" was blacklisted`)
             }
 
