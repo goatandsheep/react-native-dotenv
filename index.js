@@ -44,8 +44,13 @@ module.exports = ({types: t}) => ({
       const parsed = parseDotenvFile(this.opts.path, this.opts.verbose)
       const localParsed = parseDotenvFile(this.opts.path + '.local')
       const modeParsed = parseDotenvFile(this.opts.path + '.' + babelMode)
-      this.env = Object.assign(Object.assign(parsed, modeParsed), localParsed)
+      const modeLocalParsed = parseDotenvFile(this.opts.path + '.' + babelMode + '.local')
+      this.env = Object.assign(Object.assign(Object.assign(parsed, modeParsed), localParsed), modeLocalParsed)
     } else {
+      dotenv.config({
+        path: this.opts.path + '.' + babelMode + '.local',
+        silent: true
+      })
       dotenv.config({
         path: this.opts.path + '.' + babelMode,
         silent: true
