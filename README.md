@@ -42,6 +42,7 @@ If the defaults do not cut it for your project, this outlines the available opti
 {
   "plugins": [
     ["module:react-native-dotenv", {
+      "envName": "APP_ENV",
       "moduleName": "@env",
       "path": ".env",
       "blocklist": null,
@@ -150,6 +151,46 @@ console.log(UNDEFINED_VAR === undefined) // true
 
 When set to `false`, an error will be thrown. **This is no longer default behavior**.
 
+## Override `envName`
+
+One thing that we've noticed is that metro overwrites the test environment variable even if you specify a config, so we've added a way to fix this. By default, defining the `APP_ENV` variable can be used to set your preferred environment, separate from `NODE_ENV`.
+
+```json
+// package.json
+{
+  "scripts": {
+    "start:staging": "APP_ENV=staging npx react-native start",
+  }
+}
+```
+The above example would use the `.env.staging` file. The standard word is `test`, but go nuts.
+
+To use your own defined name as the environment override, you can define it using `envName`:
+
+```json
+{
+  "plugins": [
+    ["module:react-native-dotenv", {
+     "envName": "MY_ENV"
+    }]
+  ]
+}
+```
+
+Now you can define `MY_ENV`:
+
+```json
+// package.json
+{
+  "scripts": {
+    "start:staging": "MY_ENV=staging npx react-native start",
+  }
+}
+```
+
+Note: if you're using `APP_ENV` (or `envName`), you should avoid using `development` nor `production` as values, and you should avoid having a `.env.development` or `.env.production`. This is a Babel and Node thing that I have little control over unfortunately and is consistent with many other platforms that have an override option, like [Gatsby](https://www.gatsbyjs.com/docs/how-to/local-development/environment-variables/#additional-environments-staging-test-etc). If you want to use `development` and `production`, you should not use `APP_ENV` (or `envName`), but rather the built-in `NODE_ENV=development` or `NODE_ENV=production`.
+
+
 ## Multi-env
 
 This package now supports environment specific variables. This means you may now import environment variables from multiple files, i.e. `.env`, `.env.development`, `.env.production`, and `.env.test`. This is based on [dotenv-flow](https://www.npmjs.com/package/dotenv-flow).
@@ -173,22 +214,6 @@ To choose, setup your scripts with `NODE_ENV` for each environment
   }
 }
 ```
-
-## Experimental feature
-
-One thing that we've noticed is that metro overwrites the test environment variable even if you specify a config so we've added a way to fix this. Make sure to specify the config value as indicated in the wiki and make custom configs for alternative builds. However, if you still need this, such as for a staging / test environment, you can add the APP_ENV environment variable in the CLI.
-
-```json
-// package.json
-{
-  "scripts": {
-    "start:staging": "APP_ENV=staging npx react-native start",
-  }
-}
-```
-The above example would use the `.env.staging` file. The standard word is `test`, but go nuts.
-
-Note: if you're using `APP_ENV`, you should avoid using `development` nor `production` as values and you should avoid having a `.env.development` or `.env.production`. This is a Babel and Node thing that I have little control over unfortunately and is consistent with many other platforms that have an override option, like [Gatsby](https://www.gatsbyjs.com/docs/how-to/local-development/environment-variables/#additional-environments-staging-test-etc). If you want to use `development` and `production`, you should not use `APP_ENV`, but rather the built-in `NODE_ENV=development` or `NODE_ENV=production`.
 
 ## TypeScript
 
