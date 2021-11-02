@@ -110,6 +110,17 @@ module.exports = ({types: t}) => ({
 
         path.remove()
       }
+    },
+    MemberExpression(path, {opts}) {
+      if (path.get('object').matchesPattern('process.env')) {
+        const key = path.toComputedKey()
+        if (t.isStringLiteral(key)) {
+          const importedId = key.value
+          const value = (opts.env && importedId in opts.env) ? opts.env[importedId] : process.env[importedId]
+
+          path.replaceWith(t.valueToNode(value))
+        }
+      }
     }
   }
 })
