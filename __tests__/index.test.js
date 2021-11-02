@@ -141,4 +141,11 @@ describe('react-native-dotenv', () => {
     const {code} = transformFileSync(FIXTURES + 'app-env/source.js')
     expect(code).toBe('console.log("abc123456");\nconsole.log("username123456");')
   })
+
+  it('should load MY_ENV specific env file', () => {
+    process.env.MY_ENV = 'cli'
+
+    const {code} = transformFileSync(FIXTURES + 'env-name/source.js')
+    expect(code).toBe('console.log("abc123456");\nconsole.log("username123456");')
+  })
 })

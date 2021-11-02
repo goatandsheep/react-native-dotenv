@@ -23,6 +23,7 @@ module.exports = ({types: t}) => ({
 
   pre() {
     this.opts = {
+      envName: 'APP_ENV',
       moduleName: '@env',
       path: '.env',
       whitelist: null,
@@ -35,7 +36,7 @@ module.exports = ({types: t}) => ({
       ...this.opts
     }
 
-    const babelMode = process.env.APP_ENV || (process.env.BABEL_ENV && process.env.BABEL_ENV !== 'undefined' && process.env.BABEL_ENV !== 'development' && process.env.BABEL_ENV) || process.env.NODE_ENV || 'development'
+    const babelMode = process.env[this.opts.envName] || (process.env.BABEL_ENV && process.env.BABEL_ENV !== 'undefined' && process.env.BABEL_ENV !== 'development' && process.env.BABEL_ENV) || process.env.NODE_ENV || 'development'
     if (this.opts.verbose) {
       console.log('dotenvMode', babelMode)
     }
