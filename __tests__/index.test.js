@@ -78,6 +78,11 @@ describe('react-native-dotenv', () => {
     expect(code).toBe('console.log("abc123");\nconsole.log("username");')
   })
 
+  it('should allow specifying process.env', () => {
+    const {code} = transformFileSync(FIXTURES + 'process-env/source.js')
+    expect(code).toBe('console.log("abc123");\nconsole.log("username");')
+  })
+
   it('should allow specifying the package module name', () => {
     const {code} = transformFileSync(FIXTURES + 'module-name/source.js')
     expect(code).toBe('// eslint-disable-next-line import/no-unresolved\nconsole.log("abc123");\nconsole.log("username");')
@@ -139,6 +144,13 @@ describe('react-native-dotenv', () => {
     process.env.APP_ENV = 'cli'
 
     const {code} = transformFileSync(FIXTURES + 'app-env/source.js')
+    expect(code).toBe('console.log("abc123456");\nconsole.log("username123456");')
+  })
+
+  it('should load MY_ENV specific env file', () => {
+    process.env.MY_ENV = 'cli'
+
+    const {code} = transformFileSync(FIXTURES + 'env-name/source.js')
     expect(code).toBe('console.log("abc123456");\nconsole.log("username123456");')
   })
 })
