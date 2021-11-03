@@ -11,19 +11,19 @@ describe('react-native-dotenv', () => {
 
   it('should throw if the variable does not exist', () => {
     expect(
-      () => transformFileSync(FIXTURES + 'variable-not-exist/source.js')
+      () => transformFileSync(FIXTURES + 'variable-not-exist/source.js'),
     ).toThrow('"foo" is not defined in .env')
   })
 
   it('should throw if default is imported', () => {
     expect(
-      () => transformFileSync(FIXTURES + 'default-import/source.js')
+      () => transformFileSync(FIXTURES + 'default-import/source.js'),
     ).toThrow('Default import is not supported')
   })
 
   it('should throw if wildcard is imported', () => {
     expect(
-      () => transformFileSync(FIXTURES + 'wildcard-import/source.js')
+      () => transformFileSync(FIXTURES + 'wildcard-import/source.js'),
     ).toThrow('Wildcard import is not supported')
   })
 
@@ -95,25 +95,25 @@ describe('react-native-dotenv', () => {
 
   it('should throw when using non-allowlisted env variables', () => {
     expect(
-      () => transformFileSync(FIXTURES + 'allowlist/source.js')
+      () => transformFileSync(FIXTURES + 'allowlist/source.js'),
     ).toThrow('"NOT_ALLOWLISTED" was not present in allowlist')
   })
 
   it('should throw when using blocklisted env variables', () => {
     expect(
-      () => transformFileSync(FIXTURES + 'blocklist/source.js')
+      () => transformFileSync(FIXTURES + 'blocklist/source.js'),
     ).toThrow('"BLOCKLISTED" was not present in blocklist')
   })
 
   it('should throw when using non-whitelisted env variables', () => {
     expect(
-      () => transformFileSync(FIXTURES + 'whitelist/source.js')
+      () => transformFileSync(FIXTURES + 'whitelist/source.js'),
     ).toThrow('"NOT_WHITELISTED" was not whitelisted')
   })
 
   it('should throw when using blacklisted env variables', () => {
     expect(
-      () => transformFileSync(FIXTURES + 'blacklist/source.js')
+      () => transformFileSync(FIXTURES + 'blacklist/source.js'),
     ).toThrow('"BLACKLISTED" was blacklisted')
   })
 
@@ -121,7 +121,7 @@ describe('react-native-dotenv', () => {
     process.env.FROM_ENV = 'here'
 
     expect(
-      () => transformFileSync(FIXTURES + 'safe-error/source.js')
+      () => transformFileSync(FIXTURES + 'safe-error/source.js'),
     ).toThrow('"FROM_ENV" is not defined')
   })
 
