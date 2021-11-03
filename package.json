@@ -65,7 +65,8 @@
       {
         "files": "**/*",
         "rules": {
-          "unicorn/prefer-module": "off"
+          "unicorn/prefer-module": "off",
+          "node/prefer-global/process": "off"
         }
       },
       {

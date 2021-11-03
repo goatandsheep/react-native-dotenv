@@ -32,7 +32,7 @@ module.exports = ({types: t}) => ({
       safe: false,
       allowUndefined: true,
       verbose: false,
-      ...this.opts
+      ...this.opts,
     }
 
     const babelMode = process.env.APP_ENV || (process.env.BABEL_ENV && process.env.BABEL_ENV !== 'undefined' && process.env.BABEL_ENV !== 'development' && process.env.BABEL_ENV) || process.env.NODE_ENV || 'development'
@@ -49,18 +49,18 @@ module.exports = ({types: t}) => ({
     } else {
       dotenv.config({
         path: this.opts.path + '.' + babelMode + '.local',
-        silent: true
+        silent: true,
       })
       dotenv.config({
         path: this.opts.path + '.' + babelMode,
-        silent: true
+        silent: true,
       })
       dotenv.config({
         path: this.opts.path + '.local',
-        silent: true
+        silent: true,
       })
       dotenv.config({
-        path: this.opts.path
+        path: this.opts.path,
       })
       this.env = process.env
     }
@@ -109,6 +109,6 @@ module.exports = ({types: t}) => ({
 
         path.remove()
       }
-    }
-  }
+    },
+  },
 })
