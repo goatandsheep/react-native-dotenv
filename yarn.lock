@@ -4559,10 +4559,10 @@ xmlchars@^2.2.0:
   resolved "https://registry.npmjs.org/xmlchars/-/xmlchars-2.2.0.tgz"
   integrity sha512-JZnDKK8B0RCDw84FNdDAIpZK+JuJw+s7Lz8nksI7SIuU3UXJJslUthsi+uWBUYOwPFwW7W7PRLRfUKpxjtjFCw==
 
-xo@^0.46.3:
-  version "0.46.3"
-  resolved "https://registry.yarnpkg.com/xo/-/xo-0.46.3.tgz#59273da10ca9359f8af39436c1da0ef065e76779"
-  integrity sha512-olSo9EQhwbBWgAtSC8ixRMLif6T/N3Axs51hgo/VVMVRSEDSmm+lo0OmECYkTtUhUbdkHBAkNc1pC38o8Stf8g==
+xo@^0.46.4:
+  version "0.46.4"
+  resolved "https://registry.yarnpkg.com/xo/-/xo-0.46.4.tgz#45e2f50bbc6c6ba777f868d93f8b087584922a7b"
+  integrity sha512-nA7txROpMGD6tNT9rGtVeRVn9dLScND6fcZtPalY5M3DtbEDqQi9CCmhD7/RP6sKO0c9bX0Wd3BIXQsATeP3hQ==
   dependencies:
     "@eslint/eslintrc" "^1.0.3"
     "@typescript-eslint/eslint-plugin" "*"
