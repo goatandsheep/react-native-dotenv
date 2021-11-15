@@ -80,7 +80,7 @@ describe('react-native-dotenv', () => {
 
   it('should allow specifying process.env', () => {
     const {code} = transformFileSync(FIXTURES + 'process-env/source.js')
-    expect(code).toBe('console.log("abc123");\nconsole.log("username");')
+    expect(code).toBe('console.log("abc123");\nconsole.log("username");\nconsole.log("test");')
   })
 
   it('should allow specifying the package module name', () => {
