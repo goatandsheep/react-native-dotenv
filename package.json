@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@babel/core": "7.16.0",
-    "codecov": "^3.8.2",
+    "codecov": "^3.8.3",
     "jest": "27.3.1",
     "jest-junit": "^13.0.0",
     "xo": "^0.46.4"
