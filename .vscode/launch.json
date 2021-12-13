@@ -1,0 +1,10 @@
+{
+    "configurations": [
+    {
+        "command": "npm run test",
+        "name": "Run npm run test",
+        "request": "launch",
+        "type": "node-terminal"
+    }
+    ]
+}
