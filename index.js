@@ -32,7 +32,7 @@ module.exports = ({types: t}) => ({
       blocklist: null,
       safe: false,
       allowUndefined: true,
-      verbose: true,
+      verbose: false,
       ...this.opts,
     }
 
