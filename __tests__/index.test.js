@@ -80,7 +80,7 @@ describe('react-native-dotenv', () => {
 
   it('should allow specifying process.env', () => {
     const {code} = transformFileSync(FIXTURES + 'process-env/source.js')
-    expect(code).toBe('console.log("abc123");\nconsole.log("username");')
+    expect(code).toBe('console.log("abc123");\nconsole.log("username");\nconsole.log("test");')
   })
 
   it('should allow specifying the package module name', () => {
@@ -127,7 +127,7 @@ describe('react-native-dotenv', () => {
 
   it('should load environment variables from .env in safe mode', () => {
     const {code} = transformFileSync(FIXTURES + 'safe-success/source.js')
-    expect(code).toBe('console.log("1");')
+    expect(code).toBe('console.log("1");\nconsole.log("test");')
   })
 
   it('should import undefined variables', () => {
