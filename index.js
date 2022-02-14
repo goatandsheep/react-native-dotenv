@@ -42,7 +42,7 @@ module.exports = (api, options) => {
       readFileSync(options.path, 'utf8')
     } catch (error) {
       // The env file does not exist.
-      if (options.verbose) {
+      if (options.safe && options.verbose) {
         console.error('react-native-dotenv', error)
       }
     }
@@ -51,7 +51,7 @@ module.exports = (api, options) => {
       readFileSync(options.path + '.local', 'utf8')
     } catch (error) {
       // The env file does not exist.
-      if (options.verbose) {
+      if (options.safe && options.verbose) {
         console.error('react-native-dotenv', error)
       }
     }
@@ -60,7 +60,7 @@ module.exports = (api, options) => {
       readFileSync(options.path + '.' + babelMode, 'utf8')
     } catch (error) {
       // The env file does not exist.
-      if (options.verbose) {
+      if (options.safe && options.verbose) {
         console.error('react-native-dotenv', error)
       }
     }
@@ -69,7 +69,7 @@ module.exports = (api, options) => {
       readFileSync(options.path + '.' + babelMode + '.local', 'utf8')
     } catch (error) {
       // The env file does not exist.
-      if (options.verbose) {
+      if (options.safe && options.verbose) {
         console.error('react-native-dotenv', error)
       }
     }
