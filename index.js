@@ -42,8 +42,9 @@ module.exports = (api, options) => {
   if (options.verbose) {
     console.log('dotenvMode', babelMode)
   }
+
   api.cache.using(() => {
-    if(options.safe) {
+    if (options.safe) {
       const parsed = parseDotenvFile(options.path, options.verbose)
       const localParsed = parseDotenvFile(localFilePath, options.verbose)
       const modeParsed = parseDotenvFile(modeFilePath, options.verbose)
