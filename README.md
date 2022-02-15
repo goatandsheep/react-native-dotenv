@@ -291,9 +291,17 @@ or
 
 `expo r -c`
 
+and
+
+`expo start --clear`
+
 or
 
 [react-native-clean-project](https://www.npmjs.com/package/react-native-clean-project)
+
+You can also set `api.cache(false)` in your babel config
+
+metro.config.js`resetCache: true`
 
 Maybe a solution for updating package.json scripts:
 
