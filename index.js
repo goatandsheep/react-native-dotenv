@@ -20,6 +20,7 @@ function parseDotenvFile(path, verbose = false) {
 
 module.exports = (api, options) => {
   const t = api.types
+  this.env = {}
   options = {
     envName: 'APP_ENV',
     moduleName: '@env',
@@ -37,53 +38,17 @@ module.exports = (api, options) => {
   const localFilePath = options.path + '.local'
   const modeFilePath = options.path + '.' + babelMode
   const modeLocalFilePath = options.path + '.' + babelMode + '.local'
+
+  if (options.verbose) {
+    console.log('dotenvMode', babelMode)
+  }
   api.cache.using(() => {
-
-    if (options.verbose) {
-      console.log('dotenvMode', babelMode)
-    }
-    
-    let parsed = {}
-    let localParsed = {}
-    let modeParsed = {}
-    let modeLocalParsed = {}
-    try {
-      parsed = readFileSync(options.path, 'utf8')
-    } catch (error) {
-      // The env file does not exist.
-      if (options.safe && options.verbose) {
-        console.error('react-native-dotenv', error)
-      }
-    }
-
-    try {
-      localParsed = readFileSync(options.path + '.local', 'utf8')
-    } catch (error) {
-      // The env file does not exist.
-      if (options.safe && options.verbose) {
-        console.error('react-native-dotenv', error)
-      }
-    }
-
-    try {
-      modeParsed = readFileSync(options.path + '.' + babelMode, 'utf8')
-    } catch (error) {
-      // The env file does not exist.
-      if (options.safe && options.verbose) {
-        console.error('react-native-dotenv', error)
-      }
-    }
-
-    try {
-      modeLocalParsed = readFileSync(options.path + '.' + babelMode + '.local', 'utf8')
-    } catch (error) {
-      // The env file does not exist.
-      if (options.safe && options.verbose) {
-        console.error('react-native-dotenv', error)
-      }
-    }
-
     if(options.safe) {
+      const parsed = parseDotenvFile(options.path, options.verbose)
+      const localParsed = parseDotenvFile(localFilePath, options.verbose)
+      const modeParsed = parseDotenvFile(modeFilePath, options.verbose)
+      const modeLocalParsed = parseDotenvFile(modeLocalFilePath, options.verbose)
+
       this.env = Object.assign(Object.assign(Object.assign(parsed, modeParsed), localParsed), modeLocalParsed)
       this.env.NODE_ENV = process.env.NODE_ENV || babelMode
     } else {
@@ -135,21 +100,6 @@ module.exports = (api, options) => {
         this.env = Object.assign(Object.assign(Object.assign(parsed, modeParsed), localParsed), modeLocalParsed)
         this.env.NODE_ENV = process.env.NODE_ENV || babelMode
       } else {
-        dotenv.config({
-          path: modeLocalFilePath,
-          silent: true,
-        })
-        dotenv.config({
-          path: modeFilePath,
-          silent: true,
-        })
-        dotenv.config({
-          path: localFilePath,
-          silent: true,
-        })
-        dotenv.config({
-          path: this.opts.path,
-        })
         this.env = process.env
       }
     },
