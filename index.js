@@ -38,8 +38,17 @@ module.exports = (api, options) => {
   const modeFilePath = options.path + '.' + babelMode
   const modeLocalFilePath = options.path + '.' + babelMode + '.local'
   api.cache.using(() => {
+
+    if (options.verbose) {
+      console.log('dotenvMode', babelMode)
+    }
+    
+    let parsed = {}
+    let localParsed = {}
+    let modeParsed = {}
+    let modeLocalParsed = {}
     try {
-      readFileSync(options.path, 'utf8')
+      parsed = readFileSync(options.path, 'utf8')
     } catch (error) {
       // The env file does not exist.
       if (options.safe && options.verbose) {
@@ -48,7 +57,7 @@ module.exports = (api, options) => {
     }
 
     try {
-      readFileSync(options.path + '.local', 'utf8')
+      localParsed = readFileSync(options.path + '.local', 'utf8')
     } catch (error) {
       // The env file does not exist.
       if (options.safe && options.verbose) {
@@ -57,7 +66,7 @@ module.exports = (api, options) => {
     }
 
     try {
-      readFileSync(options.path + '.' + babelMode, 'utf8')
+      modeParsed = readFileSync(options.path + '.' + babelMode, 'utf8')
     } catch (error) {
       // The env file does not exist.
       if (options.safe && options.verbose) {
@@ -66,12 +75,34 @@ module.exports = (api, options) => {
     }
 
     try {
-      readFileSync(options.path + '.' + babelMode + '.local', 'utf8')
+      modeLocalParsed = readFileSync(options.path + '.' + babelMode + '.local', 'utf8')
     } catch (error) {
       // The env file does not exist.
       if (options.safe && options.verbose) {
         console.error('react-native-dotenv', error)
       }
+    }
+
+    if(options.safe) {
+      this.env = Object.assign(Object.assign(Object.assign(parsed, modeParsed), localParsed), modeLocalParsed)
+      this.env.NODE_ENV = process.env.NODE_ENV || babelMode
+    } else {
+      dotenv.config({
+        path: modeLocalFilePath,
+        silent: true,
+      })
+      dotenv.config({
+        path: modeFilePath,
+        silent: true,
+      })
+      dotenv.config({
+        path: localFilePath,
+        silent: true,
+      })
+      dotenv.config({
+        path: options.path,
+      })
+      this.env = process.env
     }
   })
   api.addExternalDependency(options.path)
@@ -94,10 +125,6 @@ module.exports = (api, options) => {
         allowUndefined: true,
         verbose: false,
         ...this.opts,
-      }
-
-      if (this.opts.verbose) {
-        console.log('dotenvMode', babelMode)
       }
 
       if (this.opts.safe) {
