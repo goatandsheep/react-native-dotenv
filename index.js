@@ -18,6 +18,14 @@ function parseDotenvFile(path, verbose = false) {
   return dotenv.parse(content)
 }
 
+function mtime(filePath) {
+  try {
+    return fs.statSync(filePath).mtimeMs
+  } catch {
+    return null
+  }
+}
+
 module.exports = (api, options) => {
   const t = api.types
   this.env = {}
@@ -43,38 +51,43 @@ module.exports = (api, options) => {
     console.log('dotenvMode', babelMode)
   }
 
-  api.cache.using(() => {
-    if (options.safe) {
-      const parsed = parseDotenvFile(options.path, options.verbose)
-      const localParsed = parseDotenvFile(localFilePath, options.verbose)
-      const modeParsed = parseDotenvFile(modeFilePath, options.verbose)
-      const modeLocalParsed = parseDotenvFile(modeLocalFilePath, options.verbose)
+  api.cache.using(() => mtime(options.path))
+  api.cache.using(() => mtime(localFilePath))
+  api.cache.using(() => mtime(modeFilePath))
+  api.cache.using(() => mtime(modeLocalFilePath))
+  
+  if (options.safe) {
+    const parsed = parseDotenvFile(options.path, options.verbose)
+    const localParsed = parseDotenvFile(localFilePath, options.verbose)
+    const modeParsed = parseDotenvFile(modeFilePath, options.verbose)
+    const modeLocalParsed = parseDotenvFile(modeLocalFilePath, options.verbose)
 
-      this.env = Object.assign(Object.assign(Object.assign(parsed, modeParsed), localParsed), modeLocalParsed)
-      this.env.NODE_ENV = process.env.NODE_ENV || babelMode
-    } else {
-      dotenv.config({
-        path: modeLocalFilePath,
-        silent: true,
-      })
-      dotenv.config({
-        path: modeFilePath,
-        silent: true,
-      })
-      dotenv.config({
-        path: localFilePath,
-        silent: true,
-      })
-      dotenv.config({
-        path: options.path,
-      })
-      this.env = process.env
-    }
-  })
+    this.env = Object.assign(Object.assign(Object.assign(parsed, modeParsed), localParsed), modeLocalParsed)
+    this.env.NODE_ENV = process.env.NODE_ENV || babelMode
+  } else {
+    dotenv.config({
+      path: modeLocalFilePath,
+      silent: true,
+    })
+    dotenv.config({
+      path: modeFilePath,
+      silent: true,
+    })
+    dotenv.config({
+      path: localFilePath,
+      silent: true,
+    })
+    dotenv.config({
+      path: options.path,
+    })
+    this.env = process.env
+  }
+
   api.addExternalDependency(options.path)
   api.addExternalDependency(localFilePath)
   api.addExternalDependency(modeFilePath)
   api.addExternalDependency(modeLocalFilePath)
+
   return ({
     name: 'dotenv-import',
 
