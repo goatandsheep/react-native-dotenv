@@ -81,7 +81,6 @@ module.exports = (api, options) => {
     const modeLocalParsed = parseDotenvFile(modeLocalFilePath, options.verbose)
 
     this.env = safeObjectAssign(Object.assign(Object.assign(Object.assign(parsed, modeParsed), localParsed), modeLocalParsed), dotenvTemporary, ['NODE_ENV', 'BABEL_ENV', options.envName])
-    this.env.NODE_ENV = process.env.NODE_ENV || babelMode
   } else {
     dotenv.config({
       path: modeLocalFilePath,
@@ -132,7 +131,6 @@ module.exports = (api, options) => {
         const modeParsed = parseDotenvFile(modeFilePath)
         const modeLocalParsed = parseDotenvFile(modeLocalFilePath)
         this.env = safeObjectAssign(Object.assign(Object.assign(Object.assign(parsed, modeParsed), localParsed), modeLocalParsed), dotenvTemporary, ['NODE_ENV', 'BABEL_ENV', options.envName])
-        this.env.NODE_ENV = process.env.NODE_ENV || babelMode
       } else {
         dotenv.config({
           path: modeLocalFilePath,
@@ -204,8 +202,9 @@ module.exports = (api, options) => {
           if (t.isStringLiteral(key)) {
             const importedId = key.value
             const value = (opts.env && importedId in opts.env) ? opts.env[importedId] : process.env[importedId]
-
-            path.replaceWith(t.valueToNode(value))
+            if (value !== undefined) {
+              path.replaceWith(t.valueToNode(value))
+            }
           }
         }
       },

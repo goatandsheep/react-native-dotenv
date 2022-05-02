@@ -90,6 +90,20 @@ describe('react-native-dotenv', () => {
     expect(code).toBe('console.log("abc123");\nconsole.log("username");\nconsole.log("test");')
   })
 
+  it('should not change undefined process.env variables', () => {
+    const {code} = transformFileSync(FIXTURES + 'process-env-undefined/source.js')
+    expect(code).toBe('console.log(process.env.UNDEFINED_VAR);')
+  })
+
+  it('should propagate process.env variables from node process', () => {
+    const customEnv = 'my-custom-env'
+    const backupNodeEnv = process.env.NODE_ENV
+    process.env.NODE_ENV = customEnv
+    const {code} = transformFileSync(FIXTURES + 'process-env-propagate/source.js')
+    expect(code).toBe(`console.log("${customEnv}");`)
+    process.env.NODE_ENV = backupNodeEnv
+  })
+
   it('should allow specifying the package module name', () => {
     const {code} = transformFileSync(FIXTURES + 'module-name/source.js')
     expect(code).toBe('// eslint-disable-next-line import/no-unresolved\nconsole.log("abc123");\nconsole.log("username");')
