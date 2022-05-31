@@ -90,6 +90,18 @@ describe('react-native-dotenv', () => {
     expect(code).toBe('console.log("abc123");\nconsole.log("username");\nconsole.log("test");')
   })
 
+  it('should allow specifying process.env with multiple variable destructuring', () => {
+    const {code} = transformFileSync(FIXTURES + 'process-env-object-pattern/source.js')
+    const output = `const {
+  API_KEY = "abc123",
+  NODE_ENV = "test",
+  DEV_USERNAME = "username"
+} = process.env;
+console.log(API_KEY, NODE_ENV, DEV_USERNAME);`
+
+    expect(code).toBe(output)
+  })
+
   it('should allow specifying the package module name', () => {
     const {code} = transformFileSync(FIXTURES + 'module-name/source.js')
     expect(code).toBe('// eslint-disable-next-line import/no-unresolved\nconsole.log("abc123");\nconsole.log("username");')

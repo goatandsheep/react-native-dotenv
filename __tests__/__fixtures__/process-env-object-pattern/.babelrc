@@ -1,0 +1,11 @@
+{
+  "plugins": [
+    ["../../../", {
+      "path": "__tests__/__fixtures__/process-env-object-pattern/.env",
+      "blacklist": null,
+      "whitelist": null,
+      "safe": false,
+      "allowUndefined": true
+    }]
+  ]
+}
