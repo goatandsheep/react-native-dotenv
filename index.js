@@ -199,20 +199,20 @@ module.exports = (api, options) => {
         }
       },
       MemberExpression(path) {
-        const hasEnv = (key) => this.env[key] !== undefined;
-        const getValue = (key) => this.env[key];
+        const hasEnv = key => this.env[key] !== undefined
+        const getValue = key => this.env[key]
 
         // Input:  process.env.VARIABLE1
         // Output: "VALUE1"
         if (path.get('object').matchesPattern('process.env')) {
-          const keyObj = path.toComputedKey();
-          if (t.isStringLiteral(keyObj)) {
-            const key = keyObj.value
+          const keyObject = path.toComputedKey()
+          if (t.isStringLiteral(keyObject)) {
+            const key = keyObject.value
             if (!hasEnv(key)) {
-              return;
+              return
             }
 
-            const value = getValue(key);
+            const value = getValue(key)
             path.replaceWith(t.valueToNode(value))
           }
         }
@@ -220,20 +220,20 @@ module.exports = (api, options) => {
         // Input:  const {VARIABLE1} = process.env
         // Output: const {VARIABLE1 = "VALUE1"} = process.env
         if (path.matchesPattern('process.env')) {
-          const {parent} = path;
+          const {parent} = path
 
-          if (parent.type === "VariableDeclarator" && parent.id.type === 'ObjectPattern') {
+          if (parent.type === 'VariableDeclarator' && parent.id.type === 'ObjectPattern') {
             for (const variable of parent.id.properties) {
-              const key = variable.key.name;
+              const key = variable.key.name
               if (!hasEnv(key)) {
-                return;
+                return
               }
 
-              const value = getValue(key);
+              const value = getValue(key)
               variable.value = t.assignmentPattern(
                 variable.value,
                 t.stringLiteral(value),
-              );
+              )
             }
           }
         }
