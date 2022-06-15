@@ -251,8 +251,8 @@ console.log(API_URL)
 - Inside that folder, create a `*.d.ts`file, say, `env.d.ts`
 - in that file, declare a module as the following format:
 ```ts
-declare module '@env' {
-  export const API_BASE: string;
+declare module 'react-native-dotenv' {
+  export const API_URL: string;
 }
 ```
 Add all of your .env variables inside this module.
