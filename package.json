@@ -26,7 +26,7 @@
     "dotenv": "^16.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.17.7",
+    "@babel/core": "7.18.9",
     "codecov": "^3.8.3",
     "jest": "27.5.1",
     "jest-junit": "^13.0.0",
