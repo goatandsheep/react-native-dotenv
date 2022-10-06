@@ -217,47 +217,22 @@ To choose, setup your scripts with `NODE_ENV` for each environment
 
 ## TypeScript
 
-### Option 1: easy mode
-
-Install the @types package [![npm version](https://badgen.net/npm/v/@types/react-native-dotenv)](https://www.npmjs.com/package/@types/react-native-dotenv)
-
-```shell
-npm install @types/react-native-dotenv
-```
-
-Set the `moduleName` in your Babel config as `react-native-dotenv`.
-
-```json
-{
-  "plugins": [
-    ["module:react-native-dotenv", {
-      "moduleName": "react-native-dotenv"
-    }]
-  ]
-}
-```
-
-Import your variables from `react-native-dotenv`:
-
-```js
-import {API_URL} from 'react-native-dotenv'
-
-console.log(API_URL)
-```
-
-### Option 2: specify types manually
+For the library to work with TypeScript, you must manually specify the types for the module.
 
 - Create a `types` folder in your project
 - Inside that folder, create a `*.d.ts`file, say, `env.d.ts`
 - in that file, declare a module as the following format:
+
 ```ts
 declare module '@env' {
   export const API_BASE: string;
 }
 ```
+
 Add all of your .env variables inside this module.
 
 - Finally, add this folder into the `typeRoots` field in your `tsconfig.json` file:
+
 ```json
 {
 ...
