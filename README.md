@@ -7,11 +7,12 @@
 [![codecov](https://badgen.net/codecov/c/github/goatandsheep/react-native-dotenv)](https://codecov.io/gh/goatandsheep/react-native-dotenv)
 [![XO code style](https://badgen.net/badge/code%20style/XO/cyan)](https://github.com/xojs/xo) [![Join the chat at https://gitter.im/pass-it-on/react-native-dotenv](https://badges.gitter.im/pass-it-on/react-native-dotenv.svg)](https://gitter.im/pass-it-on/react-native-dotenv?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![npm downloads](https://img.shields.io/npm/dt/react-native-dotenv.svg?style=flat-square)](https://www.npmjs.com/package/react-native-dotenv)
+[![works with dotenv-vault](https://camo.githubusercontent.com/f4f6e29efeee2705d4155a0b07373147ac266580fef1172ddd2e72a2d9445c55/68747470733a2f2f62616467652e646f74656e762e6f72672f776f726b732d776974682e7376673f723d33)](https://www.dotenv.org/get-started?r=7)
 
 ## Installation
 
 ```sh
-$ npm install react-native-dotenv
+$ npm install -D react-native-dotenv
 ```
 
 **Breaking changes**: moving from `v0.x` to `v2.x` changes both the setup and usage of this package. Please see the [migration guide](https://github.com/goatandsheep/react-native-dotenv/wiki/Migration-Guide).
@@ -264,11 +265,19 @@ or
 
 or
 
+`yarn start --clear`
+
+or
+
 `expo r -c`
 
 and
 
 `expo start --clear`
+
+or
+
+`rm -rf .expo/web/cache`
 
 or
 
