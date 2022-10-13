@@ -80,7 +80,7 @@ module.exports = (api, options) => {
     const modeParsed = parseDotenvFile(modeFilePath, options.verbose)
     const modeLocalParsed = parseDotenvFile(modeLocalFilePath, options.verbose)
 
-    this.env = safeObjectAssign(Object.assign(Object.assign(Object.assign(parsed, modeParsed), localParsed), modeLocalParsed), dotenvTemporary, ['NODE_ENV', 'BABEL_ENV', options.envName])
+    this.env = safeObjectAssign(Object.assign(Object.assign(Object.assign(modeLocalParsed, modeParsed), localParsed), parsed), dotenvTemporary, ['NODE_ENV', 'BABEL_ENV', options.envName])
   } else {
     dotenv.config({
       path: modeLocalFilePath,
@@ -132,6 +132,7 @@ module.exports = (api, options) => {
         const modeLocalParsed = parseDotenvFile(modeLocalFilePath)
         this.env = safeObjectAssign(Object.assign(Object.assign(Object.assign(parsed, modeParsed), localParsed), modeLocalParsed), dotenvTemporary, ['NODE_ENV', 'BABEL_ENV', options.envName])
       } else {
+        // The order should be inversed as once defined it won't look elsewhere
         dotenv.config({
           path: modeLocalFilePath,
           silent: true,
