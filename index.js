@@ -111,7 +111,6 @@ module.exports = (api, options) => {
       path: options.path,
     })
     env = process.env
-    env = undefObjectAssign(env, dotenvTemporary)
   }
 
   api.addExternalDependency(path.resolve(options.path))
