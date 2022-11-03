@@ -29,7 +29,7 @@
     "@babel/core": "7.17.7",
     "codecov": "^3.8.3",
     "jest": "27.5.1",
-    "jest-junit": "^13.0.0",
+    "jest-junit": "^14.0.1",
     "xo": "^0.48.0"
   },
   "author": "Kemal Ahmed",
