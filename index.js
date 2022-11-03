@@ -1,6 +1,6 @@
 const {readFileSync, statSync} = require('fs')
-const dotenv = require('dotenv')
 const path = require('path')
+const dotenv = require('dotenv')
 
 function parseDotenvFile(path, verbose = false) {
   let content
@@ -170,7 +170,6 @@ module.exports = (api, options) => {
           const key = path.toComputedKey()
           if (t.isStringLiteral(key)) {
             const importedId = key.value
-            // const value = (options.env && importedId in options.env) ? options.env[importedId] : process.env[importedId]
             const value = (env && importedId in env) ? env[importedId] : process.env[importedId]
             if (value !== undefined) {
               path.replaceWith(t.valueToNode(value))
