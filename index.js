@@ -1,4 +1,5 @@
 const {readFileSync, statSync} = require('fs')
+const path = require('path')
 const dotenv = require('dotenv')
 
 function parseDotenvFile(path, verbose = false) {
@@ -16,6 +17,17 @@ function parseDotenvFile(path, verbose = false) {
   }
 
   return dotenv.parse(content)
+}
+
+function undefObjectAssign(targetObject, sourceObject) {
+  const keys = Object.keys(sourceObject)
+  for (let i = 0, length = keys.length; i < length; i++) {
+    if (sourceObject[keys[i]]) {
+      targetObject[keys[i]] = sourceObject[keys[i]]
+    }
+  }
+
+  return targetObject
 }
 
 function safeObjectAssign(targetObject, sourceObject, exceptions = []) {
@@ -45,7 +57,7 @@ function mtime(filePath) {
 
 module.exports = (api, options) => {
   const t = api.types
-  this.env = {}
+  let env = {}
   options = {
     envName: 'APP_ENV',
     moduleName: '@env',
@@ -73,15 +85,16 @@ module.exports = (api, options) => {
   api.cache.using(() => mtime(modeFilePath))
   api.cache.using(() => mtime(modeLocalFilePath))
 
-  const dotenvTemporary = Object.assign({}, process.env)
+  const dotenvTemporary = undefObjectAssign({}, process.env)
   if (options.safe) {
     const parsed = parseDotenvFile(options.path, options.verbose)
     const localParsed = parseDotenvFile(localFilePath, options.verbose)
     const modeParsed = parseDotenvFile(modeFilePath, options.verbose)
     const modeLocalParsed = parseDotenvFile(modeLocalFilePath, options.verbose)
 
-    this.env = safeObjectAssign(Object.assign(Object.assign(Object.assign(modeLocalParsed, modeParsed), localParsed), parsed), dotenvTemporary, ['NODE_ENV', 'BABEL_ENV', options.envName])
+    env = safeObjectAssign(undefObjectAssign(undefObjectAssign(undefObjectAssign(parsed, modeParsed), localParsed), modeLocalParsed), dotenvTemporary, ['NODE_ENV', 'BABEL_ENV', options.envName])
   } else {
+    // The order should be inversed as once defined it won't look elsewhere
     dotenv.config({
       path: modeLocalFilePath,
       silent: true,
@@ -97,65 +110,19 @@ module.exports = (api, options) => {
     dotenv.config({
       path: options.path,
     })
-    this.env = process.env
-    this.env = Object.assign(this.env, dotenvTemporary)
+    env = process.env
   }
 
-  api.addExternalDependency(options.path)
-  api.addExternalDependency(localFilePath)
-  api.addExternalDependency(modeFilePath)
-  api.addExternalDependency(modeLocalFilePath)
+  api.addExternalDependency(path.resolve(options.path))
+  api.addExternalDependency(path.resolve(localFilePath))
+  api.addExternalDependency(path.resolve(modeFilePath))
+  api.addExternalDependency(path.resolve(modeLocalFilePath))
 
   return ({
     name: 'dotenv-import',
-
-    pre() {
-      this.opts = {
-        envName: 'APP_ENV',
-        moduleName: '@env',
-        path: '.env',
-        whitelist: null,
-        blacklist: null,
-        allowlist: null,
-        blocklist: null,
-        safe: false,
-        allowUndefined: true,
-        verbose: false,
-        ...this.opts,
-      }
-
-      const dotenvTemporary = Object.assign({}, process.env)
-      if (this.opts.safe) {
-        const parsed = parseDotenvFile(this.opts.path, this.opts.verbose)
-        const localParsed = parseDotenvFile(localFilePath)
-        const modeParsed = parseDotenvFile(modeFilePath)
-        const modeLocalParsed = parseDotenvFile(modeLocalFilePath)
-        this.env = safeObjectAssign(Object.assign(Object.assign(Object.assign(parsed, modeParsed), localParsed), modeLocalParsed), dotenvTemporary, ['NODE_ENV', 'BABEL_ENV', options.envName])
-      } else {
-        // The order should be inversed as once defined it won't look elsewhere
-        dotenv.config({
-          path: modeLocalFilePath,
-          silent: true,
-        })
-        dotenv.config({
-          path: modeFilePath,
-          silent: true,
-        })
-        dotenv.config({
-          path: localFilePath,
-          silent: true,
-        })
-        dotenv.config({
-          path: options.path,
-        })
-        this.env = process.env
-        this.env = Object.assign(this.env, dotenvTemporary)
-      }
-    },
-
     visitor: {
-      ImportDeclaration(path, {opts}) {
-        if (path.node.source.value === opts.moduleName) {
+      ImportDeclaration(path) {
+        if (path.node.source.value === options.moduleName) {
           for (const [idx, specifier] of path.node.specifiers.entries()) {
             if (specifier.type === 'ImportDefaultSpecifier') {
               throw path.get('specifiers')[idx].buildCodeFrameError('Default import is not supported')
@@ -169,27 +136,27 @@ module.exports = (api, options) => {
               const importedId = specifier.imported.name
               const localId = specifier.local.name
 
-              if (Array.isArray(opts.allowlist) && !opts.allowlist.includes(importedId)) {
+              if (Array.isArray(options.allowlist) && !options.allowlist.includes(importedId)) {
                 throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" was not present in allowlist`)
-              } else if (Array.isArray(opts.whitelist) && !opts.whitelist.includes(importedId)) {
+              } else if (Array.isArray(options.whitelist) && !options.whitelist.includes(importedId)) {
                 console.warn('[DEPRECATION WARNING] This option is will be deprecated soon. Use allowlist instead')
                 throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" was not whitelisted`)
               }
 
-              if (Array.isArray(opts.blocklist) && opts.blocklist.includes(importedId)) {
+              if (Array.isArray(options.blocklist) && options.blocklist.includes(importedId)) {
                 throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" was not present in blocklist`)
-              } else if (Array.isArray(opts.blacklist) && opts.blacklist.includes(importedId)) {
+              } else if (Array.isArray(options.blacklist) && options.blacklist.includes(importedId)) {
                 console.warn('[DEPRECATION WARNING] This option is will be deprecated soon. Use blocklist instead')
                 throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" was blacklisted`)
               }
 
-              if (!opts.allowUndefined && !Object.prototype.hasOwnProperty.call(this.env, importedId)) {
-                throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" is not defined in ${opts.path}`)
+              if (!options.allowUndefined && !Object.prototype.hasOwnProperty.call(env, importedId)) {
+                throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" is not defined in ${options.path}`)
               }
 
               const binding = path.scope.getBinding(localId)
               for (const refPath of binding.referencePaths) {
-                refPath.replaceWith(t.valueToNode(this.env[importedId]))
+                refPath.replaceWith(t.valueToNode(env[importedId]))
               }
             }
           }
@@ -197,12 +164,12 @@ module.exports = (api, options) => {
           path.remove()
         }
       },
-      MemberExpression(path, {opts}) {
+      MemberExpression(path) {
         if (path.get('object').matchesPattern('process.env')) {
           const key = path.toComputedKey()
           if (t.isStringLiteral(key)) {
             const importedId = key.value
-            const value = (opts.env && importedId in opts.env) ? opts.env[importedId] : process.env[importedId]
+            const value = (env && importedId in env) ? env[importedId] : process.env[importedId]
             if (value !== undefined) {
               path.replaceWith(t.valueToNode(value))
             }
