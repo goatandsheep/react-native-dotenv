@@ -54,10 +54,10 @@ describe('react-native-dotenv', () => {
   })
 
   it('should prioritize environment variables over variables defined in .env even when safe', () => {
-    process.env.API_KEY = 'i win'
+    process.env.API_KEY = 'i win again'
 
     const {code} = transformFileSync(FIXTURES + 'default-safe/source.js')
-    expect(code).toBe('console.log("i win");\nconsole.log("username");')
+    expect(code).toBe('console.log("i win again");\nconsole.log("username");')
   })
 
   it('should load custom env file', () => {
