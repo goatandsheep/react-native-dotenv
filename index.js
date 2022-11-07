@@ -86,31 +86,14 @@ module.exports = (api, options) => {
   api.cache.using(() => mtime(modeLocalFilePath))
 
   const dotenvTemporary = undefObjectAssign({}, process.env)
+  const parsed = parseDotenvFile(options.path, options.verbose)
+  const localParsed = parseDotenvFile(localFilePath, options.verbose)
+  const modeParsed = parseDotenvFile(modeFilePath, options.verbose)
+  const modeLocalParsed = parseDotenvFile(modeLocalFilePath, options.verbose)
   if (options.safe) {
-    const parsed = parseDotenvFile(options.path, options.verbose)
-    const localParsed = parseDotenvFile(localFilePath, options.verbose)
-    const modeParsed = parseDotenvFile(modeFilePath, options.verbose)
-    const modeLocalParsed = parseDotenvFile(modeLocalFilePath, options.verbose)
-
     env = safeObjectAssign(undefObjectAssign(undefObjectAssign(undefObjectAssign(parsed, modeParsed), localParsed), modeLocalParsed), dotenvTemporary, ['NODE_ENV', 'BABEL_ENV', options.envName])
   } else {
-    // The order should be inversed as once defined it won't look elsewhere
-    dotenv.config({
-      path: modeLocalFilePath,
-      silent: true,
-    })
-    dotenv.config({
-      path: modeFilePath,
-      silent: true,
-    })
-    dotenv.config({
-      path: localFilePath,
-      silent: true,
-    })
-    dotenv.config({
-      path: options.path,
-    })
-    env = process.env
+    env = undefObjectAssign(undefObjectAssign(undefObjectAssign(undefObjectAssign(parsed, modeParsed), localParsed), modeLocalParsed), dotenvTemporary)
   }
 
   api.addExternalDependency(path.resolve(options.path))

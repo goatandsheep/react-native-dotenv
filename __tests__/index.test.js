@@ -3,6 +3,9 @@ const {transformFileSync} = require('@babel/core')
 const FIXTURES = '__tests__/__fixtures__/'
 
 describe('react-native-dotenv', () => {
+  if (process.env.NODE_ENV === undefined) {
+    process.env.NODE_ENV = test
+  }
   const OLD_ENV = process.env
   afterEach(() => {
     jest.resetModules()
@@ -47,7 +50,7 @@ describe('react-native-dotenv', () => {
   })
 
   /*
-    // Temporarily removing this test because modifying process.env is not working inline for unsafe mode
+    // removed because babel caches process.env if multiple tests using the same fixtures
     it('should prioritize environment variables over variables defined in .env', () => {
       process.env.API_KEY = 'i win'
       const {code} = transformFileSync(FIXTURES + 'default/source.js')
