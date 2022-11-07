@@ -6,6 +6,7 @@ describe('react-native-dotenv', () => {
   if (process.env.NODE_ENV === undefined) {
     process.env.NODE_ENV = test
   }
+
   const OLD_ENV = process.env
   afterEach(() => {
     jest.resetModules()
