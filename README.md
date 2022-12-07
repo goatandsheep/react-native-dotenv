@@ -79,7 +79,7 @@ fetch(`${API_URL}/users`, {
 })
 ```
 
-Also preview [the upcoming test app](https://github.com/goatandsheep/chatkitty-example-react-native/).
+Also preview [the expo test app](https://github.com/goatandsheep/react-native-dotenv-expo-test).
 
 ## [DEPRECATED] White and black lists
 
@@ -244,14 +244,31 @@ Add all of your .env variables inside this module.
 
 ## Reference Material
 
+If you are not familiar with how dotenv or Babel work, make sure to read the following reference materials:
+
 * [babel environments](https://babeljs.io/docs/en/6.26.3/babelrc#env-option)
 * [dotenv documentation](https://www.npmjs.com/package/dotenv)
 * [See the wiki for more troubleshooting tips](https://github.com/goatandsheep/react-native-dotenv/wiki/Multi-env-troubleshooting)
 
-## Caveats
+### How this works
+
+This Babel plugin processes your `.env` files and your environment variables and replaces the references to the environment variables in your code before it runs. This is because the environment variables will no longer be accessible once the React Native engine generates the app outputs.
+
+## Cacheing
 
 When using with [`babel-loader`](https://github.com/babel/babel-loader) with caching enabled you will run into issues where environment changes won’t be picked up.
-This is due to the fact that `babel-loader` computes a `cacheIdentifier` that does not take your environment into account.
+This is due to the fact that `babel-loader` computes a `cacheIdentifier` that does not take your `.env` file(s) into account. The good news is that a recent update has fixed this problem as long as you're using a new version of Babel. Many react native libraries have not updated their Babel version yet so to force the version, add in your `package.json`:
+
+```json
+"resolutions": {
+  "@babel/core": "^7.20.2",
+  "babel-loader": "^8.3.0"
+}
+```
+
+If this does not work, you should set `api.cache(false)` in your babel config
+
+metro.config.js`resetCache: true`
 
 You can easily clear the cache:
 
@@ -282,10 +299,6 @@ or
 or
 
 [react-native-clean-project](https://www.npmjs.com/package/react-native-clean-project)
-
-You can also set `api.cache(false)` in your babel config
-
-metro.config.js`resetCache: true`
 
 Maybe a solution for updating package.json scripts:
 
