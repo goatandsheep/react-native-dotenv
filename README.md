@@ -21,7 +21,7 @@ Many have been asking about the reasons behind recent changes in this repo. Plea
 
 ## Introduction
 
-This babel plugin lets you inject your environment variables into your react-native environment using dotenv for multiple environments.
+This babel plugin lets you inject your environment variables into your Javascript environment using dotenv for multiple environments. It is best suited for use with react native and works with all flavors including web. 
 
 ## Usage
 
