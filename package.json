@@ -74,7 +74,8 @@
           "unicorn/prefer-module": "off",
           "unicorn/prefer-node-protocol": "off",
           "node/prefer-global/process": "off",
-          "n/prefer-global/process": "off"
+          "n/prefer-global/process": "off",
+          "prefer-destructuring": "off"
         }
       },
       {
