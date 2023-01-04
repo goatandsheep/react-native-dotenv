@@ -90,8 +90,8 @@ module.exports = (api, options) => {
   const localParsed = parseDotenvFile(localFilePath, options.verbose)
   const modeParsed = parseDotenvFile(modeFilePath, options.verbose)
   const modeLocalParsed = parseDotenvFile(modeLocalFilePath, options.verbose)
-  env = (options.safe) ? safeObjectAssign(undefObjectAssign(undefObjectAssign(undefObjectAssign(parsed, modeParsed), localParsed), modeLocalParsed), dotenvTemporary, ['NODE_ENV', 'BABEL_ENV', options.envName])
-    : undefObjectAssign(undefObjectAssign(undefObjectAssign(undefObjectAssign(parsed, modeParsed), localParsed), modeLocalParsed), dotenvTemporary)
+  env = (options.safe) ? safeObjectAssign(undefObjectAssign(undefObjectAssign(undefObjectAssign(parsed, localParsed), modeParsed), modeLocalParsed), dotenvTemporary, ['NODE_ENV', 'BABEL_ENV', options.envName])
+    : undefObjectAssign(undefObjectAssign(undefObjectAssign(undefObjectAssign(parsed, localParsed), modeParsed), modeLocalParsed), dotenvTemporary)
 
   api.addExternalDependency(path.resolve(options.path))
   api.addExternalDependency(path.resolve(localFilePath))
