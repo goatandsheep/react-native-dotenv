@@ -31,9 +31,6 @@
     "jest-junit": "^15.0.0",
     "xo": "^0.53.1"
   },
-  "engines": {
-    "node": ">=14.0.0 <15.0.0 || >=16.0.0 <17.0.0 || >=18.0.0"
-  },
   "author": "Kemal Ahmed",
   "license": "MIT",
   "jest": {
