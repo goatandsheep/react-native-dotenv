@@ -1,6 +1,6 @@
 {
   "name": "react-native-dotenv",
-  "version": "3.4.6",
+  "version": "3.4.7",
   "description": "Load environment variables using import statements.",
   "repository": "github:goatandsheep/react-native-dotenv",
   "homepage": "https://github.com/goatandsheep/react-native-dotenv",
@@ -73,8 +73,10 @@
         "files": "**/*",
         "rules": {
           "unicorn/prefer-module": "off",
+          "unicorn/prefer-node-protocol": "off",
           "node/prefer-global/process": "off",
-          "n/prefer-global/process": "off"
+          "n/prefer-global/process": "off",
+          "prefer-destructuring": "off"
         }
       },
       {
