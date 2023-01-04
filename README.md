@@ -198,6 +198,8 @@ This package now supports environment specific variables. This means you may now
 
 Note: it is not recommended that you commit any sensitive information in `.env` file to code in case your git repo is exposed. The best practice is to put a `.env.template` or `.env.development.template` that contains dummy values so other developers know what to configure. Then add your `.env` and `.env.development` to `.gitignore`. You can also keep sensitive keys in a separate `.env.local` (and respective `.env.local.template`) in `.gitignore` and you can use your other `.env` files for non-sensitive config.
 
+If you are publishing your apps on an auto-publishing platform like EAS (Expo Application Services), make sure to put your secrets on the platform dashboard directly. If you are wondering what environment the platforms choose it is likely `.env.production` (not `.env.prod`) and there is likely no way to change this.
+
 The base set of variables will be `.env` and the environment-specific variables will overwrite them.
 
 The variables will automatically be pulled from the appropriate environment and `development` is the default. The choice of environment is based on your Babel environment first and if that value is not set, your NPM environment, which should actually be the same, but this makes it more robust.
@@ -221,7 +223,7 @@ To choose, setup your scripts with `NODE_ENV` for each environment
 For the library to work with TypeScript, you must manually specify the types for the module.
 
 - Create a `types` folder in your project
-- Inside that folder, create a `*.d.ts`file, say, `env.d.ts`
+- Inside that folder, create a `*.d.tsx`file, say, `env.d.tsx`
 - in that file, declare a module as the following format:
 
 ```ts
