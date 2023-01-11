@@ -21,7 +21,7 @@ Many have been asking about the reasons behind recent changes in this repo. Plea
 
 ## Introduction
 
-This babel plugin lets you inject your environment variables into your Javascript environment using dotenv for multiple environments. It is best suited for use with react native and works with all flavors including web. 
+This babel plugin lets you inject your environment variables into your Javascript environment using dotenv for multiple environments. It is best suited for use with react native and works with all flavors including web.
 
 ## Usage
 
@@ -52,7 +52,8 @@ If the defaults do not cut it for your project, this outlines the available opti
       "whitelist": null, // DEPRECATED
       "safe": false,
       "allowUndefined": true,
-      "verbose": false
+      "verbose": false,
+      "ci": false
     }]
   ]
 }
@@ -190,6 +191,24 @@ Now you can define `MY_ENV`:
 ```
 
 Note: if you're using `APP_ENV` (or `envName`), you should avoid using `development` nor `production` as values, and you should avoid having a `.env.development` or `.env.production`. This is a Babel and Node thing that I have little control over unfortunately and is consistent with many other platforms that have an override option, like [Gatsby](https://www.gatsbyjs.com/docs/how-to/local-development/environment-variables/#additional-environments-staging-test-etc). If you want to use `development` and `production`, you should not use `APP_ENV` (or `envName`), but rather the built-in `NODE_ENV=development` or `NODE_ENV=production`.
+
+## Ignoring CI environment variables
+
+In some cases you may have issues where your environment specific variables are ignored by your continuous integration platform.
+
+You can disable this now
+
+```json
+{
+  "plugins": [
+    ["module:react-native-dotenv", {
+      "ci": true
+    }]
+  ]
+}
+```
+
+This will then only allow the environment specific variables you define and ignore anything that might have been injected into the environment from the CI.
 
 
 ## Multi-env
