@@ -1,0 +1,11 @@
+{
+  "plugins": [
+    [
+      "../../../",
+      {
+        "path": "__tests__/__fixtures__/ignore-process-env/.env",
+        "ignoreProcessEnv": true
+      }
+    ]
+  ]
+}
