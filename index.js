@@ -59,9 +59,9 @@ module.exports = (api, options) => {
   const t = api.types
   let env = {}
   options = {
-    envName: "APP_ENV",
-    moduleName: "@env",
-    path: ".env",
+    envName: 'APP_ENV',
+    moduleName: '@env',
+    path: '.env',
     whitelist: null,
     blacklist: null,
     allowlist: null,
@@ -71,7 +71,7 @@ module.exports = (api, options) => {
     verbose: false,
     ignoreProcessEnv: false,
     ...options,
-  };
+  }
   const babelMode = process.env[options.envName] || (process.env.BABEL_ENV && process.env.BABEL_ENV !== 'undefined' && process.env.BABEL_ENV !== 'development' && process.env.BABEL_ENV) || process.env.NODE_ENV || 'development'
   const localFilePath = options.path + '.local'
   const modeFilePath = options.path + '.' + babelMode
@@ -88,7 +88,7 @@ module.exports = (api, options) => {
 
   const dotenvTemporary = options.ignoreProcessEnv
     ? {}
-    : undefObjectAssign({}, process.env);
+    : undefObjectAssign({}, process.env)
   const parsed = parseDotenvFile(options.path, options.verbose)
   const localParsed = parseDotenvFile(localFilePath, options.verbose)
   const modeParsed = parseDotenvFile(modeFilePath, options.verbose)
@@ -140,10 +140,10 @@ module.exports = (api, options) => {
               const binding = path.scope.getBinding(localId)
               for (const refPath of binding.referencePaths) {
                 try {
-                  refPath.replaceWith(t.valueToNode(env[importedId]));
-                } catch (e) {
-                  refPath.scope.crawl();
-                  refPath.replaceWith(t.valueToNode(env[importedId]));
+                  refPath.replaceWith(t.valueToNode(env[importedId]))
+                } catch {
+                  refPath.scope.crawl()
+                  refPath.replaceWith(t.valueToNode(env[importedId]))
                 }
               }
             }
