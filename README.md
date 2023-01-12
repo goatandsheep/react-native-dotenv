@@ -202,7 +202,7 @@ You can disable this now
 {
   "plugins": [
     ["module:react-native-dotenv", {
-      "ci": true
+      "ignoreProcessEnv": true
     }]
   ]
 }

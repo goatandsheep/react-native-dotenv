@@ -69,7 +69,7 @@ module.exports = (api, options) => {
     safe: false,
     allowUndefined: true,
     verbose: false,
-    ci: false,
+    ignoreProcessEnv: false,
     ...options,
   };
   const babelMode = process.env[options.envName] || (process.env.BABEL_ENV && process.env.BABEL_ENV !== 'undefined' && process.env.BABEL_ENV !== 'development' && process.env.BABEL_ENV) || process.env.NODE_ENV || 'development'
@@ -86,7 +86,9 @@ module.exports = (api, options) => {
   api.cache.using(() => mtime(modeFilePath))
   api.cache.using(() => mtime(modeLocalFilePath))
 
-  const dotenvTemporary = undefObjectAssign({}, options.ci ? {} : process.env);
+  const dotenvTemporary = options.ignoreProcessEnv
+    ? {}
+    : undefObjectAssign({}, process.env);
   const parsed = parseDotenvFile(options.path, options.verbose)
   const localParsed = parseDotenvFile(localFilePath, options.verbose)
   const modeParsed = parseDotenvFile(modeFilePath, options.verbose)
