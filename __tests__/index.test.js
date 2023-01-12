@@ -181,13 +181,13 @@ describe('react-native-dotenv', () => {
     expect(code).toBe('console.log("abc123456");\nconsole.log("username123456");')
   })
 
-  it("should ignore environment variables when ignoreProcessEnv is true", () => {
-    process.env.API_KEY = "i win";
-    process.env.DEV_USERNAME = "not me";
+  it('should ignore environment variables when ignoreProcessEnv is true', () => {
+    process.env.API_KEY = 'i win'
+    process.env.DEV_USERNAME = 'not me'
 
-    const { code } = transformFileSync(
-      FIXTURES + "ignore-process-env/source.js"
-    );
-    expect(code).toBe('console.log("abc123");\nconsole.log("username");');
-  });
+    const {code} = transformFileSync(
+      FIXTURES + 'ignore-process-env/source.js',
+    )
+    expect(code).toBe('console.log("abc123");\nconsole.log("username");')
+  })
 })
