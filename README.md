@@ -15,6 +15,12 @@
 $ npm install -D react-native-dotenv
 ```
 
+If you are using Yarn:
+
+```sh
+$ yarn add -D react-native-dotenv
+```
+
 **Breaking changes**: moving from `v0.x` to `v2.x` changes both the setup and usage of this package. Please see the [migration guide](https://github.com/goatandsheep/react-native-dotenv/wiki/Migration-Guide).
 
 Many have been asking about the reasons behind recent changes in this repo. Please see the [story wiki page](https://github.com/goatandsheep/react-native-dotenv/wiki/Story-of-this-repo).
