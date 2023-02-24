@@ -81,8 +81,8 @@ module.exports = (api, options) => {
   }
 
   api.cache.using(() => mtime(options.path))
-  api.cache.using(() => mtime(localFilePath))
   api.cache.using(() => mtime(modeFilePath))
+  api.cache.using(() => mtime(localFilePath))
   api.cache.using(() => mtime(modeLocalFilePath))
 
   const dotenvTemporary = undefObjectAssign({}, process.env)
@@ -90,12 +90,12 @@ module.exports = (api, options) => {
   const localParsed = parseDotenvFile(localFilePath, options.verbose)
   const modeParsed = parseDotenvFile(modeFilePath, options.verbose)
   const modeLocalParsed = parseDotenvFile(modeLocalFilePath, options.verbose)
-  env = (options.safe) ? safeObjectAssign(undefObjectAssign(undefObjectAssign(undefObjectAssign(parsed, localParsed), modeParsed), modeLocalParsed), dotenvTemporary, ['NODE_ENV', 'BABEL_ENV', options.envName])
-    : undefObjectAssign(undefObjectAssign(undefObjectAssign(undefObjectAssign(parsed, localParsed), modeParsed), modeLocalParsed), dotenvTemporary)
+  env = (options.safe) ? safeObjectAssign(undefObjectAssign(undefObjectAssign(undefObjectAssign(parsed, modeParsed), localParsed), modeLocalParsed), dotenvTemporary, ['NODE_ENV', 'BABEL_ENV', options.envName])
+    : undefObjectAssign(undefObjectAssign(undefObjectAssign(undefObjectAssign(parsed, modeParsed), localParsed), modeLocalParsed), dotenvTemporary)
 
   api.addExternalDependency(path.resolve(options.path))
-  api.addExternalDependency(path.resolve(localFilePath))
   api.addExternalDependency(path.resolve(modeFilePath))
+  api.addExternalDependency(path.resolve(localFilePath))
   api.addExternalDependency(path.resolve(modeLocalFilePath))
 
   return ({
