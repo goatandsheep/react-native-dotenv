@@ -1,4 +1,4 @@
-const {readFileSync, statSync} = require('fs')
+const fs = require('fs')
 const path = require('path')
 const dotenv = require('dotenv')
 
@@ -6,7 +6,7 @@ function parseDotenvFile(path, verbose = false) {
   let content
 
   try {
-    content = readFileSync(path)
+    content = fs.readFileSync(path)
   } catch (error) {
     // The env file does not exist.
     if (verbose) {
@@ -49,7 +49,7 @@ function safeObjectAssign(targetObject, sourceObject, exceptions = []) {
 
 function mtime(filePath) {
   try {
-    return statSync(filePath).mtimeMs
+    return fs.statSync(filePath).mtimeMs
   } catch {
     return null
   }
