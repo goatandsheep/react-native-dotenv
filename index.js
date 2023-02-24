@@ -72,31 +72,33 @@ module.exports = (api, options) => {
     ...options,
   }
   const babelMode = process.env[options.envName] || (process.env.BABEL_ENV && process.env.BABEL_ENV !== 'undefined' && process.env.BABEL_ENV !== 'development' && process.env.BABEL_ENV) || process.env.NODE_ENV || 'development'
-  const localFilePath = options.path + '.local'
-  const modeFilePath = options.path + '.' + babelMode
-  const modeLocalFilePath = options.path + '.' + babelMode + '.local'
 
   if (options.verbose) {
     console.log('dotenvMode', babelMode)
   }
 
-  api.cache.using(() => mtime(options.path))
-  api.cache.using(() => mtime(localFilePath))
-  api.cache.using(() => mtime(modeFilePath))
-  api.cache.using(() => mtime(modeLocalFilePath))
+  const priorityWeights = {
+    '.env.test.local': 100,
+    '.env.local': 90,
+    '.env.test': 80,
+    '.env': 0,
+    '.env.production.local': 100,
+    '.env.production': 80,
+    '.env.development.local': 100,
+    '.env.development': 80
+}
+
+  const envFiles = readdirSync('.').filter(file => file.includes('.env'))
+  const highestPriority = envFiles.sort((a,b) => priorityWeights[b] - priorityWeights[a])[0]
+
+  api.cache.using(() => mtime(highestPriority))
 
   const dotenvTemporary = undefObjectAssign({}, process.env)
-  const parsed = parseDotenvFile(options.path, options.verbose)
-  const localParsed = parseDotenvFile(localFilePath, options.verbose)
-  const modeParsed = parseDotenvFile(modeFilePath, options.verbose)
-  const modeLocalParsed = parseDotenvFile(modeLocalFilePath, options.verbose)
-  env = (options.safe) ? safeObjectAssign(undefObjectAssign(undefObjectAssign(undefObjectAssign(parsed, localParsed), modeParsed), modeLocalParsed), dotenvTemporary, ['NODE_ENV', 'BABEL_ENV', options.envName])
-    : undefObjectAssign(undefObjectAssign(undefObjectAssign(undefObjectAssign(parsed, localParsed), modeParsed), modeLocalParsed), dotenvTemporary)
+  const parsed = parseDotenvFile(highestPriority, options.verbose)
+  env = (options.safe) ? safeObjectAssign((parsed), dotenvTemporary, ['NODE_ENV', 'BABEL_ENV', options.envName])
+    : undefObjectAssign((parsed), dotenvTemporary)
 
-  api.addExternalDependency(path.resolve(options.path))
-  api.addExternalDependency(path.resolve(localFilePath))
-  api.addExternalDependency(path.resolve(modeFilePath))
-  api.addExternalDependency(path.resolve(modeLocalFilePath))
+  api.addExternalDependency(path.resolve(highestPriority))
 
   return ({
     name: 'dotenv-import',
