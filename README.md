@@ -246,7 +246,6 @@ Add all of your .env variables inside this module.
 {
 ...
     "typeRoots": ["./src/types"],
-    ""
 ...
 }
 ```
