@@ -43,6 +43,17 @@ Basic setup:
 }
 ```
 
+**babel.config.js (If you're using Expo:)**
+```js
+module.exports = function (api) {
+  api.cache(true);
+  return {
+    presets: ["babel-preset-expo"],
+    plugins: ["module:react-native-dotenv"], //add this line
+  };
+};
+```
+
 If the defaults do not cut it for your project, this outlines the available options for your Babel configuration and their respective default values, but you do not need to add them if you are using the default settings.
 
 ```json
