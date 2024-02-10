@@ -38,9 +38,9 @@ function safeObjectAssign(targetObject, sourceObject, exceptions = []) {
     }
   }
 
-  for (let j = 0, length = exceptions.length; j < length; j++) {
-    if (sourceObject[exceptions[j]]) {
-      targetObject[exceptions[j]] = sourceObject[exceptions[j]]
+  for (let index = 0, length = exceptions.length; index < length; index++) {
+    if (sourceObject[exceptions[index]]) {
+      targetObject[exceptions[index]] = sourceObject[exceptions[index]]
     }
   }
 
@@ -103,13 +103,13 @@ module.exports = (api, options) => {
     visitor: {
       ImportDeclaration(path) {
         if (path.node.source.value === options.moduleName) {
-          for (const [idx, specifier] of path.node.specifiers.entries()) {
+          for (const [index, specifier] of path.node.specifiers.entries()) {
             if (specifier.type === 'ImportDefaultSpecifier') {
-              throw path.get('specifiers')[idx].buildCodeFrameError('Default import is not supported')
+              throw path.get('specifiers')[index].buildCodeFrameError('Default import is not supported')
             }
 
             if (specifier.type === 'ImportNamespaceSpecifier') {
-              throw path.get('specifiers')[idx].buildCodeFrameError('Wildcard import is not supported')
+              throw path.get('specifiers')[index].buildCodeFrameError('Wildcard import is not supported')
             }
 
             if (specifier.imported && specifier.local) {
@@ -117,26 +117,26 @@ module.exports = (api, options) => {
               const localId = specifier.local.name
 
               if (Array.isArray(options.allowlist) && !options.allowlist.includes(importedId)) {
-                throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" was not present in allowlist`)
+                throw path.get('specifiers')[index].buildCodeFrameError(`"${importedId}" was not present in allowlist`)
               } else if (Array.isArray(options.whitelist) && !options.whitelist.includes(importedId)) {
                 console.warn('[DEPRECATION WARNING] This option is will be deprecated soon. Use allowlist instead')
-                throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" was not whitelisted`)
+                throw path.get('specifiers')[index].buildCodeFrameError(`"${importedId}" was not whitelisted`)
               }
 
               if (Array.isArray(options.blocklist) && options.blocklist.includes(importedId)) {
-                throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" was not present in blocklist`)
+                throw path.get('specifiers')[index].buildCodeFrameError(`"${importedId}" was not present in blocklist`)
               } else if (Array.isArray(options.blacklist) && options.blacklist.includes(importedId)) {
                 console.warn('[DEPRECATION WARNING] This option is will be deprecated soon. Use blocklist instead')
-                throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" was blacklisted`)
+                throw path.get('specifiers')[index].buildCodeFrameError(`"${importedId}" was blacklisted`)
               }
 
-              if (!options.allowUndefined && !Object.prototype.hasOwnProperty.call(env, importedId)) {
-                throw path.get('specifiers')[idx].buildCodeFrameError(`"${importedId}" is not defined in ${options.path}`)
+              if (!options.allowUndefined && !Object.hasOwn(env, importedId)) {
+                throw path.get('specifiers')[index].buildCodeFrameError(`"${importedId}" is not defined in ${options.path}`)
               }
 
               const binding = path.scope.getBinding(localId)
-              for (const refPath of binding.referencePaths) {
-                refPath.replaceWith(t.valueToNode(env[importedId]))
+              for (const referencePath of binding.referencePaths) {
+                referencePath.replaceWith(t.valueToNode(env[importedId]))
               }
             }
           }
