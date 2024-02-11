@@ -78,8 +78,8 @@ module.exports = (api, options) => {
 
   if (options.verbose) {
     console.log('dotenvMode', babelMode)
-    if (options.envName === 'production' || options.envName === 'development') {
-      console.error('dotenv error', 'cannot use APP_ENV=development or APP_ENV=production')
+    if (process.env[options.envName] === 'production' || process.env[options.envName] === 'development') {
+      console.error('APP_ENV error', 'cannot use APP_ENV=development or APP_ENV=production')
     }
   }
 
