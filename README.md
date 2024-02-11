@@ -5,9 +5,9 @@
 [![npm version](https://badgen.net/npm/v/react-native-dotenv)](https://www.npmjs.com/package/react-native-dotenv)
 [![dependencies Status](https://img.shields.io/librariesio/release/npm/react-native-dotenv)](https://img.shields.io/librariesio/release/npm/react-native-dotenv)
 [![codecov](https://badgen.net/codecov/c/github/goatandsheep/react-native-dotenv)](https://codecov.io/gh/goatandsheep/react-native-dotenv)
-[![XO code style](https://badgen.net/badge/code%20style/XO/cyan)](https://github.com/xojs/xo) [![Join the chat at https://gitter.im/pass-it-on/react-native-dotenv](https://badges.gitter.im/pass-it-on/react-native-dotenv.svg)](https://gitter.im/pass-it-on/react-native-dotenv?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![XO code style](https://badgen.net/badge/code%20style/XO/cyan)](https://github.com/xojs/xo)
 [![npm downloads](https://img.shields.io/npm/dt/react-native-dotenv.svg?style=flat-square)](https://www.npmjs.com/package/react-native-dotenv)
-[![works with dotenv-vault](https://camo.githubusercontent.com/f4f6e29efeee2705d4155a0b07373147ac266580fef1172ddd2e72a2d9445c55/68747470733a2f2f62616467652e646f74656e762e6f72672f776f726b732d776974682e7376673f723d33)](https://www.dotenv.org/get-started?r=7)
+[![works with dotenv-vault](https://badge.dotenv.org/works-with.svg?r=1)](https://www.dotenv.org/r/github.com/dotenv-org/dotenv-vault?r=1)
 
 ## Installation
 
@@ -27,44 +27,54 @@ Many have been asking about the reasons behind recent changes in this repo. Plea
 
 ## Introduction
 
-This babel plugin lets you inject your environment variables into your Javascript environment using dotenv for multiple environments. It is best suited for use with react native and works with all flavors including web. 
+This babel plugin lets you inject your environment variables into your Javascript environment using dotenv for multiple environments. It is best suited for use with react native and works with all flavors including web.
 
 ## Usage
 
-**.babelrc**
+> Also preview [the expo test app](https://github.com/goatandsheep/react-native-dotenv-expo-test).
+
+**babel.config.js**
 
 Basic setup:
 
-```json
-{
-  "plugins": [
-    ["module:react-native-dotenv"]
+```javascript
+api.cache(false)
+module.exports = {
+  plugins: [
+    ['module:react-native-dotenv']
   ]
-}
+};
 ```
 
 If the defaults do not cut it for your project, this outlines the available options for your Babel configuration and their respective default values, but you do not need to add them if you are using the default settings.
 
-```json
-{
-  "plugins": [
-    ["module:react-native-dotenv", {
-      "envName": "APP_ENV",
-      "moduleName": "@env",
-      "path": ".env",
-      "blocklist": null,
-      "allowlist": null,
-      "blacklist": null, // DEPRECATED
-      "whitelist": null, // DEPRECATED
-      "safe": false,
-      "allowUndefined": true,
-      "verbose": false
-    }]
-  ]
-}
+```javascript
+api.cache(false)
+module.exports = {
+  plugins: [
+    [
+      'module:react-native-dotenv',
+      {
+        envName: 'APP_ENV',
+        moduleName: '@env',
+        path: '.env',
+        blocklist: null,
+        allowlist: null,
+        blacklist: null, // DEPRECATED
+        whitelist: null, // DEPRECATED
+        safe: false,
+        allowUndefined: true,
+        verbose: false,
+      },
+    ],
+  ],
+};
+
 ```
 
-Note: for safe mode, it's highly recommended to set `allowUndefined` to `false`.
+> Note: for safe mode, it's highly recommended to set `allowUndefined` to `false`.
+
+> Note: Expo now has [built-in environment variable support](https://docs.expo.dev/guides/environment-variables/). Evaluate if you need
 
 **.env**
 
@@ -72,6 +82,22 @@ Note: for safe mode, it's highly recommended to set `allowUndefined` to `false`.
 API_URL=https://api.example.org
 API_TOKEN=abc123
 ```
+
+### process.env technique
+
+In **users.js**
+
+```js
+fetch(`${process.env.API_URL}/users`, {
+  headers: {
+    'Authorization': `Bearer ${process.env.API_TOKEN}`
+  }
+})
+```
+
+### Import technique
+
+> The import technique, which is the initial functionality of the library, is to have an import statement at the top that turns into an object because of Babel
 
 In **users.js**
 
@@ -84,8 +110,6 @@ fetch(`${API_URL}/users`, {
   }
 })
 ```
-
-Also preview [the expo test app](https://github.com/goatandsheep/react-native-dotenv-expo-test).
 
 ## [DEPRECATED] White and black lists
 
@@ -195,7 +219,7 @@ Now you can define `MY_ENV`:
 }
 ```
 
-Note: if you're using `APP_ENV` (or `envName`), you should avoid using `development` nor `production` as values, and you should avoid having a `.env.development` or `.env.production`. This is a Babel and Node thing that I have little control over unfortunately and is consistent with many other platforms that have an override option, like [Gatsby](https://www.gatsbyjs.com/docs/how-to/local-development/environment-variables/#additional-environments-staging-test-etc). If you want to use `development` and `production`, you should not use `APP_ENV` (or `envName`), but rather the built-in `NODE_ENV=development` or `NODE_ENV=production`.
+Note: if you're using `APP_ENV` (or `envName`), you cannot use `development` nor `production` as values, and you should avoid having a `.env.development` or `.env.production`. This is a Babel and Node thing that I have little control over unfortunately and is consistent with many other platforms that have an override option, like [Gatsby](https://www.gatsbyjs.com/docs/how-to/local-development/environment-variables/#additional-environments-staging-test-etc). If you want to use `development` and `production`, you should not use `APP_ENV` (or `envName`), but rather the built-in `NODE_ENV=development` or `NODE_ENV=production`.
 
 
 ## Multi-env
@@ -229,7 +253,7 @@ To choose, setup your scripts with `NODE_ENV` for each environment
 For the library to work with TypeScript, you must manually specify the types for the module.
 
 - Create a `types` folder in your project
-- Inside that folder, create a `*.d.tsx`file, say, `env.d.tsx`
+- Inside that folder, create a `*.d.ts`file, say, `env.d.ts`
 - in that file, declare a module as the following format:
 
 ```ts
@@ -247,8 +271,8 @@ Add all of your .env variables inside this module.
 ...
   "compilerOptions": {
     ...
-      "typeRoots": ["./src/types"],
-    ...  
+      "typeRoots": ["./types"],
+    ...
   }
 ...
 }
@@ -290,11 +314,19 @@ rm -rf node_modules/.cache/babel-loader/*
 
 or
 
+`npm start -- --reset-cache`
+
+or
+
 `yarn start --reset-cache`
 
 or
 
 `yarn start --clear`
+
+or
+
+`jest --no-cache`
 
 or
 

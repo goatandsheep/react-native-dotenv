@@ -174,6 +174,24 @@ describe('react-native-dotenv', () => {
     expect(code).toBe('console.log("abc123456");\nconsole.log("username123456");')
   })
 
+  it('should fail to load APP_ENV development', () => {
+    console.error = jest.fn()
+    process.env.APP_ENV = 'development'
+
+    const {code} = transformFileSync(FIXTURES + 'app-env-development/source.js')
+    expect(code).toBe('console.log("never");\nconsole.log("this-should-not-appear");')
+    expect(console.error.mock.calls[0][0]).toBe('APP_ENV error')
+  })
+
+  it('should fail to load APP_ENV production', () => {
+    console.error = jest.fn()
+    process.env.APP_ENV = 'production'
+
+    const {code} = transformFileSync(FIXTURES + 'app-env-production/source.js')
+    expect(code).toBe('console.log("never");\nconsole.log("this-should-not-appear");')
+    expect(console.error.mock.calls[0][0]).toBe('APP_ENV error')
+  })
+
   it('should load MY_ENV specific env file', () => {
     process.env.MY_ENV = 'cli'
 
