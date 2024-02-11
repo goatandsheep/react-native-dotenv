@@ -7,9 +7,10 @@ assignees: goatandsheep
 
 ---
 
-- [x] Asked question in discussions
-- [x] Tried the troubleshooting Wiki
-- [x] Followed the migration Wiki
+- [ ] Asked question in discussions
+- [ ] Tried the troubleshooting Wiki
+- [ ] Followed the migration Wiki
+- [ ] Installed library as devDependency not production dependency
 
 **Describe the bug**
 A clear and concise description of what the bug is.
