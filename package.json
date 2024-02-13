@@ -23,7 +23,7 @@
     "12factor"
   ],
   "dependencies": {
-    "dotenv": "^16.4.1"
+    "dotenv": "^16.4.3"
   },
   "devDependencies": {
     "@babel/core": "^7.23.9",
