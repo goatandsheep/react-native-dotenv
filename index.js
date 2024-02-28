@@ -57,7 +57,6 @@ function mtime(filePath) {
 
 module.exports = (api, options) => {
   const t = api.types
-  let env = {}
   options = {
     envName: 'APP_ENV',
     moduleName: '@env',
@@ -93,8 +92,15 @@ module.exports = (api, options) => {
   const localParsed = parseDotenvFile(localFilePath, options.verbose)
   const modeParsed = parseDotenvFile(modeFilePath, options.verbose)
   const modeLocalParsed = parseDotenvFile(modeLocalFilePath, options.verbose)
-  env = (options.safe) ? safeObjectAssign(undefObjectAssign(undefObjectAssign(undefObjectAssign(parsed, modeParsed), localParsed), modeLocalParsed), dotenvTemporary, ['NODE_ENV', 'BABEL_ENV', options.envName])
-    : undefObjectAssign(undefObjectAssign(undefObjectAssign(undefObjectAssign(parsed, modeParsed), localParsed), modeLocalParsed), dotenvTemporary)
+
+  let env = parsed
+  env = undefObjectAssign(env, localParsed)
+  env = undefObjectAssign(env, modeParsed)
+  env = undefObjectAssign(env, modeLocalParsed)
+
+  env = options.safe ?
+    safeObjectAssign(env, dotenvTemporary, ['NODE_ENV', 'BABEL_ENV', options.envName]) :
+    undefObjectAssign(env, dotenvTemporary)
 
   api.addExternalDependency(path.resolve(options.path))
   api.addExternalDependency(path.resolve(modeFilePath))
