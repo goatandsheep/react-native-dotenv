@@ -198,4 +198,30 @@ describe('react-native-dotenv', () => {
     const {code} = transformFileSync(FIXTURES + 'env-name/source.js')
     expect(code).toBe('console.log("abc123456");\nconsole.log("username123456");')
   })
+
+  it('should follow dotenv-flow variable precedence (default)', () => {
+    const {code} = transformFileSync(FIXTURES + 'dotenv-flow/source.js')
+    expect(code).toBe('console.log("local-key");')
+  })
+
+  it('should follow dotenv-flow variable precedence (mode)', () => {
+    process.env.NODE_ENV = 'production'
+
+    const {code} = transformFileSync(FIXTURES + 'dotenv-flow-mode/source.js', {})
+    expect(code).toBe('console.log("production-key");')
+  })
+
+  it('should follow dotenv-flow variable precedence (mode local)', () => {
+    process.env.NODE_ENV = 'development'
+
+    const {code} = transformFileSync(FIXTURES + 'dotenv-flow-mode-local/source.js', {})
+    expect(code).toBe('console.log("development-local-key");')
+  })
+
+  it('should follow dotenv-flow variable precedence (explicit local)', () => {
+    process.env.NODE_ENV = 'local'
+
+    const {code} = transformFileSync(FIXTURES + 'dotenv-flow-explicit-local/source.js', {})
+    expect(code).toBe('console.log("local-key");')
+  })
 })
