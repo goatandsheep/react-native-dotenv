@@ -96,10 +96,12 @@ module.exports = (api, options) => {
   env = (options.safe) ? safeObjectAssign(undefObjectAssign(undefObjectAssign(undefObjectAssign(parsed, modeParsed), localParsed), modeLocalParsed), dotenvTemporary, ['NODE_ENV', 'BABEL_ENV', options.envName])
     : undefObjectAssign(undefObjectAssign(undefObjectAssign(undefObjectAssign(parsed, modeParsed), localParsed), modeLocalParsed), dotenvTemporary)
 
-  api.addExternalDependency(path.resolve(options.path))
-  api.addExternalDependency(path.resolve(modeFilePath))
-  api.addExternalDependency(path.resolve(localFilePath))
-  api.addExternalDependency(path.resolve(modeLocalFilePath))
+  if (typeof api.addExternalDependency === 'function') {
+    api.addExternalDependency(path.resolve(options.path))
+    api.addExternalDependency(path.resolve(modeFilePath))
+    api.addExternalDependency(path.resolve(localFilePath))
+    api.addExternalDependency(path.resolve(modeLocalFilePath))
+  }
 
   return ({
     name: 'dotenv-import',

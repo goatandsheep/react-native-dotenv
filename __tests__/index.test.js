@@ -162,6 +162,18 @@ describe('react-native-dotenv', () => {
     expect(code).toBe('console.log(undefined);')
   })
 
+  it('should support Babel API versions without addExternalDependency', () => {
+    const plugin = require('../index.js')
+    const api = {
+      types: {},
+      cache: {
+        using: jest.fn(),
+      },
+    }
+
+    expect(() => plugin(api, {path: FIXTURES + 'default/.env'})).not.toThrow()
+  })
+
   it('should not throw if .env exists in safe mode', () => {
     const {code} = transformFileSync(FIXTURES + 'safe-no-dotenv/source.js')
     expect(code).toBe('console.log(undefined);')
