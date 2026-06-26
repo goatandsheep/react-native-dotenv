@@ -86,6 +86,11 @@ describe('react-native-dotenv', () => {
     expect(code).toBe('const a = "abc123";\nconst b = "username";')
   })
 
+  it('should preserve worklet function references when importing environment variables', () => {
+    const {code} = transformFileSync(FIXTURES + 'worklet/source.js')
+    expect(code).toBe('const API_KEY = "abc123";\nfunction onUpdate() {\n  \'worklet\';\n\n  console.log(API_KEY);\n}')
+  })
+
   it('should allow specifying a custom module name', () => {
     const {code} = transformFileSync(FIXTURES + 'custom-module/source.js')
     expect(code).toBe('console.log("abc123");\nconsole.log("username");')

@@ -55,6 +55,14 @@ function mtime(filePath) {
   }
 }
 
+function isWorkletFunction(path) {
+  return path.isFunction() && path.node.body && Array.isArray(path.node.body.directives) && path.node.body.directives.some(directive => directive.value.value === 'worklet')
+}
+
+function isInsideWorkletFunction(path) {
+  return Boolean(path.findParent(parentPath => isWorkletFunction(parentPath)))
+}
+
 module.exports = (api, options) => {
   const t = api.types
   let env = {}
@@ -106,6 +114,8 @@ module.exports = (api, options) => {
     visitor: {
       ImportDeclaration(path) {
         if (path.node.source.value === options.moduleName) {
+          const declarations = []
+
           for (const [index, specifier] of path.node.specifiers.entries()) {
             if (specifier.type === 'ImportDefaultSpecifier') {
               throw path.get('specifiers')[index].buildCodeFrameError('Default import is not supported')
@@ -138,13 +148,24 @@ module.exports = (api, options) => {
               }
 
               const binding = path.scope.getBinding(localId)
-              for (const referencePath of binding.referencePaths) {
-                referencePath.replaceWith(t.valueToNode(env[importedId]))
+              const valueNode = t.valueToNode(env[importedId])
+              if (binding.referencePaths.some(referencePath => isInsideWorkletFunction(referencePath))) {
+                declarations.push(t.variableDeclaration('const', [
+                  t.variableDeclarator(t.identifier(localId), valueNode),
+                ]))
+              } else {
+                for (const referencePath of binding.referencePaths) {
+                  referencePath.replaceWith(t.cloneNode(valueNode))
+                }
               }
             }
           }
 
-          path.remove()
+          if (declarations.length > 0) {
+            path.replaceWithMultiple(declarations)
+          } else {
+            path.remove()
+          }
         }
       },
       MemberExpression(path) {
