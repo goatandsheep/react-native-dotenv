@@ -205,7 +205,7 @@ describe('react-native-dotenv', () => {
     const {code} = transformSync('console.log(process.env.JEST_WORKER_ID);', {
       configFile: false,
       babelrc: false,
-      plugins: [[require('../index.js'), { moduleName: '@env', path: '.env' }]]
+      plugins: [[require('../index.js'), {moduleName: '@env', path: '.env'}]],
     })
     expect(code).toBe('console.log(process.env.JEST_WORKER_ID);')
   })

@@ -156,6 +156,7 @@ module.exports = (api, options) => {
             if (importedId === 'JEST_WORKER_ID' && !(env && 'JEST_WORKER_ID' in env)) {
               return
             }
+
             const value = (env && importedId in env) ? env[importedId] : process.env[importedId]
             if (value !== undefined) {
               path.replaceWith(t.valueToNode(value))
