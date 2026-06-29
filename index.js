@@ -89,6 +89,7 @@ module.exports = (api, options) => {
   api.cache.using(() => mtime(modeLocalFilePath))
 
   const dotenvTemporary = undefObjectAssign({}, process.env)
+  delete dotenvTemporary.JEST_WORKER_ID
   const parsed = parseDotenvFile(options.path, options.verbose)
   const localParsed = parseDotenvFile(localFilePath, options.verbose)
   const modeParsed = parseDotenvFile(modeFilePath, options.verbose)
@@ -152,6 +153,9 @@ module.exports = (api, options) => {
           const key = path.toComputedKey()
           if (t.isStringLiteral(key)) {
             const importedId = key.value
+            if (importedId === 'JEST_WORKER_ID' && !(env && 'JEST_WORKER_ID' in env)) {
+              return
+            }
             const value = (env && importedId in env) ? env[importedId] : process.env[importedId]
             if (value !== undefined) {
               path.replaceWith(t.valueToNode(value))

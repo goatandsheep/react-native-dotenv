@@ -198,4 +198,15 @@ describe('react-native-dotenv', () => {
     const {code} = transformFileSync(FIXTURES + 'env-name/source.js')
     expect(code).toBe('console.log("abc123456");\nconsole.log("username123456");')
   })
+
+  it('should ignore JEST_WORKER_ID from process.env', () => {
+    process.env.JEST_WORKER_ID = '123'
+    const {transformSync} = require('@babel/core')
+    const {code} = transformSync('console.log(process.env.JEST_WORKER_ID);', {
+      configFile: false,
+      babelrc: false,
+      plugins: [[require('../index.js'), { moduleName: '@env', path: '.env' }]]
+    })
+    expect(code).toBe('console.log(process.env.JEST_WORKER_ID);')
+  })
 })
