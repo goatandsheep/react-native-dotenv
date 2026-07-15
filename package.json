@@ -33,7 +33,7 @@
     "codecov": "^3.8.3",
     "jest": "30.4.2",
     "jest-junit": "^17.0.0",
-    "xo": "^0.57.0"
+    "xo": "^4.0.0"
   },
   "author": "Kemal Ahmed",
   "license": "MIT",
