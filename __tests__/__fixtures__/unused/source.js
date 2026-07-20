@@ -1,3 +1,3 @@
-import {join} from 'node:path' // eslint-disable-line import/no-unresolved
+import {join} from 'node:path'
 
 console.log(join)

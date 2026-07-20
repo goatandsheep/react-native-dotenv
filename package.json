@@ -33,7 +33,7 @@
     "codecov": "^3.8.3",
     "jest": "30.4.2",
     "jest-junit": "^17.0.0",
-    "xo": "^0.57.0"
+    "xo": "^4.0.0"
   },
   "author": "Kemal Ahmed",
   "license": "MIT",
@@ -71,43 +71,72 @@
     "@babel/core": "^7.20.5",
     "@babel/runtime": "^7.20.6"
   },
-  "xo": {
-    "semicolon": false,
-    "space": 2,
-    "overrides": [
-      {
-        "files": "**/*",
-        "rules": {
-          "unicorn/prefer-module": "off",
-          "unicorn/prefer-node-protocol": "off",
-          "node/prefer-global/process": "off",
-          "n/prefer-global/process": "off",
-          "prefer-destructuring": "off"
-        }
-      },
-      {
-        "files": "__tests__/**/*.js",
-        "env": [
-          "jest"
-        ]
-      },
-      {
-        "files": "__tests__/__fixtures__/**/*.js",
-        "rules": {
-          "import/no-unresolved": [
-            "error",
-            {
-              "ignore": [
-                "@env",
-                "foo",
-                "react-native-dotenv"
-              ]
-            }
-          ],
-          "unicorn/import-style": "off",
-          "no-unused-vars": "off"
-        }
+  "xo": [
+    {
+      "ignores": [
+        "**/*.md"
+      ]
+    },
+    {
+      "semicolon": false,
+      "space": 2
+    },
+    {
+      "files": "**/*",
+      "rules": {
+        "unicorn/prefer-module": "off",
+        "unicorn/prefer-node-protocol": "off",
+        "node/prefer-global/process": "off",
+        "n/prefer-global/process": "off",
+        "prefer-destructuring": "off",
+        "unicorn/max-nested-calls": "off",
+        "unicorn/no-computed-property-existence-check": "off",
+        "unicorn/no-declarations-before-early-exit": "off",
+        "unicorn/no-anonymous-default-export": "off",
+        "unicorn/consistent-boolean-name": "off"
       }
-    ]
-  }
+    },
+    {
+      "files": "__tests__/**/*.js",
+      "languageOptions": {
+        "globals": {
+          "afterAll": false,
+          "afterEach": false,
+          "beforeAll": false,
+          "beforeEach": false,
+          "describe": false,
+          "expect": false,
+          "fdescribe": false,
+          "fit": false,
+          "it": false,
+          "jest": false,
+          "pending": false,
+          "test": false,
+          "xdescribe": false,
+          "xit": false,
+          "xtest": false
+        }
+      },
+      "rules": {
+        "unicorn/filename-case": "off"
+      }
+    },
+    {
+      "files": "__tests__/__fixtures__/**/*.js",
+      "rules": {
+        "import-x/no-unresolved": [
+          "error",
+          {
+            "ignore": [
+              "@env",
+              "foo",
+              "react-native-dotenv"
+            ]
+          }
+        ],
+        "unicorn/import-style": "off",
+        "no-unused-vars": "off"
+      }
+    }
+  ]
 }
