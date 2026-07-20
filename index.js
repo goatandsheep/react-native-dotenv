@@ -2,11 +2,11 @@ const fs = require('fs')
 const path = require('path')
 const dotenv = require('dotenv')
 
-function parseDotenvFile(path, verbose = false) {
+function parseDotenvFile(filepath, verbose = false) {
   let content
 
   try {
-    content = fs.readFileSync(path)
+    content = fs.readFileSync(filepath)
   } catch (error) {
     // The env file does not exist.
     if (verbose) {
@@ -16,14 +16,14 @@ function parseDotenvFile(path, verbose = false) {
     return {}
   }
 
-  return dotenv.parse(content)
+  return dotenv.parse(content) //
 }
 
 function undefObjectAssign(targetObject, sourceObject) {
   const keys = Object.keys(sourceObject)
-  for (let i = 0, length = keys.length; i < length; i++) {
-    if (sourceObject[keys[i]]) {
-      targetObject[keys[i]] = sourceObject[keys[i]]
+  for (const key of keys) {
+    if (sourceObject[key]) {
+      targetObject[key] = sourceObject[key]
     }
   }
 
@@ -32,15 +32,15 @@ function undefObjectAssign(targetObject, sourceObject) {
 
 function safeObjectAssign(targetObject, sourceObject, exceptions = []) {
   const keys = Object.keys(targetObject)
-  for (let i = 0, length = keys.length; i < length; i++) {
-    if (targetObject[keys[i]] && sourceObject[keys[i]]) {
-      targetObject[keys[i]] = sourceObject[keys[i]]
+  for (const key of keys) {
+    if (targetObject[key] && sourceObject[key]) {
+      targetObject[key] = sourceObject[key]
     }
   }
 
-  for (let index = 0, length = exceptions.length; index < length; index++) {
-    if (sourceObject[exceptions[index]]) {
-      targetObject[exceptions[index]] = sourceObject[exceptions[index]]
+  for (const exception of exceptions) {
+    if (sourceObject[exception]) {
+      targetObject[exception] = sourceObject[exception]
     }
   }
 
@@ -93,7 +93,8 @@ module.exports = (api, options) => {
   const localParsed = parseDotenvFile(localFilePath, options.verbose)
   const modeParsed = parseDotenvFile(modeFilePath, options.verbose)
   const modeLocalParsed = parseDotenvFile(modeLocalFilePath, options.verbose)
-  env = (options.safe) ? safeObjectAssign(undefObjectAssign(undefObjectAssign(undefObjectAssign(parsed, modeParsed), localParsed), modeLocalParsed), dotenvTemporary, ['NODE_ENV', 'BABEL_ENV', options.envName])
+  env = (options.safe)
+    ? safeObjectAssign(undefObjectAssign(undefObjectAssign(undefObjectAssign(parsed, modeParsed), localParsed), modeLocalParsed), dotenvTemporary, ['NODE_ENV', 'BABEL_ENV', options.envName])
     : undefObjectAssign(undefObjectAssign(undefObjectAssign(undefObjectAssign(parsed, modeParsed), localParsed), modeLocalParsed), dotenvTemporary)
 
   api.addExternalDependency(path.resolve(options.path))
@@ -104,58 +105,66 @@ module.exports = (api, options) => {
   return ({
     name: 'dotenv-import',
     visitor: {
-      ImportDeclaration(path) {
-        if (path.node.source.value === options.moduleName) {
-          for (const [index, specifier] of path.node.specifiers.entries()) {
-            if (specifier.type === 'ImportDefaultSpecifier') {
-              throw path.get('specifiers')[index].buildCodeFrameError('Default import is not supported')
-            }
+      ImportDeclaration(filepath) {
+        if (filepath.node.source.value !== options.moduleName) {
+          return
+        }
 
-            if (specifier.type === 'ImportNamespaceSpecifier') {
-              throw path.get('specifiers')[index].buildCodeFrameError('Wildcard import is not supported')
-            }
-
-            if (specifier.imported && specifier.local) {
-              const importedId = specifier.imported.name
-              const localId = specifier.local.name
-
-              if (Array.isArray(options.allowlist) && !options.allowlist.includes(importedId)) {
-                throw path.get('specifiers')[index].buildCodeFrameError(`"${importedId}" was not present in allowlist`)
-              } else if (Array.isArray(options.whitelist) && !options.whitelist.includes(importedId)) {
-                console.warn('[DEPRECATION WARNING] This option is will be deprecated soon. Use allowlist instead')
-                throw path.get('specifiers')[index].buildCodeFrameError(`"${importedId}" was not whitelisted`)
-              }
-
-              if (Array.isArray(options.blocklist) && options.blocklist.includes(importedId)) {
-                throw path.get('specifiers')[index].buildCodeFrameError(`"${importedId}" was not present in blocklist`)
-              } else if (Array.isArray(options.blacklist) && options.blacklist.includes(importedId)) {
-                console.warn('[DEPRECATION WARNING] This option is will be deprecated soon. Use blocklist instead')
-                throw path.get('specifiers')[index].buildCodeFrameError(`"${importedId}" was blacklisted`)
-              }
-
-              if (!options.allowUndefined && !Object.hasOwn(env, importedId)) {
-                throw path.get('specifiers')[index].buildCodeFrameError(`"${importedId}" is not defined in ${options.path}`)
-              }
-
-              const binding = path.scope.getBinding(localId)
-              for (const referencePath of binding.referencePaths) {
-                referencePath.replaceWith(t.valueToNode(env[importedId]))
-              }
-            }
+        for (const [index, specifier] of filepath.node.specifiers.entries()) {
+          if (specifier.type === 'ImportDefaultSpecifier') {
+            throw filepath.get('specifiers')[index].buildCodeFrameError('Default import is not supported')
           }
 
-          path.remove()
-        }
-      },
-      MemberExpression(path) {
-        if (path.get('object').matchesPattern('process.env')) {
-          const key = path.toComputedKey()
-          if (t.isStringLiteral(key)) {
-            const importedId = key.value
-            const value = (env && importedId in env) ? env[importedId] : process.env[importedId]
-            if (value !== undefined) {
-              path.replaceWith(t.valueToNode(value))
+          if (specifier.type === 'ImportNamespaceSpecifier') {
+            throw filepath.get('specifiers')[index].buildCodeFrameError('Wildcard import is not supported')
+          }
+
+          if (specifier.imported && specifier.local) {
+            const importedId = specifier.imported.name
+            const localId = specifier.local.name
+
+            if (Array.isArray(options.allowlist) && !options.allowlist.includes(importedId)) {
+              throw filepath.get('specifiers')[index].buildCodeFrameError(`"${importedId}" was not present in allowlist`)
             }
+
+            if (Array.isArray(options.whitelist) && !options.whitelist.includes(importedId)) {
+              console.warn('[DEPRECATION WARNING] This option is will be deprecated soon. Use allowlist instead')
+              throw filepath.get('specifiers')[index].buildCodeFrameError(`"${importedId}" was not whitelisted`)
+            }
+
+            if (Array.isArray(options.blocklist) && options.blocklist.includes(importedId)) {
+              throw filepath.get('specifiers')[index].buildCodeFrameError(`"${importedId}" was not present in blocklist`)
+            }
+
+            if (Array.isArray(options.blacklist) && options.blacklist.includes(importedId)) {
+              console.warn('[DEPRECATION WARNING] This option is will be deprecated soon. Use blocklist instead')
+              throw filepath.get('specifiers')[index].buildCodeFrameError(`"${importedId}" was blacklisted`)
+            }
+
+            if (!options.allowUndefined && !Object.hasOwn(env, importedId)) {
+              throw filepath.get('specifiers')[index].buildCodeFrameError(`"${importedId}" is not defined in ${options.path}`)
+            }
+
+            const binding = filepath.scope.getBinding(localId)
+            for (const referencePath of binding.referencePaths) {
+              referencePath.replaceWith(t.valueToNode(env[importedId]))
+            }
+          }
+        }
+
+        filepath.remove()
+      },
+      MemberExpression(filepath) {
+        if (!filepath.get('object').matchesPattern('process.env')) {
+          return
+        }
+
+        const key = filepath.toComputedKey()
+        if (t.isStringLiteral(key)) {
+          const importedId = key.value
+          const value = (env && importedId in env) ? env[importedId] : process.env[importedId]
+          if (value !== undefined) {
+            filepath.replaceWith(t.valueToNode(value))
           }
         }
       },
