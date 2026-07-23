@@ -1,6 +1,6 @@
 {
   "name": "react-native-dotenv",
-  "version": "3.4.11",
+  "version": "3.4.12",
   "description": "Load environment variables using import statements.",
   "repository": {
     "type": "git",
