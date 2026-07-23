@@ -38,36 +38,40 @@ This babel plugin lets you inject your environment variables into your Javascrip
 Basic setup:
 
 ```javascript
-api.cache(false)
-module.exports = {
-  plugins: [
-    ['module:react-native-dotenv']
-  ]
+module.exports = function (api) {
+  api.cache(false)
+  return {
+    plugins: [
+      ['module:react-native-dotenv']
+    ]
+  }
 };
 ```
 
 If the defaults do not cut it for your project, this outlines the available options for your Babel configuration and their respective default values, but you do not need to add them if you are using the default settings.
 
 ```javascript
-api.cache(false)
-module.exports = {
-  plugins: [
-    [
-      'module:react-native-dotenv',
-      {
-        envName: 'APP_ENV',
-        moduleName: '@env',
-        path: '.env',
-        blocklist: null,
-        allowlist: null,
-        blacklist: null, // DEPRECATED
-        whitelist: null, // DEPRECATED
-        safe: false,
-        allowUndefined: true,
-        verbose: false,
-      },
+module.exports = function(api){
+  api.cache(false)
+  return {
+    plugins: [
+      [
+        'module:react-native-dotenv',
+        {
+          envName: 'APP_ENV',
+          moduleName: '@env',
+          path: '.env',
+          blocklist: null,
+          allowlist: null,
+          blacklist: null, // DEPRECATED
+          whitelist: null, // DEPRECATED
+          safe: false,
+          allowUndefined: true,
+          verbose: false,
+        },
+      ],
     ],
-  ],
+  }
 };
 
 ```
@@ -219,7 +223,7 @@ Now you can define `MY_ENV`:
 }
 ```
 
-Note: if you're using `APP_ENV` (or `envName`), you cannot use `development` nor `production` as values, and you should avoid having a `.env.development` or `.env.production`. This is a Babel and Node thing that I have little control over unfortunately and is consistent with many other platforms that have an override option, like [Gatsby](https://www.gatsbyjs.com/docs/how-to/local-development/environment-variables/#additional-environments-staging-test-etc). If you want to use `development` and `production`, you should not use `APP_ENV` (or `envName`), but rather the built-in `NODE_ENV=development` or `NODE_ENV=production`.
+Note: if you're using `APP_ENV` (or `envName`), you cannot use `development` nor `production` as values, and you should avoid having a `.env.development` or `.env.production`. This is a Babel and Node thing that I have little control over unfortunately and is consistent with many other platforms that have an override option, like [Gatsby](https://www.gatsbyjs.com/docs/how-to/local-development/environment-variables/#additional-environments-staging-test-etc). If you want to use `development` and `production`, you should not use `APP_ENV` (or `envName`), but rather the built-in `NODE_ENV=development` or `NODE_ENV=production` or you can just use `debug` vs `release` modes. It actually does compile but only for the `start` command so it is up to you but then you have to run `react-native start` every time you change the values.
 
 
 ## Multi-env
@@ -278,6 +282,8 @@ Add all of your .env variables inside this module.
 }
 ```
 
+It is also advised to set `moduleName` to `react-native-dotenv`.
+
 ## Reference Material
 
 If you are not familiar with how dotenv or Babel work, make sure to read the following reference materials:
@@ -302,7 +308,9 @@ This is due to the fact that `babel-loader` computes a `cacheIdentifier` that do
 }
 ```
 
-If this does not work, you should set `api.cache(false)` in your babel config
+If this does not work, you should set `api.cache(false)` in your babel config, which resets Babel cache.
+
+If you're using android, add a clean task to your run command: `react-native run-android --tasks clean,installDebug`
 
 metro.config.js`resetCache: true`
 
@@ -312,7 +320,7 @@ You can easily clear the cache:
 rm -rf node_modules/.cache/babel-loader/*
 ```
 
-or
+or reset all caches
 
 `npm start -- --reset-cache`
 
@@ -335,6 +343,10 @@ or
 and
 
 `expo start --clear`
+
+or
+
+`react-native clean`
 
 or
 
