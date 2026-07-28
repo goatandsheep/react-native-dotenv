@@ -54,7 +54,7 @@ On transform you'll see a message on stderr (same style as dotenv):
 ◇ injected env (2) from .env
 ```
 
-Metro may prefix worker logs with `|`. Expo also prints its own `env: load .env` line — that is Expo's built-in loader, not this plugin.
+Metro may prefix worker logs with `|`.
 
 Set `quiet: true` in the plugin options to suppress the `◇ injected env` message.
 
@@ -258,8 +258,6 @@ For host/CI-only values, use `@env` imports — or put the key in `.env` and let
 </details>
 <details><summary>Expo</summary><br>
 
-Expo has [built-in environment variable support](https://docs.expo.dev/guides/environment-variables/). Use this plugin when you want `@env` imports or multi-env files (e.g. `.env.staging` via `APP_ENV`).
-
 ```js
 // babel.config.js
 module.exports = function (api) {
@@ -434,11 +432,6 @@ For nextjs, you _must_ set `moduleName` to `react-native-dotenv`.
 <details><summary>How does this work?</summary><br/>
 
 This Babel plugin reads your `.env` files at build time and replaces `@env` imports (and matching `process.env` references) with their values before the React Native bundle is generated. Runtime Node `process.env` is not available in the app the same way.
-
-</details>
-<details><summary>Do I need this with Expo?</summary><br/>
-
-Expo now has [built-in environment variable support](https://docs.expo.dev/guides/environment-variables/). Evaluate if you still need this plugin.
 
 </details>
 <details><summary>Can I put secrets in `.env`?</summary><br/>
