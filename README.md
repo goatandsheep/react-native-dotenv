@@ -2,7 +2,7 @@
 
 <img src="https://raw.githubusercontent.com/motdotla/dotenv/master/dotenv.svg" alt="dotenv" align="right" width="200" />
 
-Load environment variables using import statements.
+Load `.env` into React Native with `import` statements. A Babel plugin that inlines your environment variables at build time — with multi-environment support.
 
 &nbsp;
 

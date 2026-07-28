@@ -1,7 +1,7 @@
 {
   "name": "react-native-dotenv",
   "version": "3.4.12",
-  "description": "Load environment variables using import statements.",
+  "description": "Load .env into React Native with import statements. A Babel plugin that inlines environment variables at build time.",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dotenvx/react-native-dotenv.git"
