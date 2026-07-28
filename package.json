@@ -10,8 +10,8 @@
   "bugs": "https://github.com/dotenvx/react-native-dotenv/issues",
   "main": "index.js",
   "scripts": {
-    "lint": "xo",
-    "lint:fix": "xo --fix",
+    "standard": "standard",
+    "standard:fix": "standard --fix",
     "test": "jest",
     "audit": "yarn audit --groups dependencies"
   },
@@ -32,7 +32,7 @@
   "devDependencies": {
     "@babel/core": "^7.29.7",
     "jest": "30.4.2",
-    "xo": "^4.0.0"
+    "standard": "^17.1.2"
   },
   "author": "Kemal Ahmed",
   "license": "MIT",
@@ -55,72 +55,12 @@
       "text-summary"
     ]
   },
-  "xo": [
-    {
-      "ignores": [
-        "**/*.md"
-      ]
-    },
-    {
-      "semicolon": false,
-      "space": 2
-    },
-    {
-      "files": "**/*",
-      "rules": {
-        "unicorn/prefer-module": "off",
-        "unicorn/prefer-node-protocol": "off",
-        "node/prefer-global/process": "off",
-        "n/prefer-global/process": "off",
-        "prefer-destructuring": "off",
-        "unicorn/max-nested-calls": "off",
-        "unicorn/no-computed-property-existence-check": "off",
-        "unicorn/no-declarations-before-early-exit": "off",
-        "unicorn/no-anonymous-default-export": "off",
-        "unicorn/consistent-boolean-name": "off"
-      }
-    },
-    {
-      "files": "__tests__/**/*.js",
-      "languageOptions": {
-        "globals": {
-          "afterAll": false,
-          "afterEach": false,
-          "beforeAll": false,
-          "beforeEach": false,
-          "describe": false,
-          "expect": false,
-          "fdescribe": false,
-          "fit": false,
-          "it": false,
-          "jest": false,
-          "pending": false,
-          "test": false,
-          "xdescribe": false,
-          "xit": false,
-          "xtest": false
-        }
-      },
-      "rules": {
-        "unicorn/filename-case": "off"
-      }
-    },
-    {
-      "files": "__tests__/__fixtures__/**/*.js",
-      "rules": {
-        "import-x/no-unresolved": [
-          "error",
-          {
-            "ignore": [
-              "@env",
-              "foo",
-              "react-native-dotenv"
-            ]
-          }
-        ],
-        "unicorn/import-style": "off",
-        "no-unused-vars": "off"
-      }
-    }
-  ]
+  "standard": {
+    "env": [
+      "jest"
+    ],
+    "ignore": [
+      "__tests__/__fixtures__/**"
+    ]
+  }
 }

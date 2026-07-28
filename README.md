@@ -3,11 +3,8 @@
 > Load environment variables using `import` statements.
 
 [![npm version](https://badgen.net/npm/v/react-native-dotenv)](https://www.npmjs.com/package/react-native-dotenv)
-[![dependencies Status](https://img.shields.io/librariesio/release/npm/react-native-dotenv)](https://img.shields.io/librariesio/release/npm/react-native-dotenv)
-[![codecov](https://badgen.net/codecov/c/github/dotenvx/react-native-dotenv)](https://codecov.io/gh/dotenvx/react-native-dotenv)
-[![XO code style](https://badgen.net/badge/code%20style/XO/cyan)](https://github.com/xojs/xo)
-[![npm downloads](https://img.shields.io/npm/dt/react-native-dotenv.svg?style=flat-square)](https://www.npmjs.com/package/react-native-dotenv)
-[![works with dotenv-vault](https://badge.dotenv.org/works-with.svg?r=1)](https://www.dotenv.org/r/github.com/dotenv-org/dotenv-vault?r=1)
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![npm downloads](https://img.shields.io/npm/dw/react-native-dotenv.svg?style=flat-square)](https://www.npmjs.com/package/react-native-dotenv)
 
 ## Installation
 
@@ -114,10 +111,6 @@ fetch(`${API_URL}/users`, {
   }
 })
 ```
-
-## [DEPRECATED] White and black lists
-
-Moving forward to a more inclusive language, terms like `white` and `black` are being moved away. Future versions will just use `allowlist` and `blocklist` while `whitelist`/`blacklist` are still supported.
 
 ## Allow and Block lists
 
@@ -367,22 +360,3 @@ Or you can override the default `cacheIdentifier` to include some of your enviro
 The tests that use `require('@env')` are also not passing.
 
 For nextjs, you _must_ set `moduleName` to `react-native-dotenv`.
-
-## Credits
-
-* Based on [David Chang](https://github.com/zetachang)’s works on [babel-plugin-dotenv](https://github.com/zetachang/react-native-dotenv/tree/master/babel-plugin-dotenv).
-* Also based on [Bertrand Marron](https://github.com/tusbar)'s works on [babel-plugin-dotenv-import](https://github.com/tusbar/babel-plugin-dotenv-import).
-
-If you'd like to become an active contributor, please send us a message.
-
-## Miscellaneous
-
-```
-    ╚⊙ ⊙╝
-  ╚═(███)═╝
- ╚═(███)═╝
-╚═(███)═╝
- ╚═(███)═╝
-  ╚═(███)═╝
-   ╚═(███)═╝
-```
