@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Removed
+
+- Removed deprecated `whitelist` and `blacklist` options. Use `allowlist` and `blocklist` instead.
+
 ## 3.4.12
 
 ## Older

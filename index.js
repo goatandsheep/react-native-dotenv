@@ -62,8 +62,6 @@ module.exports = (api, options) => {
     envName: 'APP_ENV',
     moduleName: '@env',
     path: '.env',
-    whitelist: null,
-    blacklist: null,
     allowlist: null,
     blocklist: null,
     safe: false,
@@ -127,18 +125,8 @@ module.exports = (api, options) => {
               throw filepath.get('specifiers')[index].buildCodeFrameError(`"${importedId}" was not present in allowlist`)
             }
 
-            if (Array.isArray(options.whitelist) && !options.whitelist.includes(importedId)) {
-              console.warn('[DEPRECATION WARNING] This option is will be deprecated soon. Use allowlist instead')
-              throw filepath.get('specifiers')[index].buildCodeFrameError(`"${importedId}" was not whitelisted`)
-            }
-
             if (Array.isArray(options.blocklist) && options.blocklist.includes(importedId)) {
               throw filepath.get('specifiers')[index].buildCodeFrameError(`"${importedId}" was not present in blocklist`)
-            }
-
-            if (Array.isArray(options.blacklist) && options.blacklist.includes(importedId)) {
-              console.warn('[DEPRECATION WARNING] This option is will be deprecated soon. Use blocklist instead')
-              throw filepath.get('specifiers')[index].buildCodeFrameError(`"${importedId}" was blacklisted`)
             }
 
             if (!options.allowUndefined && !Object.hasOwn(env, importedId)) {
