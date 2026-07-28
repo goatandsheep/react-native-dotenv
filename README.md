@@ -1,4 +1,4 @@
-# react-native-dotenv [![CircleCI](https://circleci.com/gh/goatandsheep/react-native-dotenv.svg?style=svg)](https://circleci.com/gh/goatandsheep/react-native-dotenv)
+# react-native-dotenv [![CI](https://github.com/dotenvx/react-native-dotenv/actions/workflows/ci.yml/badge.svg)](https://github.com/dotenvx/react-native-dotenv/actions/workflows/ci.yml)
 
 > Load environment variables using `import` statements.
 
