@@ -34,6 +34,10 @@
     "jest": "30.4.2",
     "standard": "^17.1.2"
   },
+  "overrides": {
+    "brace-expansion": "^5.0.8",
+    "minimatch": "^10.2.5"
+  },
   "author": "Kemal Ahmed",
   "license": "MIT",
   "files": [
