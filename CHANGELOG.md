@@ -2,9 +2,13 @@
 
 All notable changes to this project are documented in this file.
 
-[Unreleased](https://github.com/dotenvx/dotenvx/compare/v4.0.0...main)
+## [Unreleased](https://github.com/dotenvx/react-native-dotenv/compare/v4.0.0...main)
 
-## [4.0.0](https://github.com/dotenvx/dotenvx/compare/v3.4.12...v4.0.0) (2026-07-28)
+### Added
+
+- Log `◇ injected env (N) from .env` to stderr on transform (same style as dotenv). Set `quiet: true` to suppress.
+
+## [4.0.0](https://github.com/dotenvx/react-native-dotenv/compare/v3.4.12...v4.0.0) (2026-07-28)
 
 ### Fixed
 

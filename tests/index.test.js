@@ -8,7 +8,11 @@ describe('react-native-dotenv', () => {
   }
 
   const OLD_ENV = process.env
+  beforeEach(() => {
+    jest.spyOn(console, 'error').mockImplementation(() => {})
+  })
   afterEach(() => {
+    console.error.mockRestore()
     jest.resetModules()
     process.env = { ...OLD_ENV }
   })
@@ -31,10 +35,29 @@ describe('react-native-dotenv', () => {
   })
 
   it('should print the environment if setting to verbose', () => {
-    console.log = jest.fn()
     const { code } = transformFileSync(FIXTURES + 'verbose/source.js')
     expect(code).toBe('console.log("abc123");\nconsole.log("username");')
-    expect(console.log.mock.calls[0][1]).toBe('test')
+    expect(console.error.mock.calls.some(call => String(call[0]).includes('dotenvMode test'))).toBe(true)
+  })
+
+  it('should log injected env to stderr', () => {
+    jest.resetModules()
+    transformSync('import { API_KEY } from "@env"; console.log(API_KEY)', {
+      configFile: false,
+      babelrc: false,
+      plugins: [[require('../index.js'), { path: FIXTURES + 'default/.env' }]]
+    })
+    expect(console.error.mock.calls.some(call => /^◇ injected env \(\d+\) from /.test(String(call[0])))).toBe(true)
+  })
+
+  it('should not log injected env when quiet', () => {
+    jest.resetModules()
+    transformSync('import { API_KEY } from "@env"', {
+      configFile: false,
+      babelrc: false,
+      plugins: [[require('../index.js'), { path: FIXTURES + 'default/.env', quiet: true }]]
+    })
+    expect(console.error.mock.calls.some(call => String(call[0]).includes('injected env'))).toBe(false)
   })
 
   it('should allow importing variables already defined in the environment', () => {
@@ -151,21 +174,19 @@ describe('react-native-dotenv', () => {
   })
 
   it('should fail to load APP_ENV development', () => {
-    console.error = jest.fn()
     process.env.APP_ENV = 'development'
 
     const { code } = transformFileSync(FIXTURES + 'app-env-development/source.js')
     expect(code).toBe('console.log("never");\nconsole.log("this-should-not-appear");')
-    expect(console.error.mock.calls[0][0]).toBe('APP_ENV error')
+    expect(console.error.mock.calls.some(call => call[0] === 'APP_ENV error')).toBe(true)
   })
 
   it('should fail to load APP_ENV production', () => {
-    console.error = jest.fn()
     process.env.APP_ENV = 'production'
 
     const { code } = transformFileSync(FIXTURES + 'app-env-production/source.js')
     expect(code).toBe('console.log("never");\nconsole.log("this-should-not-appear");')
-    expect(console.error.mock.calls[0][0]).toBe('APP_ENV error')
+    expect(console.error.mock.calls.some(call => call[0] === 'APP_ENV error')).toBe(true)
   })
 
   it('should load MY_ENV specific env file', () => {

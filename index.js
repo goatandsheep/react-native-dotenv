@@ -3,20 +3,26 @@ const path = require('path')
 const dotenv = require('dotenv')
 
 function parseDotenvFile (filepath, verbose = false) {
-  let content
-
   try {
-    content = fs.readFileSync(filepath)
+    const content = fs.readFileSync(filepath)
+    return { parsed: dotenv.parse(content), exists: true }
   } catch (error) {
     // The env file does not exist.
     if (verbose) {
       console.error('react-native-dotenv', error)
     }
 
-    return {}
+    return { parsed: {}, exists: false }
   }
+}
 
-  return dotenv.parse(content) //
+function logInjectedEnv (fileEnv, loadedPaths) {
+  const keysCount = Object.keys(fileEnv).length
+  if (loadedPaths.length > 0) {
+    console.error(`◇ injected env (${keysCount}) from ${loadedPaths.join(', ')}`)
+  } else {
+    console.error(`◇ injected env (${keysCount})`)
+  }
 }
 
 function undefObjectAssign (targetObject, sourceObject) {
@@ -67,6 +73,7 @@ module.exports = (api, options) => {
     safe: false,
     allowUndefined: true,
     verbose: false,
+    quiet: false,
     ...options
   }
   const babelMode = process.env[options.envName] || (process.env.BABEL_ENV && process.env.BABEL_ENV !== 'undefined' && process.env.BABEL_ENV !== 'development' && process.env.BABEL_ENV) || process.env.NODE_ENV || 'development'
@@ -75,7 +82,7 @@ module.exports = (api, options) => {
   const modeLocalFilePath = options.path + '.' + babelMode + '.local'
 
   if (options.verbose) {
-    console.log('dotenvMode', babelMode)
+    console.error(`◇ dotenvMode ${babelMode}`)
     if (process.env[options.envName] === 'production' || process.env[options.envName] === 'development') {
       console.error('APP_ENV error', 'cannot use APP_ENV=development or APP_ENV=production')
     }
@@ -87,12 +94,18 @@ module.exports = (api, options) => {
   api.cache.using(() => mtime(modeLocalFilePath))
 
   const dotenvTemporary = undefObjectAssign({}, process.env)
-  const parsed = parseDotenvFile(options.path, options.verbose)
-  const localParsed = parseDotenvFile(localFilePath, options.verbose)
-  const modeParsed = parseDotenvFile(modeFilePath, options.verbose)
-  const modeLocalParsed = parseDotenvFile(modeLocalFilePath, options.verbose)
+  const parsedFile = parseDotenvFile(options.path, options.verbose)
+  const localFile = parseDotenvFile(localFilePath, options.verbose)
+  const modeFile = parseDotenvFile(modeFilePath, options.verbose)
+  const modeLocalFile = parseDotenvFile(modeLocalFilePath, options.verbose)
   const modeExceptions = ['NODE_ENV', 'BABEL_ENV', options.envName]
-  const fileEnv = undefObjectAssign(undefObjectAssign(undefObjectAssign(parsed, modeParsed), localParsed), modeLocalParsed)
+  const fileEnv = undefObjectAssign(
+    undefObjectAssign(
+      undefObjectAssign(parsedFile.parsed, modeFile.parsed),
+      localFile.parsed
+    ),
+    modeLocalFile.parsed
+  )
 
   // process.env.X is only inlined for keys from .env files (+ mode exceptions).
   // That stops build-tooling pollution (e.g. Metro jest-worker) without hardcoding
@@ -106,10 +119,24 @@ module.exports = (api, options) => {
     ? safeObjectAssign(undefObjectAssign({}, fileEnv), dotenvTemporary, modeExceptions)
     : undefObjectAssign(undefObjectAssign({}, fileEnv), dotenvTemporary)
 
-  api.addExternalDependency(path.resolve(options.path))
-  api.addExternalDependency(path.resolve(modeFilePath))
-  api.addExternalDependency(path.resolve(localFilePath))
-  api.addExternalDependency(path.resolve(modeLocalFilePath))
+  if (options.verbose || !options.quiet) {
+    const loadedPaths = [
+      [options.path, parsedFile.exists],
+      [modeFilePath, modeFile.exists],
+      [localFilePath, localFile.exists],
+      [modeLocalFilePath, modeLocalFile.exists]
+    ]
+      .filter(([, exists]) => exists)
+      .map(([filepath]) => filepath)
+    logInjectedEnv(fileEnv, loadedPaths)
+  }
+
+  if (typeof api.addExternalDependency === 'function') {
+    api.addExternalDependency(path.resolve(options.path))
+    api.addExternalDependency(path.resolve(modeFilePath))
+    api.addExternalDependency(path.resolve(localFilePath))
+    api.addExternalDependency(path.resolve(modeLocalFilePath))
+  }
 
   return ({
     name: 'dotenv-import',
