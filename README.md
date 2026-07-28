@@ -54,6 +54,8 @@ On transform you'll see a message on stderr (same style as dotenv):
 ◇ injected env (2) from .env
 ```
 
+Set `quiet: true` in the plugin options to suppress it.
+
 &nbsp;
 
 ## Advanced
