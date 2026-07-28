@@ -2,7 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const dotenv = require('dotenv')
 
-function parseDotenvFile(filepath, verbose = false) {
+function parseDotenvFile (filepath, verbose = false) {
   let content
 
   try {
@@ -19,7 +19,7 @@ function parseDotenvFile(filepath, verbose = false) {
   return dotenv.parse(content) //
 }
 
-function undefObjectAssign(targetObject, sourceObject) {
+function undefObjectAssign (targetObject, sourceObject) {
   const keys = Object.keys(sourceObject)
   for (const key of keys) {
     if (sourceObject[key]) {
@@ -30,7 +30,7 @@ function undefObjectAssign(targetObject, sourceObject) {
   return targetObject
 }
 
-function safeObjectAssign(targetObject, sourceObject, exceptions = []) {
+function safeObjectAssign (targetObject, sourceObject, exceptions = []) {
   const keys = Object.keys(targetObject)
   for (const key of keys) {
     if (targetObject[key] && sourceObject[key]) {
@@ -47,7 +47,7 @@ function safeObjectAssign(targetObject, sourceObject, exceptions = []) {
   return targetObject
 }
 
-function mtime(filePath) {
+function mtime (filePath) {
   try {
     return fs.statSync(filePath).mtimeMs
   } catch {
@@ -69,7 +69,7 @@ module.exports = (api, options) => {
     safe: false,
     allowUndefined: true,
     verbose: false,
-    ...options,
+    ...options
   }
   const babelMode = process.env[options.envName] || (process.env.BABEL_ENV && process.env.BABEL_ENV !== 'undefined' && process.env.BABEL_ENV !== 'development' && process.env.BABEL_ENV) || process.env.NODE_ENV || 'development'
   const localFilePath = options.path + '.local'
@@ -105,7 +105,7 @@ module.exports = (api, options) => {
   return ({
     name: 'dotenv-import',
     visitor: {
-      ImportDeclaration(filepath) {
+      ImportDeclaration (filepath) {
         if (filepath.node.source.value !== options.moduleName) {
           return
         }
@@ -154,7 +154,7 @@ module.exports = (api, options) => {
 
         filepath.remove()
       },
-      MemberExpression(filepath) {
+      MemberExpression (filepath) {
         if (!filepath.get('object').matchesPattern('process.env')) {
           return
         }
@@ -167,7 +167,7 @@ module.exports = (api, options) => {
             filepath.replaceWith(t.valueToNode(value))
           }
         }
-      },
-    },
+      }
+    }
   })
 }

@@ -4,7 +4,7 @@
 
 [![npm version](https://badgen.net/npm/v/react-native-dotenv)](https://www.npmjs.com/package/react-native-dotenv)
 [![dependencies Status](https://img.shields.io/librariesio/release/npm/react-native-dotenv)](https://img.shields.io/librariesio/release/npm/react-native-dotenv)
-[![XO code style](https://badgen.net/badge/code%20style/XO/cyan)](https://github.com/xojs/xo)
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 [![npm downloads](https://img.shields.io/npm/dt/react-native-dotenv.svg?style=flat-square)](https://www.npmjs.com/package/react-native-dotenv)
 [![works with dotenv-vault](https://badge.dotenv.org/works-with.svg?r=1)](https://www.dotenv.org/r/github.com/dotenv-org/dotenv-vault?r=1)
 
@@ -113,10 +113,6 @@ fetch(`${API_URL}/users`, {
   }
 })
 ```
-
-## [DEPRECATED] White and black lists
-
-Moving forward to a more inclusive language, terms like `white` and `black` are being moved away. Future versions will just use `allowlist` and `blocklist` while `whitelist`/`blacklist` are still supported.
 
 ## Allow and Block lists
 

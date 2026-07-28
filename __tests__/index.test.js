@@ -1,4 +1,4 @@
-const {transformFileSync} = require('@babel/core')
+const { transformFileSync } = require('@babel/core')
 
 const FIXTURES = '__tests__/__fixtures__/'
 
@@ -10,7 +10,7 @@ describe('react-native-dotenv', () => {
   const OLD_ENV = process.env
   afterEach(() => {
     jest.resetModules()
-    process.env = {...OLD_ENV}
+    process.env = { ...OLD_ENV }
   })
 
   it('should throw if the variable does not exist', () => {
@@ -26,13 +26,13 @@ describe('react-native-dotenv', () => {
   })
 
   it('should load environment variables from .env', () => {
-    const {code} = transformFileSync(FIXTURES + 'default/source.js')
+    const { code } = transformFileSync(FIXTURES + 'default/source.js')
     expect(code).toBe('console.log("abc123");\nconsole.log("username");')
   })
 
   it('should print the environment if setting to verbose', () => {
     console.log = jest.fn()
-    const {code} = transformFileSync(FIXTURES + 'verbose/source.js')
+    const { code } = transformFileSync(FIXTURES + 'verbose/source.js')
     expect(code).toBe('console.log("abc123");\nconsole.log("username");')
     expect(console.log.mock.calls[0][1]).toBe('test')
   })
@@ -40,7 +40,7 @@ describe('react-native-dotenv', () => {
   it('should allow importing variables already defined in the environment', () => {
     process.env.FROM_ENV = 'hello'
 
-    const {code} = transformFileSync(FIXTURES + 'from-env/source.js')
+    const { code } = transformFileSync(FIXTURES + 'from-env/source.js')
     expect(code).toBe('console.log("hello");')
   })
 
@@ -56,42 +56,42 @@ describe('react-native-dotenv', () => {
   it('should prioritize environment variables over variables defined in .env even when safe', () => {
     process.env.API_KEY = 'i win again'
 
-    const {code} = transformFileSync(FIXTURES + 'default-safe/source.js')
+    const { code } = transformFileSync(FIXTURES + 'default-safe/source.js')
     expect(code).toBe('console.log("i win again");\nconsole.log("username");')
   })
 
   it('should load custom env file', () => {
-    const {code} = transformFileSync(FIXTURES + 'filename/source.js')
+    const { code } = transformFileSync(FIXTURES + 'filename/source.js')
     expect(code).toBe('console.log("abc123456");\nconsole.log("username123456");')
   })
 
   it('should load multiple env files', () => {
-    const {code} = transformFileSync(FIXTURES + 'multi-env/source.js')
+    const { code } = transformFileSync(FIXTURES + 'multi-env/source.js')
     expect(code).toBe('console.log("abc123456");\nconsole.log("username123456");')
   })
 
   it('should load local env files', () => {
-    const {code} = transformFileSync(FIXTURES + 'local-env/source.js')
+    const { code } = transformFileSync(FIXTURES + 'local-env/source.js')
     expect(code).toBe('console.log("username123456");\nconsole.log("local-key");')
   })
 
   it('should support `as alias` import syntax', () => {
-    const {code} = transformFileSync(FIXTURES + 'as-alias/source.js')
+    const { code } = transformFileSync(FIXTURES + 'as-alias/source.js')
     expect(code).toBe('const a = "abc123";\nconst b = "username";')
   })
 
   it('should allow specifying a custom module name', () => {
-    const {code} = transformFileSync(FIXTURES + 'custom-module/source.js')
+    const { code } = transformFileSync(FIXTURES + 'custom-module/source.js')
     expect(code).toBe('console.log("abc123");\nconsole.log("username");')
   })
 
   it('should allow specifying process.env', () => {
-    const {code} = transformFileSync(FIXTURES + 'process-env/source.js')
+    const { code } = transformFileSync(FIXTURES + 'process-env/source.js')
     expect(code).toBe('console.log("abc123");\nconsole.log("username");\nconsole.log("test");')
   })
 
   it('should not change undefined process.env variables', () => {
-    const {code} = transformFileSync(FIXTURES + 'process-env-undefined/source.js')
+    const { code } = transformFileSync(FIXTURES + 'process-env-undefined/source.js')
     expect(code).toBe('console.log(process.env.UNDEFINED_VAR);')
   })
 
@@ -99,18 +99,18 @@ describe('react-native-dotenv', () => {
     const customEnv = 'my-custom-env'
     const backupNodeEnv = process.env.NODE_ENV
     process.env.NODE_ENV = customEnv
-    const {code} = transformFileSync(FIXTURES + 'process-env-propagate/source.js')
+    const { code } = transformFileSync(FIXTURES + 'process-env-propagate/source.js')
     expect(code).toBe(`console.log("${customEnv}");`)
     process.env.NODE_ENV = backupNodeEnv
   })
 
   it('should allow specifying the package module name', () => {
-    const {code} = transformFileSync(FIXTURES + 'module-name/source.js')
+    const { code } = transformFileSync(FIXTURES + 'module-name/source.js')
     expect(code).toBe('console.log("abc123");\nconsole.log("username");')
   })
 
   it('should leave other imports untouched', () => {
-    const {code} = transformFileSync(FIXTURES + 'unused/source.js')
+    const { code } = transformFileSync(FIXTURES + 'unused/source.js')
     expect(code).toBe('import { join } from \'node:path\';\nconsole.log(join);')
   })
 
@@ -137,24 +137,24 @@ describe('react-native-dotenv', () => {
   })
 
   it('should load environment variables from .env in safe mode', () => {
-    const {code} = transformFileSync(FIXTURES + 'safe-success/source.js')
+    const { code } = transformFileSync(FIXTURES + 'safe-success/source.js')
     expect(code).toBe('console.log("1");\nconsole.log("test");')
   })
 
   it('should import undefined variables', () => {
-    const {code} = transformFileSync(FIXTURES + 'undefined/source.js')
+    const { code } = transformFileSync(FIXTURES + 'undefined/source.js')
     expect(code).toBe('console.log(undefined);')
   })
 
   it('should not throw if .env exists in safe mode', () => {
-    const {code} = transformFileSync(FIXTURES + 'safe-no-dotenv/source.js')
+    const { code } = transformFileSync(FIXTURES + 'safe-no-dotenv/source.js')
     expect(code).toBe('console.log(undefined);')
   })
 
   it('should load APP_ENV specific env file', () => {
     process.env.APP_ENV = 'cli'
 
-    const {code} = transformFileSync(FIXTURES + 'app-env/source.js')
+    const { code } = transformFileSync(FIXTURES + 'app-env/source.js')
     expect(code).toBe('console.log("abc123456");\nconsole.log("username123456");')
   })
 
@@ -162,7 +162,7 @@ describe('react-native-dotenv', () => {
     console.error = jest.fn()
     process.env.APP_ENV = 'development'
 
-    const {code} = transformFileSync(FIXTURES + 'app-env-development/source.js')
+    const { code } = transformFileSync(FIXTURES + 'app-env-development/source.js')
     expect(code).toBe('console.log("never");\nconsole.log("this-should-not-appear");')
     expect(console.error.mock.calls[0][0]).toBe('APP_ENV error')
   })
@@ -171,7 +171,7 @@ describe('react-native-dotenv', () => {
     console.error = jest.fn()
     process.env.APP_ENV = 'production'
 
-    const {code} = transformFileSync(FIXTURES + 'app-env-production/source.js')
+    const { code } = transformFileSync(FIXTURES + 'app-env-production/source.js')
     expect(code).toBe('console.log("never");\nconsole.log("this-should-not-appear");')
     expect(console.error.mock.calls[0][0]).toBe('APP_ENV error')
   })
@@ -179,7 +179,7 @@ describe('react-native-dotenv', () => {
   it('should load MY_ENV specific env file', () => {
     process.env.MY_ENV = 'cli'
 
-    const {code} = transformFileSync(FIXTURES + 'env-name/source.js')
+    const { code } = transformFileSync(FIXTURES + 'env-name/source.js')
     expect(code).toBe('console.log("abc123456");\nconsole.log("username123456");')
   })
 })
