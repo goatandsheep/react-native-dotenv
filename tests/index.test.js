@@ -192,6 +192,27 @@ describe('react-native-dotenv', () => {
     expect(code).toBe('console.log(process.env.JEST_WORKER_ID);\nconsole.log(process.env.MY_CI_VAR);')
   })
 
+  // #501 — Expo Router injects EXPO_ROUTER_* into the Node process; inlining them
+  // stomped expo-router's own Babel plugin. Leave host-only Expo keys alone.
+  it('should not inline Expo Router host env vars absent from .env', () => {
+    process.env.EXPO_ROUTER_APP_ROOT = '/Users/someone/my-app/app'
+    process.env.EXPO_ROUTER_ABS_APP_ROOT = '/Users/someone/my-app/app'
+    process.env.EXPO_PROJECT_ROOT = '/Users/someone/my-app'
+
+    const { code } = transformSync(
+      'console.log(process.env.EXPO_ROUTER_APP_ROOT);\nconsole.log(process.env.EXPO_ROUTER_ABS_APP_ROOT);\nconsole.log(process.env.EXPO_PROJECT_ROOT);\nconsole.log(process.env.API_KEY);',
+      {
+        configFile: false,
+        babelrc: false,
+        plugins: [[require('../index.js'), { path: FIXTURES + 'default/.env' }]]
+      }
+    )
+
+    expect(code).toBe(
+      'console.log(process.env.EXPO_ROUTER_APP_ROOT);\nconsole.log(process.env.EXPO_ROUTER_ABS_APP_ROOT);\nconsole.log(process.env.EXPO_PROJECT_ROOT);\nconsole.log("abc123");'
+    )
+  })
+
   it('should still allow @env imports from host/CI without the key in .env', () => {
     process.env.MY_CI_VAR = 'from-ci'
 
