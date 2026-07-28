@@ -4,6 +4,10 @@ All notable changes to this project are documented in this file.
 
 ## [Unreleased](https://github.com/dotenvx/react-native-dotenv/compare/v4.1.0...main)
 
+### Changed
+
+- Log `◇ injected env` once per process so Metro does not spam it on every file when `api.cache(false)`.
+
 ## [4.1.0](https://github.com/dotenvx/react-native-dotenv/compare/v4.0.0...v4.1.0) (2026-07-28)
 
 ### Added
