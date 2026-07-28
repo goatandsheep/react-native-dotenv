@@ -94,12 +94,12 @@ module.exports = (api, options) => {
   const modeExceptions = ['NODE_ENV', 'BABEL_ENV', options.envName]
   const fileEnv = undefObjectAssign(undefObjectAssign(undefObjectAssign(parsed, modeParsed), localParsed), modeLocalParsed)
 
-  // Keys that may be inlined for process.env.X — only what came from .env files,
-  // plus mode-selection exceptions. Prevents host/build tooling vars (e.g.
-  // JEST_WORKER_ID from Metro's jest-worker) from leaking into the app bundle.
-  const inlineKeys = new Set(Object.keys(fileEnv))
+  // process.env.X is only inlined for keys from .env files (+ mode exceptions).
+  // That stops build-tooling pollution (e.g. Metro jest-worker) without hardcoding
+  // tool-specific names. Host/CI values still flow through @env imports below.
+  const processEnvInlineKeys = new Set(Object.keys(fileEnv))
   for (const exception of modeExceptions) {
-    inlineKeys.add(exception)
+    processEnvInlineKeys.add(exception)
   }
 
   env = (options.safe)
@@ -161,7 +161,7 @@ module.exports = (api, options) => {
         const key = filepath.toComputedKey()
         if (t.isStringLiteral(key)) {
           const importedId = key.value
-          if (!inlineKeys.has(importedId)) {
+          if (!processEnvInlineKeys.has(importedId)) {
             return
           }
           const value = Object.hasOwn(env, importedId) ? env[importedId] : process.env[importedId]

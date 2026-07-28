@@ -175,29 +175,32 @@ describe('react-native-dotenv', () => {
     expect(code).toBe('console.log("abc123456");\nconsole.log("username123456");')
   })
 
-  // #574 — Metro/jest-worker sets JEST_WORKER_ID on transform workers. Only keys
-  // from .env files (plus NODE_ENV/BABEL_ENV/envName) may be inlined for process.env.X.
-  it('should not inline host-only process.env vars like JEST_WORKER_ID', () => {
+  // #574 — process.env.X only inlines keys from .env (no host-only / tooling leaks).
+  it('should not inline process.env keys that are absent from .env', () => {
     process.env.JEST_WORKER_ID = '123'
+    process.env.MY_CI_VAR = 'from-ci'
 
-    const { code } = transformSync('console.log(process.env.JEST_WORKER_ID)', {
-      configFile: false,
-      babelrc: false,
-      plugins: [[require('../index.js'), { path: FIXTURES + 'default/.env' }]]
-    })
+    const { code } = transformSync(
+      'console.log(process.env.JEST_WORKER_ID);\nconsole.log(process.env.MY_CI_VAR);',
+      {
+        configFile: false,
+        babelrc: false,
+        plugins: [[require('../index.js'), { path: FIXTURES + 'default/.env' }]]
+      }
+    )
 
-    expect(code).toBe('console.log(process.env.JEST_WORKER_ID);')
+    expect(code).toBe('console.log(process.env.JEST_WORKER_ID);\nconsole.log(process.env.MY_CI_VAR);')
   })
 
-  it('should still inline process.env keys that are defined in .env', () => {
-    process.env.JEST_WORKER_ID = 'from-host'
+  it('should still allow @env imports from host/CI without the key in .env', () => {
+    process.env.MY_CI_VAR = 'from-ci'
 
-    const { code } = transformSync('console.log(process.env.API_KEY)', {
+    const { code } = transformSync('import { MY_CI_VAR } from "@env";\nconsole.log(MY_CI_VAR);', {
       configFile: false,
       babelrc: false,
       plugins: [[require('../index.js'), { path: FIXTURES + 'default/.env' }]]
     })
 
-    expect(code).toBe('console.log("abc123");')
+    expect(code).toBe('console.log("from-ci");')
   })
 })

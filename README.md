@@ -164,9 +164,7 @@ Prevent these env variable names from being imported.
 </details>
 <details><summary><code>safe</code> (default: <code>false</code>)</summary><br>
 
-Only allow environment variables defined in the `.env` file. This completely ignores everything already defined in the environment.
-
-The `.env` file has to exist.
+Only allow variables defined in your `.env` files. Host environment variables can still override values for those same keys at build time, but keys that exist only in the environment (and not in `.env`) are not imported.
 
 ```json
 {
@@ -228,7 +226,9 @@ console.log(`Hello ${process.env.HELLO}`)
 fetch(`${process.env.API_URL}/users`)
 ```
 
-Only keys present in your `.env` files are inlined (plus `NODE_ENV` / `BABEL_ENV` / `envName`). Other host environment variables — including build-tooling vars like `JEST_WORKER_ID` — are left alone so they do not leak into the app bundle.
+`process.env.X` is only inlined when `X` is in your `.env` files (plus `NODE_ENV` / `BABEL_ENV` / `envName`). That keeps build-tooling noise out of the bundle without special-casing tool names.
+
+For host/CI-only values, use `@env` imports — or put the key in `.env` and let CI override the value.
 
 </details>
 <details><summary>Expo</summary><br>
@@ -492,8 +492,9 @@ Prefer [Zod](https://zod.dev) to validate and infer types — see Types with Zod
 
 By default, we will never modify any environment variables that have already been set. In particular, if there is a variable in your `.env` file which collides with one that already exists in your environment, then that variable will be skipped (the existing value wins at build time).
 
-</details>
+`process.env.X` is only inlined when `X` appears in a `.env` file. Host/CI-only keys still work via `import { X } from '@env'`.
 
+</details>
 &nbsp;
 
 ## CHANGELOG
