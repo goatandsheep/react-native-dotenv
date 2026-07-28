@@ -228,6 +228,8 @@ console.log(`Hello ${process.env.HELLO}`)
 fetch(`${process.env.API_URL}/users`)
 ```
 
+Only keys present in your `.env` files are inlined (plus `NODE_ENV` / `BABEL_ENV` / `envName`). Other host environment variables — including build-tooling vars like `JEST_WORKER_ID` — are left alone so they do not leak into the app bundle.
+
 </details>
 <details><summary>Expo</summary><br>
 

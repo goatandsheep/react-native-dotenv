@@ -91,9 +91,20 @@ module.exports = (api, options) => {
   const localParsed = parseDotenvFile(localFilePath, options.verbose)
   const modeParsed = parseDotenvFile(modeFilePath, options.verbose)
   const modeLocalParsed = parseDotenvFile(modeLocalFilePath, options.verbose)
+  const modeExceptions = ['NODE_ENV', 'BABEL_ENV', options.envName]
+  const fileEnv = undefObjectAssign(undefObjectAssign(undefObjectAssign(parsed, modeParsed), localParsed), modeLocalParsed)
+
+  // Keys that may be inlined for process.env.X — only what came from .env files,
+  // plus mode-selection exceptions. Prevents host/build tooling vars (e.g.
+  // JEST_WORKER_ID from Metro's jest-worker) from leaking into the app bundle.
+  const inlineKeys = new Set(Object.keys(fileEnv))
+  for (const exception of modeExceptions) {
+    inlineKeys.add(exception)
+  }
+
   env = (options.safe)
-    ? safeObjectAssign(undefObjectAssign(undefObjectAssign(undefObjectAssign(parsed, modeParsed), localParsed), modeLocalParsed), dotenvTemporary, ['NODE_ENV', 'BABEL_ENV', options.envName])
-    : undefObjectAssign(undefObjectAssign(undefObjectAssign(undefObjectAssign(parsed, modeParsed), localParsed), modeLocalParsed), dotenvTemporary)
+    ? safeObjectAssign(undefObjectAssign({}, fileEnv), dotenvTemporary, modeExceptions)
+    : undefObjectAssign(undefObjectAssign({}, fileEnv), dotenvTemporary)
 
   api.addExternalDependency(path.resolve(options.path))
   api.addExternalDependency(path.resolve(modeFilePath))
@@ -150,7 +161,10 @@ module.exports = (api, options) => {
         const key = filepath.toComputedKey()
         if (t.isStringLiteral(key)) {
           const importedId = key.value
-          const value = (env && importedId in env) ? env[importedId] : process.env[importedId]
+          if (!inlineKeys.has(importedId)) {
+            return
+          }
+          const value = Object.hasOwn(env, importedId) ? env[importedId] : process.env[importedId]
           if (value !== undefined) {
             filepath.replaceWith(t.valueToNode(value))
           }

@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- `process.env.X` is only inlined when `X` comes from a `.env` file (or `NODE_ENV` / `BABEL_ENV` / `envName`). Host/build tooling vars like `JEST_WORKER_ID` no longer leak into the app bundle ([#574](https://github.com/dotenvx/react-native-dotenv/issues/574)).
+
 ### Removed
 
 - Removed deprecated `whitelist` and `blacklist` options. Use `allowlist` and `blocklist` instead.

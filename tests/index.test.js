@@ -1,4 +1,4 @@
-const { transformFileSync } = require('@babel/core')
+const { transformFileSync, transformSync } = require('@babel/core')
 
 const FIXTURES = 'tests/fixtures/'
 
@@ -173,5 +173,31 @@ describe('react-native-dotenv', () => {
 
     const { code } = transformFileSync(FIXTURES + 'env-name/source.js')
     expect(code).toBe('console.log("abc123456");\nconsole.log("username123456");')
+  })
+
+  // #574 — Metro/jest-worker sets JEST_WORKER_ID on transform workers. Only keys
+  // from .env files (plus NODE_ENV/BABEL_ENV/envName) may be inlined for process.env.X.
+  it('should not inline host-only process.env vars like JEST_WORKER_ID', () => {
+    process.env.JEST_WORKER_ID = '123'
+
+    const { code } = transformSync('console.log(process.env.JEST_WORKER_ID)', {
+      configFile: false,
+      babelrc: false,
+      plugins: [[require('../index.js'), { path: FIXTURES + 'default/.env' }]]
+    })
+
+    expect(code).toBe('console.log(process.env.JEST_WORKER_ID);')
+  })
+
+  it('should still inline process.env keys that are defined in .env', () => {
+    process.env.JEST_WORKER_ID = 'from-host'
+
+    const { code } = transformSync('console.log(process.env.API_KEY)', {
+      configFile: false,
+      babelrc: false,
+      plugins: [[require('../index.js'), { path: FIXTURES + 'default/.env' }]]
+    })
+
+    expect(code).toBe('console.log("abc123");')
   })
 })
