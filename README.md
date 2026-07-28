@@ -233,9 +233,37 @@ For host/CI-only values, use `@env` imports — or put the key in `.env` and let
 </details>
 <details><summary>Expo</summary><br>
 
-Expo now has [built-in environment variable support](https://docs.expo.dev/guides/environment-variables/). Evaluate if you still need this plugin.
+Expo has [built-in environment variable support](https://docs.expo.dev/guides/environment-variables/). Use this plugin when you want `@env` imports or multi-env files (e.g. `.env.staging` via `APP_ENV`).
 
-Preview [the expo test app](https://github.com/goatandsheep/react-native-dotenv-expo-test).
+```js
+// babel.config.js
+module.exports = function (api) {
+  api.cache(false)
+  return {
+    presets: ['babel-preset-expo'],
+    plugins: [
+      ['module:react-native-dotenv']
+    ]
+  }
+}
+```
+
+```ini
+# .env
+HELLO="Universe"
+```
+
+```js
+// app/index.tsx
+import { HELLO } from '@env'
+import { Text } from 'react-native'
+
+export default function HomeScreen() {
+  return <Text>Hello {HELLO}</Text>
+}
+```
+
+Then start with a clean Metro cache: `npx expo start --clear`.
 
 </details>
 <details><summary>Multi-env</summary><br>
