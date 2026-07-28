@@ -2,7 +2,9 @@
 
 All notable changes to this project are documented in this file.
 
-## [Unreleased](https://github.com/dotenvx/react-native-dotenv/compare/v4.1.0...main)
+## [Unreleased](https://github.com/dotenvx/react-native-dotenv/compare/v4.1.1...main)
+
+## [4.1.1](https://github.com/dotenvx/react-native-dotenv/compare/v4.1.0...v4.1.1) (2026-07-28)
 
 ### Changed
 
