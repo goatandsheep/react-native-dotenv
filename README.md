@@ -62,6 +62,40 @@ Set `quiet: true` in the plugin options to suppress the `◇ injected env` messa
 
 ## Advanced
 
+<details><summary>with Expo 🧭</summary><br>
+
+```js
+// babel.config.js
+module.exports = function (api) {
+  api.cache(false)
+  return {
+    presets: ['babel-preset-expo'],
+    plugins: [
+      ['module:react-native-dotenv']
+    ]
+  }
+}
+```
+
+```ini
+# .env
+HELLO="Universe"
+```
+
+```js
+// app/index.tsx
+import { HELLO } from '@env'
+import { Text } from 'react-native'
+
+export default function HomeScreen() {
+  return <Text>Hello {HELLO}</Text>
+}
+```
+
+Then start with a clean Metro cache: `npx expo start --clear`.
+
+</details>
+
 <details><summary><code>envName</code> (default: <code>'APP_ENV'</code>)</summary><br>
 
 Override which environment variable selects the mode file (separate from `NODE_ENV`). Metro can overwrite the test environment even if you specify a config, so this gives you a dedicated override.
@@ -254,39 +288,6 @@ fetch(`${process.env.API_URL}/users`)
 `process.env.X` is only inlined when `X` is in your `.env` files (plus `NODE_ENV` / `BABEL_ENV` / `envName`). That keeps build-tooling noise out of the bundle without special-casing tool names.
 
 For host/CI-only values, use `@env` imports — or put the key in `.env` and let CI override the value.
-
-</details>
-<details><summary>Expo</summary><br>
-
-```js
-// babel.config.js
-module.exports = function (api) {
-  api.cache(false)
-  return {
-    presets: ['babel-preset-expo'],
-    plugins: [
-      ['module:react-native-dotenv']
-    ]
-  }
-}
-```
-
-```ini
-# .env
-HELLO="Universe"
-```
-
-```js
-// app/index.tsx
-import { HELLO } from '@env'
-import { Text } from 'react-native'
-
-export default function HomeScreen() {
-  return <Text>Hello {HELLO}</Text>
-}
-```
-
-Then start with a clean Metro cache: `npx expo start --clear`.
 
 </details>
 <details><summary>Multi-env</summary><br>
