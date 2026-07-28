@@ -10,6 +10,8 @@ defaults:
       - image: cimg/node:lts
 
   filters: &default_filters
+    branches:
+      only: /.*/
     tags:
       only: '/v[0-9]+(\.[0-9]+)*/'
 
