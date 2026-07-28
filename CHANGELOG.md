@@ -8,11 +8,11 @@ Built from [GitHub Releases](https://github.com/dotenvx/react-native-dotenv/rele
 
 ### Fixed
 
-- `process.env.X` is only inlined when `X` is defined in a `.env` file (plus `NODE_ENV` / `BABEL_ENV` / `envName`). Stops build-tooling leaks into the bundle without hardcoding tool-specific names. Host/CI-only values still work through `@env` imports ([#574](https://github.com/dotenvx/react-native-dotenv/issues/574)).
+- BREAKING: `process.env.X` is only inlined when `X` is defined in a `.env` file (plus `NODE_ENV` / `BABEL_ENV` / `envName`). Stops build-tooling leaks into the bundle without hardcoding tool-specific names. Host/CI-only values still work through `@env` imports ([#574](https://github.com/dotenvx/react-native-dotenv/issues/574)).
 
 ### Removed
 
-- Removed deprecated `whitelist` and `blacklist` options. Use `allowlist` and `blocklist` instead.
+- BREAKING: Removed deprecated `whitelist` and `blacklist` options. Use `allowlist` and `blocklist` instead.
 
 ## [3.4.12](https://github.com/dotenvx/react-native-dotenv/releases/tag/v3.4.12) (2026-07-23)
 
