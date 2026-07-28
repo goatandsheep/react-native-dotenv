@@ -371,3 +371,137 @@ The tests that use `require('@env')` are also not passing.
 For nextjs, you _must_ set `moduleName` to `react-native-dotenv`.
 
 </details>
+
+&nbsp;
+
+## FAQ
+
+<details><summary>How does this work?</summary><br/>
+
+This Babel plugin reads your `.env` files at build time and replaces `@env` imports (and matching `process.env` references) with their values before the React Native bundle is generated. Runtime Node `process.env` is not available in the app the same way.
+
+</details>
+<details><summary>Do I need this with Expo?</summary><br/>
+
+Expo now has [built-in environment variable support](https://docs.expo.dev/guides/environment-variables/). Evaluate if you still need this plugin.
+
+</details>
+<details><summary>Can I put secrets in `.env`?</summary><br/>
+
+No. Values are inlined into your JavaScript bundle. Anyone who unpacks your app can read them. Only put public config in `.env` — keep real secrets on a server.
+
+</details>
+<details><summary>Can I use this with Next.js?</summary><br/>
+
+Yes. Set `moduleName` to `react-native-dotenv` (Next.js already owns `@env`).
+
+```json
+{
+  "plugins": [
+    ["module:react-native-dotenv", {
+      "moduleName": "react-native-dotenv"
+    }]
+  ]
+}
+```
+
+</details>
+<details><summary>What about variable expansion?</summary><br/>
+
+Use [dotenvx](https://github.com/dotenvx/dotenvx).
+
+</details>
+<details><summary>Should I commit my `.env` file?</summary><br/>
+
+No.
+
+Unless you encrypt it with [dotenvx](https://github.com/dotenvx/dotenvx). Then we recommend you do.
+
+</details>
+<details><summary>Can I use `process.env` instead?</summary><br/>
+
+Yes. The plugin inlines matching keys at build time the same way as `@env` imports.
+
+```js
+console.log(`Hello ${process.env.HELLO}`)
+fetch(`${process.env.API_URL}/users`)
+```
+
+</details>
+<details><summary>Should I have multiple `.env` files?</summary><br/>
+
+We recommend creating one `.env` file per environment. Use `.env` for local/development, `.env.production` for production and so on. This still follows the twelve factor principles as each is attributed individually to its own environment. Avoid custom set ups that work in inheritance somehow (`.env.production` inherits values from `.env` for example). It is better to duplicate values if necessary across each `.env.environment` file.
+
+> In a twelve-factor app, env vars are granular controls, each fully orthogonal to other env vars. They are never grouped together as “environments”, but instead are independently managed for each deploy. This is a model that scales up smoothly as the app naturally expands into more deploys over its lifetime.
+>
+> – [The Twelve-Factor App](http://12factor.net/config)
+
+Additionally, we recommend using [dotenvx](https://github.com/dotenvx/dotenvx) to encrypt and manage these.
+
+This package also supports dotenv-flow-style files (`.env`, `.env.local`, `.env.<mode>`, `.env.<mode>.local`). See Multi-env under Advanced.
+
+</details>
+<details><summary>What about syncing and securing `.env` files?</summary><br/>
+
+Use [dotenvx](https://github.com/dotenvx/dotenvx) to unlock syncing encrypted `.env` files over git.
+
+</details>
+<details><summary>Why aren't my environment variables updating?</summary><br/>
+
+Usually cache. Clear Metro/Babel cache and restart:
+
+```shell
+npm start -- --reset-cache
+# or
+yarn start --reset-cache
+# or
+expo start --clear
+```
+
+Also set `api.cache(false)` in your Babel config (see Usage), or clear `node_modules/.cache/babel-loader/*`. See Caching under Advanced for more.
+
+</details>
+<details><summary>What if I accidentally commit my `.env` file to code?</summary><br/>
+
+Remove it, [remove git history](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository) and then install the [git pre-commit hook](https://github.com/dotenvx/dotenvx#pre-commit) to prevent this from ever happening again.
+
+```
+npm i -g @dotenvx/dotenvx
+dotenvx precommit --install
+```
+
+</details>
+<details><summary>Why can't I use `APP_ENV=development` or `production`?</summary><br/>
+
+Babel/Node treat `development` and `production` specially. If you use `APP_ENV` (or `envName`), avoid those values — use something like `staging` / `release` instead. Prefer built-in `NODE_ENV=development` / `NODE_ENV=production` when you need those modes. See `envName` under Advanced.
+
+</details>
+<details><summary>Why is `import` from `@env` failing with module not found?</summary><br/>
+
+`@env` is a virtual module created by this Babel plugin — it is not an npm package. Make sure `module:react-native-dotenv` is in your Babel config, restart Metro with a cache reset, and that your `moduleName` option matches the import (default `@env`).
+
+</details>
+<details><summary>How do I get TypeScript types for my environment variables?</summary><br/>
+
+Prefer [Zod](https://zod.dev) to validate and infer types — see Types with Zod under Advanced.
+
+</details>
+<details><summary>What happens to environment variables that were already set?</summary><br/>
+
+By default, we will never modify any environment variables that have already been set. In particular, if there is a variable in your `.env` file which collides with one that already exists in your environment, then that variable will be skipped (the existing value wins at build time).
+
+</details>
+
+&nbsp;
+
+## CHANGELOG
+
+See [CHANGELOG.md](CHANGELOG.md)
+
+&nbsp;
+
+## Who's using react-native-dotenv?
+
+[These npm modules depend on it.](https://www.npmjs.com/browse/depended/react-native-dotenv)
+
+Projects that expand it often use the [keyword "dotenv" on npm](https://www.npmjs.com/search?q=keywords:dotenv).
