@@ -221,6 +221,8 @@ Print the active dotenv mode while transforming.
 </details>
 <details><summary>process.env</summary><br>
 
+You can also use `process.env` — the plugin inlines matching keys at build time the same way.
+
 ```js
 console.log(`Hello ${process.env.HELLO}`)
 fetch(`${process.env.API_URL}/users`)
@@ -263,35 +265,24 @@ To choose, setup your scripts with `NODE_ENV` for each environment
 </details>
 <details><summary>TypeScript</summary><br>
 
-For the library to work with TypeScript, you must manually specify the types for the module.
-
-- Create a `types` folder in your project
-- Inside that folder, create a `*.d.ts`file, say, `env.d.ts`
-- in that file, declare a module as the following format:
+Prefer [Zod](https://zod.dev) to validate your env and infer types — no hand-written `env.d.ts` needed.
 
 ```ts
-declare module '@env' {
-  export const API_BASE: string;
-}
+import { z } from 'zod'
+
+export const env = z.object({
+  HELLO: z.string().min(1),
+  API_URL: z.string().url()
+}).parse({
+  HELLO: process.env.HELLO,
+  API_URL: process.env.API_URL
+})
+
+console.log(`Hello ${env.HELLO}`)
+fetch(`${env.API_URL}/users`)
 ```
 
-Add all of your .env variables inside this module.
-
-- Finally, add this folder into the `typeRoots` field in your `tsconfig.json` file:
-
-```json
-{
-...
-  "compilerOptions": {
-    ...
-      "typeRoots": ["./types"],
-    ...
-  }
-...
-}
-```
-
-It is also advised to set `moduleName` to `react-native-dotenv`.
+`env` is fully typed from the schema. If a value is missing or invalid, Zod throws at startup instead of failing later in production.
 
 </details>
 <details><summary>Reference Material</summary><br>
