@@ -1,10 +1,10 @@
-# react-native-dotenv [![CI](https://github.com/dotenvx/react-native-dotenv/actions/workflows/ci.yml/badge.svg)](https://github.com/dotenvx/react-native-dotenv/actions/workflows/ci.yml)
+# react-native-dotenv [![NPM version](https://img.shields.io/npm/v/react-native-dotenv.svg?style=flat-square)](https://www.npmjs.com/package/react-native-dotenv) [![downloads](https://img.shields.io/npm/dw/react-native-dotenv)](https://www.npmjs.com/package/react-native-dotenv)
 
-> Load environment variables using `import` statements.
+<img src="https://raw.githubusercontent.com/motdotla/dotenv/master/dotenv.svg" alt="dotenv" align="right" width="200" />
 
-[![npm version](https://badgen.net/npm/v/react-native-dotenv)](https://www.npmjs.com/package/react-native-dotenv)
-[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
-[![npm downloads](https://img.shields.io/npm/dw/react-native-dotenv.svg?style=flat-square)](https://www.npmjs.com/package/react-native-dotenv)
+Load environment variables using import statements.
+
+&nbsp;
 
 ## Installation
 
@@ -21,10 +21,6 @@ $ yarn add -D react-native-dotenv
 **Breaking changes**: moving from `v0.x` to `v2.x` changes both the setup and usage of this package. Please see the [migration guide](https://github.com/goatandsheep/react-native-dotenv/wiki/Migration-Guide).
 
 Many have been asking about the reasons behind recent changes in this repo. Please see the [story wiki page](https://github.com/goatandsheep/react-native-dotenv/wiki/Story-of-this-repo).
-
-## Introduction
-
-This babel plugin lets you inject your environment variables into your Javascript environment using dotenv for multiple environments. It is best suited for use with react native and works with all flavors including web.
 
 ## Usage
 
