@@ -46,17 +46,11 @@ console.log(`Hello ${HELLO}`)
 fetch(`${API_URL}/users`)
 ```
 
-That's it. Your environment variables from `.env` are available via `@env`.
-
-On transform you'll see a message on stderr (same style as dotenv):
+That's it. Your environment variables from `.env` are available via `@env`!
 
 ```text
 ◇ injected env (2) from .env
 ```
-
-Metro may prefix worker logs with `|`.
-
-Set `quiet: true` in the plugin options to suppress the `◇ injected env` message.
 
 &nbsp;
 
