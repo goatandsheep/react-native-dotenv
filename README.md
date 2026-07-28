@@ -33,21 +33,17 @@ Create a `.env` file in the root of your project:
 ```ini
 # .env
 HELLO="Dotenv"
-OPENAI_API_KEY="your-api-key-goes-here"
+API_URL=https://api.example.org
 ```
 
 Import your environment variables:
 
 ```js
 // App.js
-import { HELLO, OPENAI_API_KEY } from '@env'
+import { HELLO, API_URL } from '@env'
 
 console.log(`Hello ${HELLO}`)
-fetch('https://api.openai.com/v1/models', {
-  headers: {
-    Authorization: `Bearer ${OPENAI_API_KEY}`
-  }
-})
+fetch(`${API_URL}/users`)
 ```
 
 That's it. Your environment variables from `.env` are available via `@env`.
@@ -101,11 +97,7 @@ module.exports = function (api) {
 
 ```js
 console.log(`Hello ${process.env.HELLO}`)
-fetch('https://api.openai.com/v1/models', {
-  headers: {
-    Authorization: `Bearer ${process.env.OPENAI_API_KEY}`
-  }
-})
+fetch(`${process.env.API_URL}/users`)
 ```
 
 </details>
@@ -145,8 +137,8 @@ It is possible to limit the scope of env variables that will be imported by spec
   "plugins": [
     ["module:react-native-dotenv", {
       "allowlist": [
-        "API_URL",
-        "API_TOKEN"
+        "HELLO",
+        "API_URL"
       ]
     }]
   ]
