@@ -11,7 +11,7 @@ Load environment variables using import statements.
 Install it.
 
 ```sh
-npm install -D react-native-dotenv
+npm install react-native-dotenv --save-dev
 ```
 
 Add it to your Babel config:
@@ -99,17 +99,7 @@ fetch(`${process.env.API_URL}/users`)
 Preview [the expo test app](https://github.com/goatandsheep/react-native-dotenv-expo-test).
 
 </details>
-<details><summary>Breaking changes</summary><br>
-
-Moving from `v0.x` to `v2.x` changes both the setup and usage of this package. Please see the [migration guide](https://github.com/goatandsheep/react-native-dotenv/wiki/Migration-Guide).
-
-Many have been asking about the reasons behind recent changes in this repo. Please see the [story wiki page](https://github.com/goatandsheep/react-native-dotenv/wiki/Story-of-this-repo).
-
-</details>
-
-&nbsp;
-
-## Allow and Block lists
+<details><summary>Allow and Block lists</summary><br>
 
 It is possible to limit the scope of env variables that will be imported by specifying a `allowlist` and/or a `blocklist` as an array of strings.
 
@@ -138,7 +128,8 @@ It is possible to limit the scope of env variables that will be imported by spec
 }
 ```
 
-## Safe mode
+</details>
+<details><summary>Safe mode</summary><br>
 
 Enable safe mode to only allow environment variables defined in the `.env` file. This will completely ignore everything that is already defined in the environment.
 
@@ -154,7 +145,8 @@ The `.env` file has to exist.
 }
 ```
 
-## Allow undefined
+</details>
+<details><summary>Allow undefined</summary><br>
 
 Allow importing undefined variables, their value will be `undefined`.
 
@@ -176,7 +168,8 @@ console.log(UNDEFINED_VAR === undefined) // true
 
 When set to `false`, an error will be thrown. **This is no longer default behavior**.
 
-## Override `envName`
+</details>
+<details><summary>Override `envName`</summary><br>
 
 One thing that we've noticed is that metro overwrites the test environment variable even if you specify a config, so we've added a way to fix this. By default, defining the `APP_ENV` variable can be used to set your preferred environment, separate from `NODE_ENV`.
 
@@ -188,6 +181,7 @@ One thing that we've noticed is that metro overwrites the test environment varia
   }
 }
 ```
+
 The above example would use the `.env.staging` file. The standard word is `test`, but go nuts.
 
 To use your own defined name as the environment override, you can define it using `envName`:
@@ -215,8 +209,8 @@ Now you can define `MY_ENV`:
 
 Note: if you're using `APP_ENV` (or `envName`), you cannot use `development` nor `production` as values, and you should avoid having a `.env.development` or `.env.production`. This is a Babel and Node thing that I have little control over unfortunately and is consistent with many other platforms that have an override option, like [Gatsby](https://www.gatsbyjs.com/docs/how-to/local-development/environment-variables/#additional-environments-staging-test-etc). If you want to use `development` and `production`, you should not use `APP_ENV` (or `envName`), but rather the built-in `NODE_ENV=development` or `NODE_ENV=production` or you can just use `debug` vs `release` modes. It actually does compile but only for the `start` command so it is up to you but then you have to run `react-native start` every time you change the values.
 
-
-## Multi-env
+</details>
+<details><summary>Multi-env</summary><br>
 
 This package now supports environment specific variables. This means you may now import environment variables from multiple files, i.e. `.env`, `.env.development`, `.env.production`, and `.env.test`. This is based on [dotenv-flow](https://www.npmjs.com/package/dotenv-flow).
 
@@ -242,7 +236,8 @@ To choose, setup your scripts with `NODE_ENV` for each environment
 }
 ```
 
-## TypeScript
+</details>
+<details><summary>TypeScript</summary><br>
 
 For the library to work with TypeScript, you must manually specify the types for the module.
 
@@ -274,7 +269,8 @@ Add all of your .env variables inside this module.
 
 It is also advised to set `moduleName` to `react-native-dotenv`.
 
-## Reference Material
+</details>
+<details><summary>Reference Material</summary><br>
 
 If you are not familiar with how dotenv or Babel work, make sure to read the following reference materials:
 
@@ -286,7 +282,8 @@ If you are not familiar with how dotenv or Babel work, make sure to read the fol
 
 This Babel plugin processes your `.env` files and your environment variables and replaces the references to the environment variables in your code before it runs. This is because the environment variables will no longer be accessible once the React Native engine generates the app outputs.
 
-## Cacheing
+</details>
+<details><summary>Caching</summary><br>
 
 When using with [`babel-loader`](https://github.com/babel/babel-loader) with caching enabled you will run into issues where environment changes won’t be picked up.
 This is due to the fact that `babel-loader` computes a `cacheIdentifier` that does not take your `.env` file(s) into account. The good news is that a recent update has fixed this problem as long as you're using a new version of Babel. Many react native libraries have not updated their Babel version yet so to force the version, add in your `package.json`:
@@ -357,3 +354,5 @@ Or you can override the default `cacheIdentifier` to include some of your enviro
 The tests that use `require('@env')` are also not passing.
 
 For nextjs, you _must_ set `moduleName` to `react-native-dotenv`.
+
+</details>
