@@ -50,6 +50,20 @@ describe('react-native-dotenv', () => {
     expect(console.error.mock.calls.some(call => /^◇ injected env \(\d+\) from /.test(String(call[0])))).toBe(true)
   })
 
+  it('should log injected env only once per process', () => {
+    jest.resetModules()
+    const plugin = require('../index.js')
+    const babelOpts = {
+      configFile: false,
+      babelrc: false,
+      plugins: [[plugin, { path: FIXTURES + 'default/.env' }]]
+    }
+    transformSync('import { API_KEY } from "@env"', babelOpts)
+    transformSync('import { API_KEY } from "@env"', babelOpts)
+    const injectLogs = console.error.mock.calls.filter(call => String(call[0]).includes('injected env'))
+    expect(injectLogs).toHaveLength(1)
+  })
+
   it('should not log injected env when quiet', () => {
     jest.resetModules()
     transformSync('import { API_KEY } from "@env"', {

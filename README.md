@@ -54,7 +54,9 @@ On transform you'll see a message on stderr (same style as dotenv):
 ◇ injected env (2) from .env
 ```
 
-Set `quiet: true` in the plugin options to suppress it.
+Metro may prefix worker logs with `|`. Expo also prints its own `env: load .env` line — that is Expo's built-in loader, not this plugin.
+
+Set `quiet: true` in the plugin options to suppress the `◇ injected env` message.
 
 &nbsp;
 

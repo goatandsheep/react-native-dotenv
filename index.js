@@ -16,13 +16,22 @@ function parseDotenvFile (filepath, verbose = false) {
   }
 }
 
+// Babel may re-instantiate this plugin per file (e.g. api.cache(false)). Log once
+// per process for the same message so Metro workers do not spam stderr.
+const loggedInjectMessages = new Set()
+
 function logInjectedEnv (fileEnv, loadedPaths) {
   const keysCount = Object.keys(fileEnv).length
-  if (loadedPaths.length > 0) {
-    console.error(`◇ injected env (${keysCount}) from ${loadedPaths.join(', ')}`)
-  } else {
-    console.error(`◇ injected env (${keysCount})`)
+  const message = loadedPaths.length > 0
+    ? `◇ injected env (${keysCount}) from ${loadedPaths.join(', ')}`
+    : `◇ injected env (${keysCount})`
+
+  if (loggedInjectMessages.has(message)) {
+    return
   }
+
+  loggedInjectMessages.add(message)
+  console.error(message)
 }
 
 function undefObjectAssign (targetObject, sourceObject) {
