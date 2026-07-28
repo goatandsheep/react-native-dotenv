@@ -1,10 +1,10 @@
-# react-native-dotenv [![CircleCI](https://circleci.com/gh/goatandsheep/react-native-dotenv.svg?style=svg)](https://circleci.com/gh/goatandsheep/react-native-dotenv)
+# react-native-dotenv [![CI](https://github.com/dotenvx/react-native-dotenv/actions/workflows/ci.yml/badge.svg)](https://github.com/dotenvx/react-native-dotenv/actions/workflows/ci.yml)
 
 > Load environment variables using `import` statements.
 
 [![npm version](https://badgen.net/npm/v/react-native-dotenv)](https://www.npmjs.com/package/react-native-dotenv)
 [![dependencies Status](https://img.shields.io/librariesio/release/npm/react-native-dotenv)](https://img.shields.io/librariesio/release/npm/react-native-dotenv)
-[![codecov](https://badgen.net/codecov/c/github/goatandsheep/react-native-dotenv)](https://codecov.io/gh/goatandsheep/react-native-dotenv)
+[![codecov](https://badgen.net/codecov/c/github/dotenvx/react-native-dotenv)](https://codecov.io/gh/dotenvx/react-native-dotenv)
 [![XO code style](https://badgen.net/badge/code%20style/XO/cyan)](https://github.com/xojs/xo)
 [![npm downloads](https://img.shields.io/npm/dt/react-native-dotenv.svg?style=flat-square)](https://www.npmjs.com/package/react-native-dotenv)
 [![works with dotenv-vault](https://badge.dotenv.org/works-with.svg?r=1)](https://www.dotenv.org/r/github.com/dotenv-org/dotenv-vault?r=1)

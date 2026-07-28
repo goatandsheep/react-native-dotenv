@@ -4,7 +4,7 @@ const FIXTURES = '__tests__/__fixtures__/'
 
 describe('react-native-dotenv', () => {
   if (process.env.NODE_ENV === undefined) {
-    process.env.NODE_ENV = test
+    process.env.NODE_ENV = 'test'
   }
 
   const OLD_ENV = process.env
