@@ -6,31 +6,18 @@ Load environment variables using import statements.
 
 &nbsp;
 
-## Installation
-
-```sh
-$ npm install -D react-native-dotenv
-```
-
-If you are using Yarn:
-
-```sh
-$ yarn add -D react-native-dotenv
-```
-
-**Breaking changes**: moving from `v0.x` to `v2.x` changes both the setup and usage of this package. Please see the [migration guide](https://github.com/goatandsheep/react-native-dotenv/wiki/Migration-Guide).
-
-Many have been asking about the reasons behind recent changes in this repo. Please see the [story wiki page](https://github.com/goatandsheep/react-native-dotenv/wiki/Story-of-this-repo).
-
 ## Usage
 
-> Also preview [the expo test app](https://github.com/goatandsheep/react-native-dotenv-expo-test).
+Install it.
 
-**babel.config.js**
+```sh
+npm install -D react-native-dotenv
+```
 
-Basic setup:
+Add it to your Babel config:
 
-```javascript
+```js
+// babel.config.js
 module.exports = function (api) {
   api.cache(false)
   return {
@@ -38,13 +25,49 @@ module.exports = function (api) {
       ['module:react-native-dotenv']
     ]
   }
-};
+}
 ```
+
+Create a `.env` file in the root of your project:
+
+```ini
+# .env
+API_URL=https://api.example.org
+API_TOKEN=abc123
+```
+
+Import your environment variables:
+
+```js
+// App.js
+import { API_URL, API_TOKEN } from '@env'
+
+fetch(`${API_URL}/users`, {
+  headers: {
+    Authorization: `Bearer ${API_TOKEN}`
+  }
+})
+```
+
+That's it. Your environment variables from `.env` are available via `@env`.
+
+&nbsp;
+
+## Advanced
+
+<details><summary>yarn</summary><br>
+
+```sh
+yarn add -D react-native-dotenv
+```
+
+</details>
+<details><summary>Options</summary><br>
 
 If the defaults do not cut it for your project, this outlines the available options for your Babel configuration and their respective default values, but you do not need to add them if you are using the default settings.
 
 ```javascript
-module.exports = function(api){
+module.exports = function (api) {
   api.cache(false)
   return {
     plugins: [
@@ -60,53 +83,44 @@ module.exports = function(api){
           whitelist: null, // DEPRECATED
           safe: false,
           allowUndefined: true,
-          verbose: false,
-        },
-      ],
-    ],
+          verbose: false
+        }
+      ]
+    ]
   }
-};
-
+}
 ```
 
 > Note: for safe mode, it's highly recommended to set `allowUndefined` to `false`.
 
 > Note: Expo now has [built-in environment variable support](https://docs.expo.dev/guides/environment-variables/). Evaluate if you need
 
-**.env**
-
-```dosini
-API_URL=https://api.example.org
-API_TOKEN=abc123
-```
-
-### process.env technique
-
-In **users.js**
+</details>
+<details><summary>process.env</summary><br>
 
 ```js
 fetch(`${process.env.API_URL}/users`, {
   headers: {
-    'Authorization': `Bearer ${process.env.API_TOKEN}`
+    Authorization: `Bearer ${process.env.API_TOKEN}`
   }
 })
 ```
 
-### Import technique
+</details>
+<details><summary>Expo test app</summary><br>
 
-> The import technique, which is the initial functionality of the library, is to have an import statement at the top that turns into an object because of Babel
+Preview [the expo test app](https://github.com/goatandsheep/react-native-dotenv-expo-test).
 
-In **users.js**
+</details>
+<details><summary>Breaking changes</summary><br>
 
-```js
-import {API_URL, API_TOKEN} from "@env"
+Moving from `v0.x` to `v2.x` changes both the setup and usage of this package. Please see the [migration guide](https://github.com/goatandsheep/react-native-dotenv/wiki/Migration-Guide).
 
-fetch(`${API_URL}/users`, {
-  headers: {
-    'Authorization': `Bearer ${API_TOKEN}`
-  }
-})
-```
+Many have been asking about the reasons behind recent changes in this repo. Please see the [story wiki page](https://github.com/goatandsheep/react-native-dotenv/wiki/Story-of-this-repo).
+
+</details>
+
+&nbsp;
 
 ## Allow and Block lists
 
