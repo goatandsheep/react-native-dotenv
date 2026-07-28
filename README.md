@@ -263,7 +263,7 @@ To choose, setup your scripts with `NODE_ENV` for each environment
 ```
 
 </details>
-<details><summary>TypeScript</summary><br>
+<details><summary>Types with Zod</summary><br>
 
 Prefer [Zod](https://zod.dev) to validate your env and infer types — no hand-written `env.d.ts` needed.
 
