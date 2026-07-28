@@ -32,19 +32,20 @@ Create a `.env` file in the root of your project:
 
 ```ini
 # .env
-API_URL=https://api.example.org
-API_TOKEN=abc123
+HELLO="Dotenv"
+OPENAI_API_KEY="your-api-key-goes-here"
 ```
 
 Import your environment variables:
 
 ```js
 // App.js
-import { API_URL, API_TOKEN } from '@env'
+import { HELLO, OPENAI_API_KEY } from '@env'
 
-fetch(`${API_URL}/users`, {
+console.log(`Hello ${HELLO}`)
+fetch('https://api.openai.com/v1/models', {
   headers: {
-    Authorization: `Bearer ${API_TOKEN}`
+    Authorization: `Bearer ${OPENAI_API_KEY}`
   }
 })
 ```
@@ -99,9 +100,10 @@ module.exports = function (api) {
 <details><summary>process.env</summary><br>
 
 ```js
-fetch(`${process.env.API_URL}/users`, {
+console.log(`Hello ${process.env.HELLO}`)
+fetch('https://api.openai.com/v1/models', {
   headers: {
-    Authorization: `Bearer ${process.env.API_TOKEN}`
+    Authorization: `Bearer ${process.env.OPENAI_API_KEY}`
   }
 })
 ```
