@@ -67,35 +67,7 @@
     "@babel/runtime": "^7.29.7"
   },
   "resolutions": {
-    "@babel/core": "^7.29.7",
-    "@babel/helpers": "^7.29.7",
-    "@babel/runtime": "^7.29.7",
-    "babel-plugin-istanbul": "^8.0.0",
-    "brace-expansion": "^5.0.8",
-    "cross-spawn": "^7.0.6",
-    "glob": "^13.0.6",
-    "js-yaml": "^4.3.0",
-    "minimatch": "^10.2.6",
-    "test-exclude": "^8.0.0",
-    "anymatch/picomatch": "2.3.2",
-    "micromatch/picomatch": "2.3.2"
-  },
-  "overrides": {
-    "@babel/core": "^7.29.7",
-    "@babel/helpers": "^7.29.7",
-    "babel-plugin-istanbul": "^8.0.0",
-    "brace-expansion": "^5.0.8",
-    "cross-spawn": "^7.0.6",
-    "glob": "^13.0.6",
-    "js-yaml": "^4.3.0",
-    "minimatch": "^10.2.6",
-    "test-exclude": "^8.0.0",
-    "anymatch": {
-      "picomatch": "2.3.2"
-    },
-    "micromatch": {
-      "picomatch": "2.3.2"
-    }
+    "minimatch": "^10.2.6"
   },
   "xo": [
     {
