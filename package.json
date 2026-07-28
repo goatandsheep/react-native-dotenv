@@ -47,7 +47,7 @@
     "coverageProvider": "v8",
     "testPathIgnorePatterns": [
       "/node_modules/",
-      "/__fixtures__/"
+      "/fixtures/"
     ],
     "collectCoverage": true,
     "collectCoverageFrom": [
@@ -63,7 +63,7 @@
       "jest"
     ],
     "ignore": [
-      "__tests__/__fixtures__/**"
+      "tests/fixtures/**"
     ]
   }
 }

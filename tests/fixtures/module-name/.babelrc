@@ -1,0 +1,8 @@
+{
+  "plugins": [
+    ["../../../", {
+      "path": "tests/fixtures/module-name/.env",
+      "moduleName": "react-native-dotenv"
+    }]
+  ]
+}

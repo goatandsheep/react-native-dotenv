@@ -1,8 +1,0 @@
-{
-  "plugins": [
-    ["../../../", {
-      "envName": "MY_ENV",
-      "path": "__tests__/__fixtures__/env-name/.env"
-    }]
-  ]
-}

@@ -1,0 +1,10 @@
+{
+  "plugins": [
+    ["../../../", {
+      "path": "tests/fixtures/blocklist/.env",
+      "blocklist": [
+        "BLOCKLISTED"
+      ]
+    }]
+  ]
+}

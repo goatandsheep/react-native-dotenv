@@ -1,8 +1,0 @@
-{
-  "plugins": [
-    ["../../../", {
-      "path": "__tests__/__fixtures__/process-env/.env",
-      "moduleName": "process.env"
-    }]
-  ]
-}

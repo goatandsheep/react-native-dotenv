@@ -1,0 +1,9 @@
+{
+  "plugins": [
+    ["../../../", {
+      "path": "tests/fixtures/safe-no-dotenv/.env",
+      "safe": true,
+      "allowUndefined": true
+    }]
+  ]
+}
