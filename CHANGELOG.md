@@ -2,9 +2,9 @@
 
 All notable changes to this project are documented in this file.
 
-Built from [GitHub Releases](https://github.com/dotenvx/react-native-dotenv/releases) where notes existed; other tagged versions filled in from git history between tags (most historical versions never got a GitHub release).
+[Unreleased](https://github.com/dotenvx/dotenvx/compare/v4.0.0...main)
 
-## [Unreleased]
+## [4.0.0](https://github.com/dotenvx/dotenvx/compare/v3.4.12...v4.0.0) (2026-07-28)
 
 ### Fixed
 
