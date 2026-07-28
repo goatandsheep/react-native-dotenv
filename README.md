@@ -48,6 +48,12 @@ fetch(`${API_URL}/users`)
 
 That's it. Your environment variables from `.env` are available via `@env`.
 
+On transform you'll see a message on stderr (same style as dotenv):
+
+```text
+◇ injected env (2) from .env
+```
+
 &nbsp;
 
 ## Advanced
@@ -204,13 +210,28 @@ When set to `false`, an error will be thrown.
 </details>
 <details><summary><code>verbose</code> (default: <code>false</code>)</summary><br>
 
-Print the active dotenv mode while transforming.
+Also print the active dotenv mode to stderr while transforming.
 
 ```json
 {
   "plugins": [
     ["module:react-native-dotenv", {
       "verbose": true
+    }]
+  ]
+}
+```
+
+</details>
+<details><summary><code>quiet</code> (default: <code>false</code>)</summary><br>
+
+Suppress the stderr inject message (`◇ injected env (N) from .env`).
+
+```json
+{
+  "plugins": [
+    ["module:react-native-dotenv", {
+      "quiet": true
     }]
   ]
 }
