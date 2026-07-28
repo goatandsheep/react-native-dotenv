@@ -12,8 +12,7 @@
   "scripts": {
     "standard": "standard",
     "standard:fix": "standard --fix",
-    "test": "jest",
-    "audit": "npm audit --omit=dev"
+    "test": "jest"
   },
   "keywords": [
     "dotenv",
