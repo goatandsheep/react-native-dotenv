@@ -8,7 +8,7 @@ Built from [GitHub Releases](https://github.com/dotenvx/react-native-dotenv/rele
 
 ### Fixed
 
-- BREAKING: `process.env.X` is only inlined when `X` is defined in a `.env` file (plus `NODE_ENV` / `BABEL_ENV` / `envName`). Stops build-tooling leaks into the bundle without hardcoding tool-specific names. Host/CI-only values still work through `@env` imports ([#574](https://github.com/dotenvx/react-native-dotenv/issues/574)).
+- BREAKING: `process.env.X` is only inlined when `X` is defined in a `.env` file (plus `NODE_ENV` / `BABEL_ENV` / `envName`). Stops build-tooling leaks into the bundle without hardcoding tool-specific names. Host/CI-only values still work through `@env` imports ([#574](https://github.com/dotenvx/react-native-dotenv/issues/574)). This also fixes Expo Router compatibility — Expo host env vars like `EXPO_ROUTER_*` are no longer inlined and stomped ([#501](https://github.com/dotenvx/react-native-dotenv/issues/501)).
 
 ### Removed
 
