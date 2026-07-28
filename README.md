@@ -52,66 +52,84 @@ That's it. Your environment variables from `.env` are available via `@env`.
 
 ## Advanced
 
-<details><summary>Options</summary><br>
+<details><summary><code>envName</code> (default: <code>'APP_ENV'</code>)</summary><br>
 
-If the defaults do not cut it for your project, this outlines the available options for your Babel configuration and their respective default values, but you do not need to add them if you are using the default settings.
+Override which environment variable selects the mode file (separate from `NODE_ENV`). Metro can overwrite the test environment even if you specify a config, so this gives you a dedicated override.
 
-```javascript
-module.exports = function (api) {
-  api.cache(false)
-  return {
-    plugins: [
-      [
-        'module:react-native-dotenv',
-        {
-          envName: 'APP_ENV',
-          moduleName: '@env',
-          path: '.env',
-          blocklist: null,
-          allowlist: null,
-          safe: false,
-          allowUndefined: true,
-          verbose: false
-        }
-      ]
-    ]
+```json
+// package.json
+{
+  "scripts": {
+    "start:staging": "APP_ENV=staging npx react-native start"
   }
 }
 ```
 
-> Note: for safe mode, it's highly recommended to set `allowUndefined` to `false`.
+The above example would use the `.env.staging` file.
 
-> Note: Expo now has [built-in environment variable support](https://docs.expo.dev/guides/environment-variables/). Evaluate if you need
-
-</details>
-<details><summary>process.env</summary><br>
-
-```js
-console.log(`Hello ${process.env.HELLO}`)
-fetch(`${process.env.API_URL}/users`)
-```
-
-</details>
-<details><summary>Expo test app</summary><br>
-
-Preview [the expo test app](https://github.com/goatandsheep/react-native-dotenv-expo-test).
-
-</details>
-<details><summary>Allow and Block lists</summary><br>
-
-It is possible to limit the scope of env variables that will be imported by specifying a `allowlist` and/or a `blocklist` as an array of strings.
+To use your own name:
 
 ```json
 {
   "plugins": [
     ["module:react-native-dotenv", {
-      "blocklist": [
-        "GITHUB_TOKEN"
-      ]
+      "envName": "MY_ENV"
     }]
   ]
 }
 ```
+
+```json
+// package.json
+{
+  "scripts": {
+    "start:staging": "MY_ENV=staging npx react-native start"
+  }
+}
+```
+
+Note: if you're using `APP_ENV` (or `envName`), you cannot use `development` nor `production` as values, and you should avoid having a `.env.development` or `.env.production`. This is a Babel and Node thing that I have little control over unfortunately and is consistent with many other platforms that have an override option, like [Gatsby](https://www.gatsbyjs.com/docs/how-to/local-development/environment-variables/#additional-environments-staging-test-etc). If you want to use `development` and `production`, you should not use `APP_ENV` (or `envName`), but rather the built-in `NODE_ENV=development` or `NODE_ENV=production` or you can just use `debug` vs `release` modes. It actually does compile but only for the `start` command so it is up to you but then you have to run `react-native start` every time you change the values.
+
+</details>
+<details><summary><code>moduleName</code> (default: <code>'@env'</code>)</summary><br>
+
+The module name used in import statements.
+
+```js
+import { HELLO } from '@env'
+```
+
+For TypeScript or Next.js it is often advised to set `moduleName` to `react-native-dotenv`.
+
+```json
+{
+  "plugins": [
+    ["module:react-native-dotenv", {
+      "moduleName": "react-native-dotenv"
+    }]
+  ]
+}
+```
+
+</details>
+<details><summary><code>path</code> (default: <code>'.env'</code>)</summary><br>
+
+Path to the base env file.
+
+```json
+{
+  "plugins": [
+    ["module:react-native-dotenv", {
+      "path": ".env"
+    }]
+  ]
+}
+```
+
+</details>
+<details><summary><code>allowlist</code> (default: <code>null</code>)</summary><br>
+
+Limit imports to only these env variable names.
 
 ```json
 {
@@ -127,9 +145,26 @@ It is possible to limit the scope of env variables that will be imported by spec
 ```
 
 </details>
-<details><summary>Safe mode</summary><br>
+<details><summary><code>blocklist</code> (default: <code>null</code>)</summary><br>
 
-Enable safe mode to only allow environment variables defined in the `.env` file. This will completely ignore everything that is already defined in the environment.
+Prevent these env variable names from being imported.
+
+```json
+{
+  "plugins": [
+    ["module:react-native-dotenv", {
+      "blocklist": [
+        "GITHUB_TOKEN"
+      ]
+    }]
+  ]
+}
+```
+
+</details>
+<details><summary><code>safe</code> (default: <code>false</code>)</summary><br>
+
+Only allow environment variables defined in the `.env` file. This completely ignores everything already defined in the environment.
 
 The `.env` file has to exist.
 
@@ -143,10 +178,12 @@ The `.env` file has to exist.
 }
 ```
 
-</details>
-<details><summary>Allow undefined</summary><br>
+When using safe mode, it's highly recommended to set `allowUndefined` to `false`.
 
-Allow importing undefined variables, their value will be `undefined`.
+</details>
+<details><summary><code>allowUndefined</code> (default: <code>true</code>)</summary><br>
+
+Allow importing undefined variables; their value will be `undefined`.
 
 ```json
 {
@@ -159,53 +196,42 @@ Allow importing undefined variables, their value will be `undefined`.
 ```
 
 ```js
-import {UNDEFINED_VAR} from '@env'
+import { UNDEFINED_VAR } from '@env'
 
 console.log(UNDEFINED_VAR === undefined) // true
 ```
 
-When set to `false`, an error will be thrown. **This is no longer default behavior**.
+When set to `false`, an error will be thrown.
 
 </details>
-<details><summary>Override `envName`</summary><br>
+<details><summary><code>verbose</code> (default: <code>false</code>)</summary><br>
 
-One thing that we've noticed is that metro overwrites the test environment variable even if you specify a config, so we've added a way to fix this. By default, defining the `APP_ENV` variable can be used to set your preferred environment, separate from `NODE_ENV`.
-
-```json
-// package.json
-{
-  "scripts": {
-    "start:staging": "APP_ENV=staging npx react-native start",
-  }
-}
-```
-
-The above example would use the `.env.staging` file. The standard word is `test`, but go nuts.
-
-To use your own defined name as the environment override, you can define it using `envName`:
+Print the active dotenv mode while transforming.
 
 ```json
 {
   "plugins": [
     ["module:react-native-dotenv", {
-     "envName": "MY_ENV"
+      "verbose": true
     }]
   ]
 }
 ```
 
-Now you can define `MY_ENV`:
+</details>
+<details><summary>process.env</summary><br>
 
-```json
-// package.json
-{
-  "scripts": {
-    "start:staging": "MY_ENV=staging npx react-native start",
-  }
-}
+```js
+console.log(`Hello ${process.env.HELLO}`)
+fetch(`${process.env.API_URL}/users`)
 ```
 
-Note: if you're using `APP_ENV` (or `envName`), you cannot use `development` nor `production` as values, and you should avoid having a `.env.development` or `.env.production`. This is a Babel and Node thing that I have little control over unfortunately and is consistent with many other platforms that have an override option, like [Gatsby](https://www.gatsbyjs.com/docs/how-to/local-development/environment-variables/#additional-environments-staging-test-etc). If you want to use `development` and `production`, you should not use `APP_ENV` (or `envName`), but rather the built-in `NODE_ENV=development` or `NODE_ENV=production` or you can just use `debug` vs `release` modes. It actually does compile but only for the `start` command so it is up to you but then you have to run `react-native start` every time you change the values.
+</details>
+<details><summary>Expo</summary><br>
+
+Expo now has [built-in environment variable support](https://docs.expo.dev/guides/environment-variables/). Evaluate if you still need this plugin.
+
+Preview [the expo test app](https://github.com/goatandsheep/react-native-dotenv-expo-test).
 
 </details>
 <details><summary>Multi-env</summary><br>
@@ -229,7 +255,7 @@ To choose, setup your scripts with `NODE_ENV` for each environment
 {
   "scripts": {
     "start:development": "NODE_ENV=development npx react-native start",
-    "start:production": "NODE_ENV=production npx react-native start",
+    "start:production": "NODE_ENV=production npx react-native start"
   }
 }
 ```
