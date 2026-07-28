@@ -1,4 +1,4 @@
-const { transformFileSync } = require('@babel/core')
+const { transformFileSync, transformSync } = require('@babel/core')
 
 const FIXTURES = 'tests/fixtures/'
 
@@ -173,5 +173,34 @@ describe('react-native-dotenv', () => {
 
     const { code } = transformFileSync(FIXTURES + 'env-name/source.js')
     expect(code).toBe('console.log("abc123456");\nconsole.log("username123456");')
+  })
+
+  // #574 — process.env.X only inlines keys from .env (no host-only / tooling leaks).
+  it('should not inline process.env keys that are absent from .env', () => {
+    process.env.JEST_WORKER_ID = '123'
+    process.env.MY_CI_VAR = 'from-ci'
+
+    const { code } = transformSync(
+      'console.log(process.env.JEST_WORKER_ID);\nconsole.log(process.env.MY_CI_VAR);',
+      {
+        configFile: false,
+        babelrc: false,
+        plugins: [[require('../index.js'), { path: FIXTURES + 'default/.env' }]]
+      }
+    )
+
+    expect(code).toBe('console.log(process.env.JEST_WORKER_ID);\nconsole.log(process.env.MY_CI_VAR);')
+  })
+
+  it('should still allow @env imports from host/CI without the key in .env', () => {
+    process.env.MY_CI_VAR = 'from-ci'
+
+    const { code } = transformSync('import { MY_CI_VAR } from "@env";\nconsole.log(MY_CI_VAR);', {
+      configFile: false,
+      babelrc: false,
+      plugins: [[require('../index.js'), { path: FIXTURES + 'default/.env' }]]
+    })
+
+    expect(code).toBe('console.log("from-ci");')
   })
 })
