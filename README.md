@@ -505,3 +505,9 @@ See [CHANGELOG.md](CHANGELOG.md)
 [These npm modules depend on it.](https://www.npmjs.com/browse/depended/react-native-dotenv)
 
 Projects that expand it often use the [keyword "dotenv" on npm](https://www.npmjs.com/search?q=keywords:dotenv).
+
+&nbsp;
+
+## Credits
+
+Long maintained by [Kemal Ahmed](https://guidebolt.com) ([@goatandsheep](https://github.com/goatandsheep)).
