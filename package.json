@@ -13,7 +13,7 @@
     "standard": "standard",
     "standard:fix": "standard --fix",
     "test": "jest",
-    "audit": "yarn audit --groups dependencies"
+    "audit": "npm audit --omit=dev"
   },
   "keywords": [
     "dotenv",
