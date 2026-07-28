@@ -4,15 +4,16 @@
   "description": "Load environment variables using import statements.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/goatandsheep/react-native-dotenv.git"
+    "url": "git+https://github.com/dotenvx/react-native-dotenv.git"
   },
-  "homepage": "https://github.com/goatandsheep/react-native-dotenv",
-  "bugs": "https://github.com/goatandsheep/react-native-dotenv/issues",
+  "homepage": "https://github.com/dotenvx/react-native-dotenv",
+  "bugs": "https://github.com/dotenvx/react-native-dotenv/issues",
   "main": "index.js",
   "scripts": {
     "lint": "xo",
     "lint:fix": "xo --fix",
-    "test": "jest"
+    "test": "jest",
+    "audit": "yarn audit --groups dependencies"
   },
   "keywords": [
     "dotenv",
@@ -31,7 +32,6 @@
   "devDependencies": {
     "@babel/core": "^7.29.7",
     "jest": "30.4.2",
-    "jest-junit": "^17.0.0",
     "xo": "^4.0.0"
   },
   "author": "Kemal Ahmed",
@@ -41,18 +41,10 @@
   ],
   "jest": {
     "testEnvironment": "node",
+    "coverageProvider": "v8",
     "testPathIgnorePatterns": [
       "/node_modules/",
       "/__fixtures__/"
-    ],
-    "reporters": [
-      "default",
-      [
-        "jest-junit",
-        {
-          "outputDirectory": "reports/tests"
-        }
-      ]
     ],
     "collectCoverage": true,
     "collectCoverageFrom": [
@@ -62,14 +54,6 @@
       "lcov",
       "text-summary"
     ]
-  },
-  "peerDependencies": {
-    "@babel/runtime": "^7.29.7"
-  },
-  "resolutions": {
-    "babel-plugin-istanbul": "^8.0.0",
-    "minimatch": "^10.2.6",
-    "test-exclude": "^8.0.0"
   },
   "xo": [
     {
