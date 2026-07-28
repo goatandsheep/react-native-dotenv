@@ -52,13 +52,6 @@ That's it. Your environment variables from `.env` are available via `@env`.
 
 ## Advanced
 
-<details><summary>yarn</summary><br>
-
-```sh
-yarn add -D react-native-dotenv
-```
-
-</details>
 <details><summary>Options</summary><br>
 
 If the defaults do not cut it for your project, this outlines the available options for your Babel configuration and their respective default values, but you do not need to add them if you are using the default settings.
